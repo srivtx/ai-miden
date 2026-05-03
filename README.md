@@ -87,7 +87,8 @@ ai-miden/
 │   ├── phase44/         # Long Context & Position Interpolation
 │   ├── phase45/         # Quantization & GGUF
 │   ├── phase46/         # Mechanistic Interpretability
-│   └── phase47/         # Synthetic Data & Self-Improvement
+│   ├── phase47/         # Synthetic Data & Self-Improvement
+│   └── phase48/         # Test-Time Training
 └── README.md            # This file
 ```
 
@@ -760,6 +761,10 @@ PHASE 46: Mechanistic Interpretability
 PHASE 47: Synthetic Data & Self-Improvement
     Synthetic Data, Rejection Sampling, Constitutional AI, Iterative Self-Improvement
     We generate unlimited training data and bootstrap models beyond human-labeled datasets
+    ↓
+PHASE 48: Test-Time Training
+    Meta-Learning, Unsupervised Adaptation, Online Learning
+    We adapt models at inference time without labels, datasets, or retraining
 ```
 
 **The entire journey:** A computer starts knowing nothing, measures its mistakes, figures out which knobs to turn, learns to classify data, goes deeper, stays simple, stays stable, learns to see, skips ahead through deep paths, remembers sequences, gives words meaning, translates languages, focuses attention, removes RNNs entirely, understands bidirectionally, generates autoregressively, and finally writes its own text. That is learning. That is AI.
@@ -920,6 +925,9 @@ python src/phase46/phase46_mechanistic_interpretability.py
 
 # Phase 47: Synthetic Data & Self-Improvement
 python src/phase47/phase47_synthetic_data.py
+
+# Phase 48: Test-Time Training
+python src/phase48/phase48_test_time_training.py
 ```
 
 ---
@@ -986,7 +994,8 @@ python src/phase47/phase47_synthetic_data.py
 | Phase 45 | 4 | 2 | 4 |
 | Phase 46 | 4 | 2 | 4 |
 | Phase 47 | 4 | 2 | 4 |
-| **Total** | **169** | **75** | **169** |
+| Phase 48 | 4 | 2 | 4 |
+| **Total** | **173** | **77** | **173** |
 
 ---
 
@@ -994,9 +1003,9 @@ python src/phase47/phase47_synthetic_data.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through forty-seven phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling, shrank massive models by 4-8× through precision reduction using quantization, GPTQ error compensation, and AWQ activation-aware protection to run on consumer GPUs, reverse-engineered neural networks through activation patching, sparse autoencoders, and superposition analysis to understand what individual neurons and circuits compute inside the black box, and broke through the human data bottleneck by generating unlimited synthetic training data, filtering it through automatic verifiers, and bootstrapping models to improve themselves iteratively beyond the limits of human-labeled datasets. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through forty-eight phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling, shrank massive models by 4-8× through precision reduction using quantization, GPTQ error compensation, and AWQ activation-aware protection to run on consumer GPUs, reverse-engineered neural networks through activation patching, sparse autoencoders, and superposition analysis to understand what individual neurons and circuits compute inside the black box, broke through the human data bottleneck by generating unlimited synthetic training data and bootstrapping models to improve themselves iteratively beyond the limits of human-labeled datasets, and adapted models in real-time at inference through meta-learning, test-time training, and online learning to handle distribution shifts and rare inputs without any retraining or labeled test data. Every step along the way was explained from first principles.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain, model merging, task arithmetic, SLERP, TIES-Merging, position interpolation, RoPE, YaRN, NTK-aware scaling, quantization, GPTQ, AWQ, GGUF, INT4, INT8, per-channel scaling, mechanistic interpretability, activation patching, sparse autoencoder, superposition, synthetic data, rejection sampling, constitutional AI, self-improvement — are not magic. They are just systematic ways of:
+The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain, model merging, task arithmetic, SLERP, TIES-Merging, position interpolation, RoPE, YaRN, NTK-aware scaling, quantization, GPTQ, AWQ, GGUF, INT4, INT8, per-channel scaling, mechanistic interpretability, activation patching, sparse autoencoder, superposition, synthetic data, rejection sampling, constitutional AI, self-improvement, meta-learning, test-time training, unsupervised adaptation, online learning — are not magic. They are just systematic ways of:
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve

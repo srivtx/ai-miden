@@ -929,6 +929,25 @@ Each phase has:
 
 ---
 
+## Phase 48: Test-Time Training (COMPLETED)
+
+**The Question:** "The world changes. Your model was trained on 2023 data and now faces 2024 inputs. How do you adapt to a single new example in real-time without labels, datasets, or retraining from scratch?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Meta-Learning | Learning an initialization that adapts to new tasks in few steps | Learning to ride bicycles so motorcycles take hours instead of months |
+| Test-Time Training | Adapting model parameters during inference on the test input | A doctor reading case studies on the spot before diagnosing a rare disease |
+| Unsupervised Adaptation | Adjusting to new distributions using only unlabeled data | A chef inferring Japanese cuisine principles by walking through markets |
+| Online Learning | Continuously updating the model as new data arrives | A stock trader updating strategy after every trade |
+
+**Why It Is Needed:** Real-world data shifts constantly. Models that can adapt at test time handle new domains, rare inputs, and distribution drift without expensive retraining. This is essential for robust deployment.
+
+**What We Build:** A meta-learned linear classifier that adapts to new tasks with 5 examples. We demonstrate test-time training improving accuracy on shifted data from 60% to 70% without labels, and online learning adapting to a distribution shift in real-time.
+
+**Connects To:** This completes the extended research phase series. The course now spans 49 phases covering every major concept from absolute zero to cutting-edge research.
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -971,7 +990,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-47: THE FUTURE & SCALING
+PHASE 32-48: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -987,7 +1006,8 @@ PHASE 32-47: THE FUTURE & SCALING
   ├─ Long Context & Position Interpolation (Context Extension)
   ├─ Quantization & GGUF (Consumer GPU Deployment)
   ├─ Mechanistic Interpretability (Understanding Internals)
-  └─ Synthetic Data & Self-Improvement (Breaking the Data Wall)
+  ├─ Synthetic Data & Self-Improvement (Breaking the Data Wall)
+  └─ Test-Time Training (Real-Time Adaptation)
 ```
 
 ---
@@ -996,18 +1016,18 @@ PHASE 32-47: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 48 (0-47) |
-| Concepts Covered | 180+ |
-| Code Projects | 44 (Phases 5-47, plus 0-4 done) |
+| Total Phases | 49 (0-48) |
+| Concepts Covered | 184+ |
+| Code Projects | 45 (Phases 5-48, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 27,000+ |
-| Estimated Lines of Code | 11,300+ |
+| Estimated Lines of Documentation | 27,500+ |
+| Estimated Lines of Code | 11,600+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 47, the student will:
+By the end of Phase 48, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
