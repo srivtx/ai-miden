@@ -1166,7 +1166,19 @@ PHASE 32-55: THE FUTURE & SCALING
   ├─ Classical Reinforcement Learning (Trial-and-Error Learning)
   ├─ Graph Neural Networks (Learning on Graphs)
   ├─ Distributed Training (Scaling Beyond One GPU)
-  └─ Gradient Boosting (Combining Weak Models)
+  ├─ Gradient Boosting (Combining Weak Models)
+  │
+PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
+  ├─ Dataset Curation (Preparing Training Data)
+  ├─ SFT with LoRA (Fine-Tuning Models)
+  ├─ QLoRA (Memory-Efficient Training)
+  ├─ Preference Alignment (DPO & ORPO)
+  ├─ Jailbreaking — Basic (Prompt Attacks)
+  ├─ Jailbreaking — Advanced (GCG & AutoDAN)
+  ├─ Red-Teaming & Safety (Evaluation)
+  ├─ Domain Adaptation (Custom Assistants)
+  ├─ Inference & Deployment (Serving Models)
+  └─ Real Agents with Tool Use (Applied Agents)
 ```
 
 ---
@@ -1175,23 +1187,50 @@ PHASE 32-55: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 57 (0-56) |
+| Total Phases | 64 (0-63) |
 | Concepts Covered | 216+ |
-| Code Projects | 53 (Phases 5-56, plus 0-4 done) |
+| Code Projects | 54 (Phases 5-63, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 33,000+ |
-| Estimated Lines of Code | 13,800+ |
+| Estimated Lines of Documentation | 34,000+ |
+| Estimated Lines of Code | 14,200+ |
+
+---
+
+## Phase 63: Dataset Curation for Fine-Tuning (COMPLETED)
+
+**The Question:** "You understand how models work. But how do you actually prepare real data to fine-tune a model? What format does the data need? How do you clean it? How do you make GPU training efficient?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Instruction Tuning | Teaching pre-trained models to follow commands and have conversations | Teaching a brilliant professor social skills so they answer questions directly |
+| Chat Template | Structuring multi-turn conversations with special tokens | Stage directions in a play script so actors know who speaks when |
+| Data Curation | Cleaning, filtering, and organizing raw training data | A chef selecting only the best ingredients from a mixed delivery |
+| Sequence Packing | Filling GPU memory with multiple short examples instead of padding | Packing a moving truck floor-to-ceiling instead of shipping one box at a time |
+
+**Why It Is Needed:** Real fine-tuning starts with data. Garbage data produces garbage models. Chat templates are required for the model to understand dialogue structure. Curation removes duplicates, unsafe content, and low-quality examples. Packing increases training throughput by 5-10× on short-sequence datasets.
+
+**What We Build:** A complete data pipeline simulation: 20 raw examples → chat template formatting → tokenization → deduplication → safety filtering → quality scoring → sequence packing. We show before/after statistics and GPU efficiency improvements.
+
+**Connects To:** Phase 64 (data is ready. Now how do we actually fine-tune a model with LoRA?)
 
 ---
 
 ## The Promise
 
-By the end of Phase 56, the student will:
+By the end of Phase 72, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
 - Be able to read any AI research paper and understand the "why"
 - Be ready to specialize in any subfield of AI
+- CURATE and PREPARE real instruction-following datasets
+- FINE-TUNE open-source models with LoRA and QLoRA on custom data
+- ALIGN models with human preferences using DPO and ORPO
+- EXECUTE and DEFEND against jailbreak attacks (roleplay, encoding, GCG)
+- RED-TEAM models for safety vulnerabilities
+- BUILD domain-specific assistants (medical, legal, coding)
+- DEPLOY models for inference with vLLM and batch optimization
+- BUILD real agentic systems with function calling and tool use
 
 **This is not a race to GPT. This is a complete education in artificial intelligence.**
 

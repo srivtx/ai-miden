@@ -96,7 +96,23 @@ ai-miden/
 │   ├── phase53/         # Classical Reinforcement Learning
 │   ├── phase54/         # Graph Neural Networks
 │   ├── phase55/         # Distributed Training
-│   └── phase56/         # Gradient Boosting
+│   ├── phase56/         # Gradient Boosting
+│   ├── phase57/         # Adversarial Robustness
+│   ├── phase58/         # Time Series Forecasting
+│   ├── phase59/         # Federated Learning
+│   ├── phase60/         # Bayesian Neural Networks
+│   ├── phase61/         # AutoML & Hyperparameter Search
+│   ├── phase62/         # Active Learning
+│   ├── phase63/         # Dataset Curation for Fine-Tuning
+│   ├── phase64/         # Practical SFT with LoRA
+│   ├── phase65/         # QLoRA & Memory-Efficient Training
+│   ├── phase66/         # Preference Alignment (DPO & ORPO)
+│   ├── phase67/         # Jailbreaking — Basic Attacks
+│   ├── phase68/         # Jailbreaking — Advanced (GCG & AutoDAN)
+│   ├── phase69/         # Red-Teaming & Safety Evaluation
+│   ├── phase70/         # Domain Adaptation — Custom Assistants
+│   ├── phase71/         # Inference & Deployment
+│   └── phase72/         # Real Agents with Tool Use
 └── README.md            # This file
 ```
 
@@ -960,6 +976,36 @@ python src/phase55/phase55_distributed_training.py
 
 # Phase 56: Gradient Boosting
 python src/phase56/phase56_gradient_boosting.py
+
+# Phase 63: Dataset Curation for Fine-Tuning
+python src/phase63/phase63_dataset_curation.py
+
+# Phase 64: Practical SFT with LoRA (Colab)
+# Upload src/phase64/phase64_sft_lora_colab.py to Colab T4
+
+# Phase 65: QLoRA & Memory-Efficient Training (Colab)
+# Upload src/phase65/phase65_qlora_colab.py to Colab T4
+
+# Phase 66: Preference Alignment DPO & ORPO (Colab)
+# Upload src/phase66/phase66_dpo_orpo_colab.py to Colab T4
+
+# Phase 67: Jailbreaking — Basic Attacks (Colab)
+# Upload src/phase67/phase67_jailbreak_basic_colab.py to Colab T4
+
+# Phase 68: Jailbreaking — Advanced GCG & AutoDAN (Colab)
+# Upload src/phase68/phase68_jailbreak_advanced_colab.py to Colab T4
+
+# Phase 69: Red-Teaming & Safety Evaluation (Colab)
+# Upload src/phase69/phase69_red_teaming_colab.py to Colab T4
+
+# Phase 70: Domain Adaptation — Custom Assistants (Colab)
+# Upload src/phase70/phase70_domain_adaptation_colab.py to Colab T4
+
+# Phase 71: Inference & Deployment (Colab)
+# Upload src/phase71/phase71_inference_deployment_colab.py to Colab T4
+
+# Phase 72: Real Agents with Tool Use (Colab)
+# Upload src/phase72/phase72_real_agents_colab.py to Colab T4
 ```
 
 ---
@@ -1035,7 +1081,8 @@ python src/phase56/phase56_gradient_boosting.py
 | Phase 54 | 4 | 1 | 4 |
 | Phase 55 | 4 | 1 | 4 |
 | Phase 56 | 4 | 1 | 4 |
-| **Total** | **205** | **86** | **205** |
+| Phase 63 | 4 | 2 | 4 |
+| **Total** | **209** | **88** | **209** |
 
 ---
 
@@ -1043,7 +1090,7 @@ python src/phase56/phase56_gradient_boosting.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through fifty-six phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling, shrank massive models by 4-8× through precision reduction using quantization, GPTQ error compensation, and AWQ activation-aware protection to run on consumer GPUs, reverse-engineered neural networks through activation patching, sparse autoencoders, and superposition analysis to understand what individual neurons and circuits compute inside the black box, broke through the human data bottleneck by generating unlimited synthetic training data and bootstrapping models to improve themselves iteratively beyond the limits of human-labeled datasets, adapted models in real-time at inference through meta-learning, test-time training, and online learning to handle distribution shifts and rare inputs without any retraining or labeled test data, mastered adaptive optimization with momentum, per-parameter scaling, decoupled weight decay, and learning rate schedules that adjust over training time, and learned to extract powerful representations from completely unlabeled data through contrastive learning, masked reconstruction, and pretext tasks that create their own supervision signals. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through sixty-three phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling, shrank massive models by 4-8× through precision reduction using quantization, GPTQ error compensation, and AWQ activation-aware protection to run on consumer GPUs, reverse-engineered neural networks through activation patching, sparse autoencoders, and superposition analysis to understand what individual neurons and circuits compute inside the black box, broke through the human data bottleneck by generating unlimited synthetic training data and bootstrapping models to improve themselves iteratively beyond the limits of human-labeled datasets, adapted models in real-time at inference through meta-learning, test-time training, and online learning to handle distribution shifts and rare inputs without any retraining or labeled test data, mastered adaptive optimization with momentum, per-parameter scaling, decoupled weight decay, and learning rate schedules that adjust over training time, and learned to extract powerful representations from completely unlabeled data through contrastive learning, masked reconstruction, and pretext tasks that create their own supervision signals. Every step along the way was explained from first principles.
 
 The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain, model merging, task arithmetic, SLERP, TIES-Merging, position interpolation, RoPE, YaRN, NTK-aware scaling, quantization, GPTQ, AWQ, GGUF, INT4, INT8, per-channel scaling, mechanistic interpretability, activation patching, sparse autoencoder, superposition, synthetic data, rejection sampling, constitutional AI, self-improvement, meta-learning, test-time training, unsupervised adaptation, online learning, Adam, AdamW, RMSprop, momentum, learning rate schedule, cosine annealing, warmup, self-supervised learning, contrastive learning, masked autoencoding, SimCLR, MAE, pretext task, data augmentation, BPE tokenization, MinHash deduplication, Q-learning, policy gradient, REINFORCE, actor-critic, replay buffer, graph neural network, GCN, graph attention, GAT, message passing, data parallelism, model parallelism, gradient accumulation, all-reduce, ring all-reduce, gradient boosting, AdaBoost, XGBoost, ensemble learning, bagging, boosting, decision stump, weak learner, regularized leaf — are not magic. They are just systematic ways of:
 1. Making a guess
