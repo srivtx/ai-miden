@@ -910,6 +910,25 @@ Each phase has:
 
 ---
 
+## Phase 47: Synthetic Data & Self-Improvement (COMPLETED)
+
+**The Question:** "High-quality human data is finite and expensive. We have scraped the entire internet. How do we keep improving models when we have run out of human-generated training data?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Synthetic Data | AI-generated training examples | A chess grandmaster playing against themselves to discover new strategies |
+| Rejection Sampling | Filtering generated outputs with automatic verifiers | A pearl farm keeping only gem-quality pearls |
+| Constitutional AI | Models critiquing their own outputs against written principles | A company writing a code of ethics that employees self-apply |
+| Iterative Self-Improvement | Training on a model's own best outputs in a loop | A writer revising their novel using only their best chapters as references |
+
+**Why It Is Needed:** This breaks the data bottleneck. AlphaGo surpassed human Go players by training on its own games. Modern LLMs use synthetic reasoning chains, code solutions, and Q&A pairs to scale beyond human-labeled datasets.
+
+**What We Build:** A model that generates synthetic arithmetic solutions, filters them with an exact verifier, and iteratively trains on the verified correct answers. We show that each self-improvement iteration produces higher-quality synthetic data.
+
+**Connects To:** Phase 48 (models can improve themselves with infinite synthetic data. Can they also adapt at test time on a single new example?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -952,7 +971,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-46: THE FUTURE & SCALING
+PHASE 32-47: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -967,7 +986,8 @@ PHASE 32-46: THE FUTURE & SCALING
   ├─ Model Merging & Ensembles (Multi-Task Combination)
   ├─ Long Context & Position Interpolation (Context Extension)
   ├─ Quantization & GGUF (Consumer GPU Deployment)
-  └─ Mechanistic Interpretability (Understanding Internals)
+  ├─ Mechanistic Interpretability (Understanding Internals)
+  └─ Synthetic Data & Self-Improvement (Breaking the Data Wall)
 ```
 
 ---
@@ -976,18 +996,18 @@ PHASE 32-46: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 47 (0-46) |
-| Concepts Covered | 176+ |
-| Code Projects | 43 (Phases 5-46, plus 0-4 done) |
+| Total Phases | 48 (0-47) |
+| Concepts Covered | 180+ |
+| Code Projects | 44 (Phases 5-47, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 26,500+ |
-| Estimated Lines of Code | 11,000+ |
+| Estimated Lines of Documentation | 27,000+ |
+| Estimated Lines of Code | 11,300+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 46, the student will:
+By the end of Phase 47, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
