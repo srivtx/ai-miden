@@ -63,6 +63,12 @@ docs_dsa/
 ├── PROGRESS_TRACKER.md        ← Checklist & weekly log
 ├── QUICK_REFERENCE.md         ← 1-page cheat sheet
 ├── COMPLEXITY_GUIDE.md        ← Time/space tables
+├── INTERVIEW_SKILLS.md        ← How to think aloud & communicate
+├── FINAL_CRAM.md              ← Last 48 hours before interview
+├── COMPANY_GUIDES/            ← Company-specific prep
+│   ├── GOOGLE.md              ← Google interview strategy
+│   ├── META.md                ← Meta interview strategy
+│   └── AMAZON.md              ← Amazon interview strategy
 └── IMPROVEMENTS.md            ← Future enhancements
 ```
 
