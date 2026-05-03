@@ -720,6 +720,25 @@ Each phase has:
 
 ---
 
+## Phase 37: Retrieval-Augmented Generation (COMPLETED)
+
+**The Question:** "LLMs only know their training data. They cannot access your private documents, today's news, or real-time information. How do you ground their answers in external knowledge without retraining?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| RAG | Augmenting LLM prompts with retrieved documents | Lawyer researching case law with a paralegal |
+| Vector Database | Storing document embeddings for fast similarity search | Library organized by topic similarity instead of alphabet |
+| Embedding Retrieval | Finding documents by semantic meaning instead of keywords | Perfume shop organizing scents by similarity in scent space |
+| Context Injection | Inserting retrieved documents into the LLM prompt | Teacher placing relevant pages on a student's desk for an open-book exam |
+
+**Why It Is Needed:** LLMs have knowledge cutoffs and hallucinate when uncertain. RAG grounds answers in real, up-to-date, and private documents without changing the model.
+
+**What We Build:** A toy RAG system with 10 documents, bag-of-words embeddings, cosine similarity retrieval, and a tiny linear model. We compare answering with and without retrieved context.
+
+**Connects To:** Phase 38 (we can scale models, adapt them, speed them up, and ground them. But how much data and compute do we actually need?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -762,12 +781,13 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-36: THE FUTURE & SCALING
+PHASE 32-37: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
   ├─ LoRA & PEFT (Cheap Adaptation)
-  └─ Speculative Decoding (Fast Generation)
+  ├─ Speculative Decoding (Fast Generation)
+  └─ RAG (Grounded Knowledge)
 ```
 
 ---
@@ -776,18 +796,18 @@ PHASE 32-36: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 37 (0-36) |
-| Concepts Covered | 136+ |
-| Code Projects | 33 (Phases 5-36, plus 0-4 done) |
+| Total Phases | 38 (0-37) |
+| Concepts Covered | 140+ |
+| Code Projects | 34 (Phases 5-37, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 19,000+ |
-| Estimated Lines of Code | 7,000+ |
+| Estimated Lines of Documentation | 20,000+ |
+| Estimated Lines of Code | 7,500+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 36, the student will:
+By the end of Phase 37, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary

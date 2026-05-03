@@ -76,7 +76,8 @@ ai-miden/
 │   ├── phase33/         # Mixture of Experts
 │   ├── phase34/         # Mamba & State Space Models
 │   ├── phase35/         # LoRA & Parameter-Efficient Fine-Tuning
-│   └── phase36/         # Speculative Decoding
+│   ├── phase36/         # Speculative Decoding
+│   └── phase37/         # Retrieval-Augmented Generation
 └── README.md            # This file
 ```
 
@@ -705,6 +706,10 @@ PHASE 35: LoRA & Parameter-Efficient Fine-Tuning
 PHASE 36: Speculative Decoding
     Draft Model, Acceptance Sampling, Medusa Decoding
     We generate multiple tokens per forward pass with zero quality loss
+    ↓
+PHASE 37: Retrieval-Augmented Generation
+    Vector Database, Embedding Retrieval, Context Injection
+    We ground LLM answers in external knowledge without retraining
 ```
 
 **The entire journey:** A computer starts knowing nothing, measures its mistakes, figures out which knobs to turn, learns to classify data, goes deeper, stays simple, stays stable, learns to see, skips ahead through deep paths, remembers sequences, gives words meaning, translates languages, focuses attention, removes RNNs entirely, understands bidirectionally, generates autoregressively, and finally writes its own text. That is learning. That is AI.
@@ -832,6 +837,9 @@ python src/phase35/phase35_lora.py
 
 # Phase 36: Speculative Decoding
 python src/phase36/phase36_speculative_decoding.py
+
+# Phase 37: Retrieval-Augmented Generation
+python src/phase37/phase37_rag.py
 ```
 
 ---
@@ -887,7 +895,8 @@ python src/phase36/phase36_speculative_decoding.py
 | Phase 34 | 4 | 2 | 4 |
 | Phase 35 | 4 | 2 | 4 |
 | Phase 36 | 4 | 2 | 4 |
-| **Total** | **125** | **53** | **125** |
+| Phase 37 | 4 | 2 | 4 |
+| **Total** | **129** | **55** | **129** |
 
 ---
 
@@ -895,9 +904,9 @@ python src/phase36/phase36_speculative_decoding.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through thirty-six phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, and accelerated inference by generating multiple tokens per forward pass with zero quality loss. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through thirty-seven phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, and grounded generation in external knowledge through retrieval-augmented pipelines. Every step along the way was explained from first principles.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa — are not magic. They are just systematic ways of:
+The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection — are not magic. They are just systematic ways of:
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve
