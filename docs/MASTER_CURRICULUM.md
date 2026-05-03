@@ -1080,6 +1080,25 @@ Each phase has:
 
 ---
 
+## Phase 56: Gradient Boosting (COMPLETED)
+
+**The Question:** "A single model makes mistakes. Can many weak models, each fixing the errors of the previous ones, combine into a predictor stronger than any individual model?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Gradient Boosting | Sequential training where each tree predicts the residual errors of the ensemble | A team of consultants where each one fixes what the previous consultants missed |
+| XGBoost | Optimized gradient boosting with regularization and approximate split finding | A factory assembly line with quality control and automatic defect detection |
+| AdaBoost | Reweighting examples so each new classifier focuses on previous mistakes | A jury where the judge gives more weight to jurors with better track records |
+| Ensemble Learning | Combining multiple models so errors cancel and correct predictions reinforce | "Ask the Audience" on Who Wants to Be a Millionaire — the crowd is smarter than one person |
+
+**Why It Is Needed:** Gradient boosting dominates structured data competitions. It achieves state-of-the-art results on tabular data without neural networks. XGBoost, LightGBM, and CatBoost are built on this idea. Ensemble learning is the broader principle behind random forests, boosting, and stacking.
+
+**What We Build:** From-scratch gradient boosting on a 1D nonlinear regression task, showing MSE dropping from 0.31 to 0.06 over 20 rounds. Regularized leaf weights inspired by XGBoost. AdaBoost on a binary classification task reaching 92.5% accuracy from weak stumps.
+
+**Connects To:** Phase 57 (ensembles make strong predictors. But how do we make models robust against adversarial attacks?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -1146,7 +1165,8 @@ PHASE 32-55: THE FUTURE & SCALING
   ├─ Data Augmentation & Tokenization (Better Data)
   ├─ Classical Reinforcement Learning (Trial-and-Error Learning)
   ├─ Graph Neural Networks (Learning on Graphs)
-  └─ Distributed Training (Scaling Beyond One GPU)
+  ├─ Distributed Training (Scaling Beyond One GPU)
+  └─ Gradient Boosting (Combining Weak Models)
 ```
 
 ---
@@ -1155,18 +1175,18 @@ PHASE 32-55: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 56 (0-55) |
-| Concepts Covered | 212+ |
-| Code Projects | 52 (Phases 5-55, plus 0-4 done) |
+| Total Phases | 57 (0-56) |
+| Concepts Covered | 216+ |
+| Code Projects | 53 (Phases 5-56, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 32,000+ |
-| Estimated Lines of Code | 13,500+ |
+| Estimated Lines of Documentation | 33,000+ |
+| Estimated Lines of Code | 13,800+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 55, the student will:
+By the end of Phase 56, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
