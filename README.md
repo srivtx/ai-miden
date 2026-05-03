@@ -78,7 +78,8 @@ ai-miden/
 │   ├── phase35/         # LoRA & Parameter-Efficient Fine-Tuning
 │   ├── phase36/         # Speculative Decoding
 │   ├── phase37/         # Retrieval-Augmented Generation
-│   └── phase38/         # Scaling Laws & Compute-Optimal Training
+│   ├── phase38/         # Scaling Laws & Compute-Optimal Training
+│   └── phase39/         # Knowledge Distillation
 └── README.md            # This file
 ```
 
@@ -715,6 +716,10 @@ PHASE 37: Retrieval-Augmented Generation
 PHASE 38: Scaling Laws & Compute-Optimal Training
     Power Laws, Chinchilla Rule, Data Wall, Compute-Optimal Frontier
     We learn how to allocate our training budget between model size and data
+    ↓
+PHASE 39: Knowledge Distillation
+    Teacher Model, Soft Labels, Temperature Scaling, Dark Knowledge
+    We transfer a large model's intelligence into a tiny student with matching accuracy
 ```
 
 **The entire journey:** A computer starts knowing nothing, measures its mistakes, figures out which knobs to turn, learns to classify data, goes deeper, stays simple, stays stable, learns to see, skips ahead through deep paths, remembers sequences, gives words meaning, translates languages, focuses attention, removes RNNs entirely, understands bidirectionally, generates autoregressively, and finally writes its own text. That is learning. That is AI.
@@ -848,6 +853,9 @@ python src/phase37/phase37_rag.py
 
 # Phase 38: Scaling Laws & Compute-Optimal Training
 python src/phase38/phase38_scaling_laws.py
+
+# Phase 39: Knowledge Distillation
+python src/phase39/phase39_knowledge_distillation.py
 ```
 
 ---
@@ -905,7 +913,8 @@ python src/phase38/phase38_scaling_laws.py
 | Phase 36 | 4 | 2 | 4 |
 | Phase 37 | 4 | 2 | 4 |
 | Phase 38 | 4 | 2 | 4 |
-| **Total** | **133** | **57** | **133** |
+| Phase 39 | 4 | 2 | 4 |
+| **Total** | **137** | **59** | **137** |
 
 ---
 
@@ -913,9 +922,9 @@ python src/phase38/phase38_scaling_laws.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through thirty-eight phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, and learned how to wisely allocate training budgets between model size and data using empirical scaling laws. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through thirty-nine phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, and transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation. Every step along the way was explained from first principles.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall — are not magic. They are just systematic ways of:
+The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge — are not magic. They are just systematic ways of:
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve
