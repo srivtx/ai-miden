@@ -81,7 +81,8 @@ ai-miden/
 │   ├── phase38/         # Scaling Laws & Compute-Optimal Training
 │   ├── phase39/         # Knowledge Distillation
 │   ├── phase40/         # Flow Matching & Diffusion Transformers
-│   └── phase41/         # Vision-Language Instruction Tuning
+│   ├── phase41/         # Vision-Language Instruction Tuning
+│   └── phase42/         # Reasoning with Verifiable Rewards
 └── README.md            # This file
 ```
 
@@ -730,6 +731,10 @@ PHASE 40: Flow Matching & Diffusion Transformers
 PHASE 41: Vision-Language Instruction Tuning
     Vision Encoder, Projection Layer, Multimodal Instruction Tuning
     We connect image understanding to language generation for visual conversation
+    ↓
+PHASE 42: Reasoning with Verifiable Rewards
+    Verifiable Reward, GRPO, Emergent Reasoning, DeepSeek-R1 Reasoning Chain
+    We train models to reason through self-play with automatic answer checking
 ```
 
 **The entire journey:** A computer starts knowing nothing, measures its mistakes, figures out which knobs to turn, learns to classify data, goes deeper, stays simple, stays stable, learns to see, skips ahead through deep paths, remembers sequences, gives words meaning, translates languages, focuses attention, removes RNNs entirely, understands bidirectionally, generates autoregressively, and finally writes its own text. That is learning. That is AI.
@@ -872,6 +877,9 @@ python src/phase40/phase40_flow_matching.py
 
 # Phase 41: Vision-Language Instruction Tuning
 python src/phase41/phase41_vlm.py
+
+# Phase 42: Reasoning with Verifiable Rewards
+python src/phase42/phase42_verifiable_rewards.py
 ```
 
 ---
@@ -932,7 +940,8 @@ python src/phase41/phase41_vlm.py
 | Phase 39 | 4 | 2 | 4 |
 | Phase 40 | 4 | 2 | 4 |
 | Phase 41 | 4 | 2 | 4 |
-| **Total** | **145** | **63** | **145** |
+| Phase 42 | 4 | 2 | 4 |
+| **Total** | **149** | **65** | **149** |
 
 ---
 
@@ -940,9 +949,9 @@ python src/phase41/phase41_vlm.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through forty-one phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, and connected vision and language into unified multimodal conversational agents. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through forty-two phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, and trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization. Every step along the way was explained from first principles.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model — are not magic. They are just systematic ways of:
+The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain — are not magic. They are just systematic ways of:
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve

@@ -815,6 +815,25 @@ Each phase has:
 
 ---
 
+## Phase 42: Reasoning with Verifiable Rewards (COMPLETED)
+
+**The Question:** "You have a model that can answer questions, but getting human feedback for every answer is expensive and slow. How do you train it to reason when you can automatically check if the answer is correct?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Verifiable Reward | Automatic training signal from ground-truth checkers | Math answer key: instant, exact, free |
+| GRPO | Eliminates critic by comparing outputs within a group | Teacher grading on a curve instead of using an answer key |
+| Emergent Reasoning | Problem-solving behaviors arising from RL without explicit teaching | Child inventing puzzle strategies to earn more cookies |
+| DeepSeek-R1 Reasoning Chain | Intermediate reasoning steps generated before final answer | Showing work on a math exam to catch mistakes |
+
+**Why It Is Needed:** For math, code, and logic, we can check answers automatically. DeepSeek-R1-Zero trained a 671B model using ONLY verifiable math rewards — no human labels, no SFT — and the model spontaneously developed self-verification and backtracking.
+
+**What We Build:** A tiny position-wise policy trained with GRPO on simple arithmetic. Correct answers get +1, wrong get 0. The model improves from 0% to 70% accuracy using only the answer checker as a teacher.
+
+**Connects To:** Phase 43 (we can train models to reason. How do we combine multiple specialized models?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -857,7 +876,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-41: THE FUTURE & SCALING
+PHASE 32-42: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -867,7 +886,8 @@ PHASE 32-41: THE FUTURE & SCALING
   ├─ Scaling Laws (Efficient Training)
   ├─ Knowledge Distillation (Tiny Deployment)
   ├─ Flow Matching & DiT (Fast Generation)
-  └─ VLM Instruction Tuning (Multimodal Conversation)
+  ├─ VLM Instruction Tuning (Multimodal Conversation)
+  └─ Verifiable Rewards & GRPO (Self-Play Reasoning)
 ```
 
 ---
@@ -876,18 +896,18 @@ PHASE 32-41: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 42 (0-41) |
-| Concepts Covered | 156+ |
-| Code Projects | 38 (Phases 5-41, plus 0-4 done) |
+| Total Phases | 43 (0-42) |
+| Concepts Covered | 160+ |
+| Code Projects | 39 (Phases 5-42, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 24,000+ |
-| Estimated Lines of Code | 9,500+ |
+| Estimated Lines of Documentation | 24,500+ |
+| Estimated Lines of Code | 9,800+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 41, the student will:
+By the end of Phase 42, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
