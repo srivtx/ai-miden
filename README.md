@@ -84,7 +84,8 @@ ai-miden/
 │   ├── phase41/         # Vision-Language Instruction Tuning
 │   ├── phase42/         # Reasoning with Verifiable Rewards
 │   ├── phase43/         # Model Merging & Ensembles
-│   └── phase44/         # Long Context & Position Interpolation
+│   ├── phase44/         # Long Context & Position Interpolation
+│   └── phase45/         # Quantization & GGUF
 └── README.md            # This file
 ```
 
@@ -745,6 +746,10 @@ PHASE 43: Model Merging & Ensembles
 PHASE 44: Long Context & Position Interpolation
     RoPE, Position Interpolation, YaRN, NTK-Aware Scaling
     We extend context windows by scaling position encodings without retraining
+    ↓
+PHASE 45: Quantization & GGUF
+    Quantization, GPTQ, AWQ, GGUF
+    We shrink models by 4-8× with minimal quality loss through precision reduction
 ```
 
 **The entire journey:** A computer starts knowing nothing, measures its mistakes, figures out which knobs to turn, learns to classify data, goes deeper, stays simple, stays stable, learns to see, skips ahead through deep paths, remembers sequences, gives words meaning, translates languages, focuses attention, removes RNNs entirely, understands bidirectionally, generates autoregressively, and finally writes its own text. That is learning. That is AI.
@@ -896,6 +901,9 @@ python src/phase43/phase43_model_merging.py
 
 # Phase 44: Long Context & Position Interpolation
 python src/phase44/phase44_long_context.py
+
+# Phase 45: Quantization & GGUF
+python src/phase45/phase45_quantization.py
 ```
 
 ---
@@ -959,7 +967,8 @@ python src/phase44/phase44_long_context.py
 | Phase 42 | 4 | 2 | 4 |
 | Phase 43 | 4 | 2 | 4 |
 | Phase 44 | 4 | 2 | 4 |
-| **Total** | **157** | **69** | **157** |
+| Phase 45 | 4 | 2 | 4 |
+| **Total** | **161** | **71** | **161** |
 
 ---
 
@@ -967,9 +976,9 @@ python src/phase44/phase44_long_context.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through forty-four phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, and extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through forty-five phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling, and shrank massive models by 4-8× through precision reduction using quantization, GPTQ error compensation, and AWQ activation-aware protection to run on consumer GPUs. Every step along the way was explained from first principles.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain, model merging, task arithmetic, SLERP, TIES-Merging, position interpolation, RoPE, YaRN, NTK-aware scaling — are not magic. They are just systematic ways of:
+The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain, model merging, task arithmetic, SLERP, TIES-Merging, position interpolation, RoPE, YaRN, NTK-aware scaling, quantization, GPTQ, AWQ, GGUF, INT4, INT8, per-channel scaling — are not magic. They are just systematic ways of:
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve

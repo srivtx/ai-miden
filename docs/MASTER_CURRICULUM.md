@@ -868,7 +868,26 @@ Each phase has:
 
 **What We Build:** A RoPE visualization showing how rotation angles scale with position. We compare basic interpolation, YaRN frequency-aware scaling, and NTK-aware base scaling. We verify that attention scores remain coherent after interpolation.
 
-**Connects To:** This completes the extended phase series. All modern AI techniques from sparse scaling to long context are now covered.
+**Connects To:** Phase 45 (we can extend context and merge models. How do we run these massive models on consumer hardware?)
+
+---
+
+## Phase 45: Quantization & GGUF (COMPLETED)
+
+**The Question:** "A 70B parameter model needs 140 GB in FP16. The best consumer GPU has 24 GB. How do you run these models at all?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Quantization | Reducing weight precision from FP16 to INT8/INT4 | Converting a RAW photo to JPEG: smaller, slightly less detail |
+| GPTQ | Layer-wise quantization with Hessian-based error compensation | Team carrying a sculpture: each adjustment is compensated by the others |
+| AWQ | Protecting the most important weights based on activation magnitudes | Orchestra keeping solo parts complex while simplifying background |
+| GGUF | Universal binary format for quantized models | PDF for documents: one file works everywhere |
+
+**Why It Is Needed:** Quantization is what makes large language models accessible. Llama-3-70B in INT4 fits on a single 24GB GPU. Without quantization, only data centers could run frontier models.
+
+**What We Build:** A small neural network quantized to INT8 and INT4. We compare uniform quantization, per-channel scaling, GPTQ-style error compensation, and AWQ-style activation-aware protection. We visualize the memory vs. accuracy trade-off.
+
+**Connects To:** Phase 46 (we can run models efficiently. But what are they actually doing inside?)
 
 ---
 
@@ -914,7 +933,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-44: THE FUTURE & SCALING
+PHASE 32-45: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -927,7 +946,8 @@ PHASE 32-44: THE FUTURE & SCALING
   ├─ VLM Instruction Tuning (Multimodal Conversation)
   ├─ Verifiable Rewards & GRPO (Self-Play Reasoning)
   ├─ Model Merging & Ensembles (Multi-Task Combination)
-  └─ Long Context & Position Interpolation (Context Extension)
+  ├─ Long Context & Position Interpolation (Context Extension)
+  └─ Quantization & GGUF (Consumer GPU Deployment)
 ```
 
 ---
@@ -936,18 +956,18 @@ PHASE 32-44: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 45 (0-44) |
-| Concepts Covered | 168+ |
-| Code Projects | 41 (Phases 5-44, plus 0-4 done) |
+| Total Phases | 46 (0-45) |
+| Concepts Covered | 172+ |
+| Code Projects | 42 (Phases 5-45, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 25,500+ |
-| Estimated Lines of Code | 10,400+ |
+| Estimated Lines of Documentation | 26,000+ |
+| Estimated Lines of Code | 10,700+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 44, the student will:
+By the end of Phase 45, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
