@@ -1061,6 +1061,25 @@ Each phase has:
 
 ---
 
+## Phase 55: Distributed Training (COMPLETED)
+
+**The Question:** "Modern models are too large and datasets too big for one GPU. How do you split training across hundreds or thousands of machines without changing the math?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Data Parallelism | Splitting batches across GPUs for speedup | Four students each solving 10 problems and sharing their mistakes |
+| Model Parallelism | Splitting model layers across GPUs for memory | An assembly line where each station builds one part of a car |
+| Gradient Accumulation | Simulating large batches on limited memory | Paying a large bill in installments instead of all at once |
+| Distributed SGD / All-Reduce | Synchronizing gradients across workers | A town hall where everyone independently computes the same average |
+
+**Why It Is Needed:** GPT-4 was trained on thousands of GPUs. Without distributed training, large models would be impossible to train. Data parallelism gives speed. Model parallelism gives memory. Gradient accumulation gives large batches on cheap hardware. All-reduce ensures every worker stays in sync.
+
+**What We Build:** Simulated data parallelism on 4 workers with all-reduce averaging, a 2-layer model split across 2 workers, gradient accumulation matching full-batch gradients, and ring all-reduce conceptual demonstration.
+
+**Connects To:** Phase 56 (we can scale training. But what about combining many weak models into one strong predictor?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -1103,7 +1122,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-54: THE FUTURE & SCALING
+PHASE 32-55: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -1126,7 +1145,8 @@ PHASE 32-54: THE FUTURE & SCALING
   ├─ Evaluation Metrics (Measuring Quality)
   ├─ Data Augmentation & Tokenization (Better Data)
   ├─ Classical Reinforcement Learning (Trial-and-Error Learning)
-  └─ Graph Neural Networks (Learning on Graphs)
+  ├─ Graph Neural Networks (Learning on Graphs)
+  └─ Distributed Training (Scaling Beyond One GPU)
 ```
 
 ---
@@ -1135,18 +1155,18 @@ PHASE 32-54: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 55 (0-54) |
-| Concepts Covered | 208+ |
-| Code Projects | 51 (Phases 5-54, plus 0-4 done) |
+| Total Phases | 56 (0-55) |
+| Concepts Covered | 212+ |
+| Code Projects | 52 (Phases 5-55, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 31,000+ |
-| Estimated Lines of Code | 13,200+ |
+| Estimated Lines of Documentation | 32,000+ |
+| Estimated Lines of Code | 13,500+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 54, the student will:
+By the end of Phase 55, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
