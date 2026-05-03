@@ -1132,9 +1132,67 @@ python src/phase70/phase70_domain_adaptation.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through seventy-two phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, adapted giant models with tiny parameter-efficient adapters, accelerated inference by generating multiple tokens per forward pass with zero quality loss, grounded generation in external knowledge through retrieval-augmented pipelines, learned how to wisely allocate training budgets between model size and data using empirical scaling laws, transferred massive models into tiny deployable versions while preserving their intelligence through knowledge distillation, replaced slow noise-prediction diffusion with fast direct-velocity flow matching powered by Transformer backbones, connected vision and language into unified multimodal conversational agents, trained models to reason through self-play with automatically verifiable rewards using group-relative policy optimization, combined specialist models into unified multi-task agents through weight-space merging without any retraining, extended context windows to process entire books and codebases by scaling position encodings through interpolation and NTK-aware frequency scaling, shrank massive models by 4-8× through precision reduction using quantization, GPTQ error compensation, and AWQ activation-aware protection to run on consumer GPUs, reverse-engineered neural networks through activation patching, sparse autoencoders, and superposition analysis to understand what individual neurons and circuits compute inside the black box, broke through the human data bottleneck by generating unlimited synthetic training data and bootstrapping models to improve themselves iteratively beyond the limits of human-labeled datasets, adapted models in real-time at inference through meta-learning, test-time training, and online learning to handle distribution shifts and rare inputs without any retraining or labeled test data, mastered adaptive optimization with momentum, per-parameter scaling, decoupled weight decay, and learning rate schedules that adjust over training time, learned to extract powerful representations from completely unlabeled data through contrastive learning, masked reconstruction, and pretext tasks that create their own supervision signals, and curated domain-specific datasets to build custom medical, legal, and coding assistants through continual pre-training and task-specific fine-tuning while navigating the fundamental trade-off between specialization and generalization. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI. Through seventy-two phases, you went from simple predictions all the way to building production-ready applied AI systems.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging, speculative decoding, draft model, acceptance sampling, Medusa, retrieval-augmented generation, vector database, embedding retrieval, context injection, scaling law, Chinchilla rule, compute-optimal training, data wall, knowledge distillation, teacher model, soft labels, temperature scaling, dark knowledge, flow matching, rectified flow, velocity field, diffusion transformer, ODE solver, vision encoder, projection layer, multimodal instruction tuning, vision-language model, verifiable reward, GRPO, emergent reasoning, reasoning chain, model merging, task arithmetic, SLERP, TIES-Merging, position interpolation, RoPE, YaRN, NTK-aware scaling, quantization, GPTQ, AWQ, GGUF, INT4, INT8, per-channel scaling, mechanistic interpretability, activation patching, sparse autoencoder, superposition, synthetic data, rejection sampling, constitutional AI, self-improvement, meta-learning, test-time training, unsupervised adaptation, online learning, Adam, AdamW, RMSprop, momentum, learning rate schedule, cosine annealing, warmup, self-supervised learning, contrastive learning, masked autoencoding, SimCLR, MAE, pretext task, data augmentation, BPE tokenization, MinHash deduplication, Q-learning, policy gradient, REINFORCE, actor-critic, replay buffer, graph neural network, GCN, graph attention, GAT, message passing, data parallelism, model parallelism, gradient accumulation, all-reduce, ring all-reduce, gradient boosting, AdaBoost, XGBoost, ensemble learning, bagging, boosting, decision stump, weak learner, regularized leaf, adversarial example, FGSM, PGD, adversarial training, robustness, time series, autoregressive model, AR, exponential smoothing, seasonality decomposition, trend, federated learning, differential privacy, federated averaging, FedAvg, non-IID data, Bayesian neural network, Monte Carlo dropout, variational inference, epistemic uncertainty, aleatoric uncertainty, AutoML, hyperparameter search, neural architecture search, NAS, Hyperband, successive halving, active learning, uncertainty sampling, query strategy, pool-based sampling, domain adaptation, continual pre-training, task-specific fine-tuning, custom assistant, data curation, domain corpus, generalization trade-off — are not magic. They are just systematic ways of:
+---
+
+### What You Learned
+
+**Foundations (Phases 0-10)**
+You learned what a model is, how gradient descent finds better parameters, why neural networks need depth, and how regularization, dropout, and batch normalization make deep learning actually work.
+
+**Seeing and Remembering (Phases 11-14)**
+You built convolutional networks that see, residual networks that train to arbitrary depth, recurrent networks that remember sequences, and LSTMs that preserve long-term dependencies.
+
+**Understanding Language (Phases 15-24)**
+You embedded words into meaning spaces, built sequence-to-sequence translators, discovered attention, constructed the Transformer from scratch, trained BERT to understand context and GPT to generate text. Then you aligned these models with human values through RLHF, DPO, and GRPO.
+
+**Making AI Useful (Phases 25-28)**
+You optimized inference with KV caching and Flash Attention, taught models to reason through chain-of-thought, built agents that use tools, and connected vision and language into unified multimodal systems.
+
+**Creating Data (Phases 29-31)**
+You built variational autoencoders that learn compressed representations, GANs that compete to generate realistic images, and diffusion models that denoise their way to photorealistic output.
+
+**The Future (Phases 32-46)**
+You scaled beyond dense limits with Mixture of Experts, processed infinite sequences in linear time with Mamba, adapted giant models cheaply with LoRA, accelerated generation with speculative decoding, grounded outputs with retrieval-augmented generation, allocated compute optimally with scaling laws, distilled massive teachers into tiny students, replaced diffusion with flow matching, built vision-language conversational agents, trained reasoning models with verifiable rewards, merged specialist models without retraining, extended context windows to entire books, shrank models 4-8× with quantization, and reverse-engineered neural networks to understand what individual neurons compute.
+
+**Data and Training (Phases 47-56)**
+You broke the data wall with synthetic generation and self-improvement, adapted models in real time with test-time training, optimized convergence with Adam and learning rate schedules, learned from unlabeled data with self-supervised learning, measured quality with rigorous metrics, prepared training data with augmentation and tokenization, taught agents to learn from rewards with Q-learning and policy gradients, applied deep learning to graphs with GNNs, trained across thousands of GPUs with distributed data and model parallelism, and combined weak models into strong predictors with gradient boosting.
+
+**Robustness and Uncertainty (Phases 57-62)**
+You defended models against adversarial attacks with FGSM, PGD, and adversarial training. You forecasted temporal sequences with autoregressive models and exponential smoothing. You trained on decentralized data without centralization through federated learning and differential privacy. You quantified prediction uncertainty with Bayesian neural networks and Monte Carlo dropout. You automated model selection with AutoML and successive halving. And you intelligently selected which data to label when labeling is expensive through active learning.
+
+**Applied AI (Phases 63-72)**
+You curated real instruction-following datasets, applied chat templates, and packed sequences for GPU efficiency. You fine-tuned open-source models with LoRA and QLoRA on consumer hardware. You aligned models with human preferences using DPO and ORPO. You executed and defended against jailbreak attacks — from basic roleplay and encoding tricks to automated GCG adversarial suffix optimization. You red-teamed models for safety vulnerabilities across harm taxonomies. You built domain-specific assistants for medicine, law, and coding. You deployed models at scale with vLLM, dynamic batching, and ONNX export. And you built real agentic systems with ReAct loops, function calling, and multi-turn tool use.
+
+---
+
+### The Fancy Words
+
+These are not magic. They are systematic ways of doing the same five things:
+
+**Core mechanics:** gradient descent, backpropagation, neural network, weight, bias, activation, loss function, optimizer, learning rate, batch, epoch, overfitting, underfitting, regularization, dropout, batch normalization
+
+**Architectures:** convolution, residual connection, LSTM, GRU, attention, self-attention, multi-head attention, Transformer, encoder, decoder, BERT, GPT, vision transformer, U-Net, diffusion transformer, Mamba, state space model
+
+**Training at scale:** data parallelism, model parallelism, pipeline parallelism, gradient accumulation, all-reduce, distributed SGD, mixed precision, gradient clipping, gradient checkpointing
+
+**Making models useful:** RLHF, DPO, ORPO, GRPO, instruction tuning, SFT, chain of thought, self-consistency, tool use, agent, ReAct, function calling, retrieval-augmented generation, vector database, embedding, prompt engineering
+
+**Efficiency:** LoRA, QLoRA, PEFT, quantization, GPTQ, AWQ, GGUF, pruning, knowledge distillation, speculative decoding, KV cache, Flash Attention, continuous batching
+
+**Creating data:** VAE, GAN, diffusion, flow matching, latent space, forward diffusion, reverse diffusion, noise scheduling, classifier-free guidance
+
+**Understanding internals:** mechanistic interpretability, activation patching, sparse autoencoder, superposition, feature visualization, logit lens
+
+**Safety:** adversarial example, FGSM, PGD, adversarial training, jailbreak, red-teaming, safety benchmark, harm taxonomy, content moderation, differential privacy, constitutional AI
+
+**Specialized domains:** graph neural network, GCN, GAT, message passing, federated learning, federated averaging, non-IID data, Bayesian neural network, Monte Carlo dropout, variational inference, epistemic uncertainty, time series, autoregressive model, exponential smoothing, seasonality decomposition, AutoML, hyperparameter search, neural architecture search, successive halving, active learning, uncertainty sampling
+
+---
+
+### What AI Actually Is
+
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve
