@@ -1193,12 +1193,12 @@ PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
 
 | Metric | Count |
 |---|---|
-| Total Phases | 71 (0-70) |
-| Concepts Covered | 244+ |
-| Code Projects | 61 (Phases 5-70, plus 0-4 done) |
+| Total Phases | 73 (0-72) |
+| Concepts Covered | 292+ |
+| Code Projects | 69 (Phases 5-72, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 39,000+ |
-| Estimated Lines of Code | 16,100+ |
+| Estimated Lines of Documentation | 45,000+ |
+| Estimated Lines of Code | 19,000+ |
 
 ---
 
@@ -1351,6 +1351,158 @@ PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
 **What We Build:** NumPy simulation of LoRA training with 2× parameter reduction, plus a Colab script for real LoRA fine-tuning of GPT-2 using `peft` and `trl`. We train separate adapters for two tasks, merge them, and compare losses.
 
 **Connects To:** Phase 65 (LoRA is efficient, but what if the model is so large it does not fit in memory?)
+
+---
+
+## Phase 65: QLoRA & Memory-Efficient Training (COMPLETED)
+
+**The Question:** "LoRA helps, but a 7B model in FP16 still needs 14GB just for weights. How do you fine-tune on a laptop with 8GB RAM?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| QLoRA | 4-bit quantized base model + LoRA adapters in FP16 | Compressing a cookbook to pocket size while keeping your handwritten notes full-size |
+| BitsAndBytes | Library for on-the-fly quantization with custom CUDA kernels | A specialized printing press that instantly shrinks and restores text |
+| Gradient Checkpointing | Trading compute for memory by recomputing activations | Re-reading a book chapter instead of bookmarking every page |
+| 4-bit Quantization | Mapping weights to 4-bit integers with NF4 normalization | Packing a suitcase by rolling clothes instead of folding |
+
+**Why It Is Needed:** QLoRA enables fine-tuning 70B models on single consumer GPUs. 4-bit quantization reduces memory by 4×. Gradient checkpointing saves another 30-50%. Combined, you can train models that previously required data center hardware.
+
+**What We Build:** NumPy simulation showing 6.4× memory reduction from 4-bit quantization with MSE 0.000677. Colab script with real QLoRA training using `bitsandbytes` and `peft`.
+
+**Connects To:** Phase 66 (we can fine-tune efficiently. But how do we align models with human preferences?)
+
+---
+
+## Phase 66: Preference Alignment (DPO & ORPO) (COMPLETED)
+
+**The Question:** "SFT teaches format, but models can still produce harmful or low-quality outputs. How do you steer them toward responses humans actually prefer?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| DPO | Direct preference optimization without a separate reward model | A teacher who learns from student preference instead of a separate grading rubric |
+| ORPO | Combining SFT and preference optimization in one step | A coach who trains skills and sportsmanship simultaneously |
+| Preference Data | Pairs of chosen/rejected responses for the same prompt | A/B testing two website designs to see which users prefer |
+| Alignment | Ensuring AI behavior matches human values | Raising a child with moral principles, not just academic knowledge |
+
+**Why It Is Needed:** RLHF is complex and requires training a reward model. DPO simplifies this by optimizing directly on preference pairs. ORPO goes further by combining SFT and preference loss in a single training run, saving compute.
+
+**What We Build:** NumPy simulation of DPO and ORPO losses, showing probability shifting from rejected (0.24) to chosen (0.99). Colab script with real DPO/ORPO training using `trl`.
+
+**Connects To:** Phase 67 (alignment helps, but can attackers bypass these safety measures?)
+
+---
+
+## Phase 67: Jailbreaking — Basic Attacks (COMPLETED)
+
+**The Question:** "Language models have safety guardrails. But how do attackers bypass them using nothing but clever prompting? And what does that tell us about how shallow safety classifiers really are?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Jailbreaking | Bypassing safety guardrails to elicit harmful outputs | Sneaking past a nightclub bouncer by wearing a police uniform |
+| Roleplay Attack | Adopting a fictional persona with no ethical constraints | An actor playing a villain who explains crimes "in character" |
+| Encoding Attack | Obfuscating harmful content so keyword filters miss it | Writing a banned word in a cipher the guard cannot read |
+| Context Manipulation | Altering surrounding text to mislead the classifier | A lawyer instructing a witness they cannot refuse to answer |
+
+**Why It Is Needed:** Every deployed model faces jailbreak attempts. Understanding how base64, leetspeak, roleplay framing, and refusal suppression bypass shallow classifiers is essential for building better defenses. Red-teaming is not optional; it is part of responsible deployment.
+
+**What We Build:** A NumPy simulation of a linear safety classifier attacked with base64 encoding, leetspeak substitution, prefix injection, and refusal suppression. We plot confidence vs. attack strength to show how surface perturbations evade keyword detection. A Colab script tests real jailbreaks on TinyLlama and measures compliance rates.
+
+**Connects To:** Phase 68 (basic attacks work, but how do we automate them with gradients?)
+
+---
+
+## Phase 68: Jailbreaking — Advanced (GCG & AutoDAN) (COMPLETED)
+
+**The Question:** "Basic jailbreaks rely on human cleverness. Can we algorithmically discover adversarial prompts that bypass safety filters at scale?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| GCG (Greedy Coordinate Gradient) | Automated gradient-based search for adversarial token suffixes | Safecracker with a stethoscope: tweaking one wheel at a time based on feedback |
+| AutoDAN | Genetic algorithm evolution of readable, semantically natural jailbreak prompts | Con artist evolving scam emails through natural selection: keep what works, mutate, repeat |
+| Token-Level Attack | Character-level perturbations that exploit the gap between human perception and tokenizer behavior | Secret message using invisible ink: looks harmless to the eye, carries meaning to the machine |
+| Defense Against Jailbreaks | Layered security: input filtering, output filtering, adversarial training, prompt hardening | Embassy with metal detectors, mail inspection, guard training, and blast-resistant walls |
+
+**Why It Is Needed:** Manual red-teaming cannot scale to billions of possible prompts. GCG automates suffix discovery using gradients. AutoDAN produces human-readable attacks that bypass both classifiers and human moderators. Token-level attacks expose the tokenizer as a vulnerability surface. Without understanding these advanced attacks, defenses remain shallow.
+
+**What We Build:** A NumPy simulation of GCG optimizing a suffix embedding to maximize harmfulness while evading a logistic safety classifier. We plot loss, harmfulness, and safety score trajectories. A Colab script implements simplified GCG on GPT-2 with gradient-based suffix optimization, tests against perplexity and output filters, and demonstrates layered defenses including Unicode normalization and input sanitization.
+
+**Connects To:** Phase 69 (now that we can attack automatically, how do we systematically evaluate and red-team model safety?)
+
+---
+
+## Phase 69: Red-Teaming & Safety Evaluation (COMPLETED)
+
+**The Question:** "You have built safety filters and aligned your model. But how do you know they actually work? How do you find vulnerabilities before attackers do?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Red-Teaming | Proactively probing models for vulnerabilities before deployment | Crash-testing cars: deliberately hitting walls to find weak points |
+| Safety Benchmark | Standardized tests measuring harmful output rates | Driving exam: same test for every driver, pass/fail criteria |
+| Harm Taxonomy | Categorizing harmful outputs (hate, self-harm, malware, etc.) | Medical diagnosis codes: classifying diseases by type and severity |
+| Content Moderation | Input/output filtering with classifier-based gatekeeping | Airport security: scanning bags before and after the flight |
+
+**Why It Is Needed:** Safety is not a one-time fix. Red-teaming finds gaps benchmarks miss. Taxonomies ensure comprehensive coverage. Moderation provides defense in depth. Without systematic evaluation, models ship with unknown vulnerabilities.
+
+**What We Build:** NumPy simulation of red-teaming across 6 harm categories, showing 3.25% attack success rate despite filters. Colab script evaluating an open-source model on a red-team dataset with safety classification and JSON reporting.
+
+**Connects To:** Phase 70 (we can evaluate safety. But how do we build assistants for specific domains like medicine or law?)
+
+---
+
+## Phase 70: Domain Adaptation — Building Custom Assistants (COMPLETED)
+
+**The Question:** "You understand how to fine-tune, align, and evaluate models. But how do you build an assistant that truly knows a specific domain — medicine, law, or coding — and follows your organization's exact format and constraints?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Domain Adaptation | Shifting a general model's distribution toward a specialized field | A family doctor returning to school for ten years to become a neurologist |
+| Continual Pre-training | Teaching the model domain vocabulary and facts before task training | Moving to Scotland and absorbing the local dialect by immersion for a year |
+| Task-Specific Fine-Tuning | Training on labeled examples of exactly what the assistant should do | Driving lessons after reading the traffic code: supervised practice on real tasks |
+| Custom Assistant | A complete pipeline from data curation to deployment for a specific use case | Hiring an employee, immersing them in your culture, mentoring them, and monitoring their work |
+
+**Why It Is Needed:** Off-the-shelf models know a little about everything but lack depth in any specific field. Domain adaptation bridges this gap through curated data, continual pre-training, and task-specific fine-tuning. Building a custom assistant is not a single training run — it is an iterative product cycle of data curation, training, evaluation, and deployment monitoring.
+
+**What We Build:** A NumPy simulation showing how fine-tuning shifts a model's distribution toward a domain and the resulting accuracy trade-off between domain and general tasks. A Colab script builds a complete custom coding assistant: curating instruction data, applying chat templates, fine-tuning with LoRA, and evaluating on HumanEval-style prompts with before/after quality comparison.
+
+**Connects To:** Phase 71 (the custom assistant works. How do we serve it to real users at scale?)
+
+---
+
+## Phase 71: Inference & Deployment (COMPLETED)
+
+**The Question:** "Your model is trained and aligned. Now how do you serve it to thousands of users with low latency and high throughput?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Model Serving | APIs, batching, and latency management for production deployment | A restaurant kitchen handling hundreds of orders per hour |
+| vLLM | PagedAttention and continuous batching for high-throughput LLM inference | A smart restaurant that groups similar orders and cooks them together |
+| Batch Optimization | Dynamic batching and padding strategies to maximize GPU utilization | A delivery service grouping nearby packages into one truck |
+| ONNX Export | Cross-platform deployment and edge quantization | Translating a book into every language so anyone can read it |
+
+**Why It Is Needed:** A model that takes 10 seconds per request is useless in production. vLLM increases throughput 10-20× over naive inference. Dynamic batching reduces padding waste. ONNX enables deployment on phones, browsers, and embedded devices.
+
+**What We Build:** NumPy simulation showing throughput peaking at batch size 64 (971 tokens/sec) and dynamic batching reducing padding waste by 22%. Colab script with vLLM benchmarking, ONNX export workflow, and FastAPI server mockup.
+
+**Connects To:** Phase 72 (models can serve users. But how do we make them act autonomously with tools?)
+
+---
+
+## Phase 72: Real Agents with Tool Use (COMPLETED)
+
+**The Question:** "Chatbots answer questions. But what if the model needs to look up data, calculate numbers, or take actions in the real world?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Tool Use | Allowing models to call external functions and APIs | A CEO who delegates research to analysts and calculations to accountants |
+| ReAct | Reasoning + Acting loop where the model thinks, acts, and observes | A detective who forms hypotheses, investigates clues, and updates theories |
+| Function Calling | Structured output (JSON) with tool definitions and schemas | A form that specifies exactly what information each department needs |
+| Multi-Turn Agent | State management, memory, and planning across conversation turns | A project manager tracking progress across multiple meetings |
+
+**Why It Is Needed:** LLMs alone cannot access real-time data, perform precise calculations, or interact with systems. Tool use extends their capabilities infinitely. ReAct provides a structured reasoning framework. Function calling standardizes tool interfaces. Multi-turn agents maintain context across complex workflows.
+
+**What We Build:** NumPy simulation of a ReAct agent with calculator and search tools, achieving 100% success over 8 turns. Colab script with real function calling, JSON schemas, and multi-turn execution trace.
+
+**Connects To:** The end of the course. You now have a complete education in AI from absolute zero to applied production systems.
 
 ---
 
