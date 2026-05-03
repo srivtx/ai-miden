@@ -69,6 +69,7 @@ For every pattern:
 - Timed solves.
 - Talk out loud using the pattern language.
 - If stuck for 2 minutes, re-read the trigger for that pattern.
+- Use [FLASHCARDS.md](FLASHCARDS.md) daily for 10 minutes to automate pattern recognition.
 
 ---
 

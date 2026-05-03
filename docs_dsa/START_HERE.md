@@ -65,6 +65,7 @@ docs_dsa/
 ├── COMPLEXITY_GUIDE.md        ← Time/space tables
 ├── INTERVIEW_SKILLS.md        ← How to think aloud & communicate
 ├── FINAL_CRAM.md              ← Last 48 hours before interview
+├── FLASHCARDS.md              ← 220-card spaced repetition deck
 ├── COMPANY_GUIDES/            ← Company-specific prep
 │   ├── GOOGLE.md              ← Google interview strategy
 │   ├── META.md                ← Meta interview strategy
