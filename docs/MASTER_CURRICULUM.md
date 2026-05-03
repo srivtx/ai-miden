@@ -777,6 +777,25 @@ Each phase has:
 
 ---
 
+## Phase 40: Flow Matching & Diffusion Transformers (COMPLETED)
+
+**The Question:** "DDPM diffusion works but trains indirectly (predict noise) and needs 1000 sampling steps. Is there a more direct, faster way to generate data?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Flow Matching | Direct velocity prediction for noise-to-data transformation | Sculptor using a motorized tool on an optimal carving path |
+| Rectified Flow | Straight-line optimal transport paths | Flying the direct great-circle route instead of meandering |
+| Diffusion Transformer | Transformer backbone replacing U-Net in generative models | Painter planning the entire mural globally instead of section by section |
+| ODE Solver | Numerical integration of the velocity field | River navigator adjusting check frequency based on current turbulence |
+
+**Why It Is Needed:** Flow matching is simpler to train and 10–50× faster to sample than DDPM. DiT scales better than U-Nets. Together they power SD3, Flux, and Sora.
+
+**What We Build:** A velocity MLP that learns rectified flow on a 2D swirl dataset. We sample with Euler and midpoint ODE solvers, visualizing flow trajectories from noise to data.
+
+**Connects To:** Phase 41 (we can generate images fast. How do we make models understand both images AND language in conversation?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -819,7 +838,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-39: THE FUTURE & SCALING
+PHASE 32-40: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -827,7 +846,8 @@ PHASE 32-39: THE FUTURE & SCALING
   ├─ Speculative Decoding (Fast Generation)
   ├─ RAG (Grounded Knowledge)
   ├─ Scaling Laws (Efficient Training)
-  └─ Knowledge Distillation (Tiny Deployment)
+  ├─ Knowledge Distillation (Tiny Deployment)
+  └─ Flow Matching & DiT (Fast Generation)
 ```
 
 ---
@@ -836,18 +856,18 @@ PHASE 32-39: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 40 (0-39) |
-| Concepts Covered | 148+ |
-| Code Projects | 36 (Phases 5-39, plus 0-4 done) |
+| Total Phases | 41 (0-40) |
+| Concepts Covered | 152+ |
+| Code Projects | 37 (Phases 5-40, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 22,000+ |
-| Estimated Lines of Code | 8,500+ |
+| Estimated Lines of Documentation | 23,000+ |
+| Estimated Lines of Code | 9,000+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 39, the student will:
+By the end of Phase 40, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
