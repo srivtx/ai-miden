@@ -1,4 +1,4 @@
-← [Previous: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) | End →
+← [Previous: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) | [Next: Phase 73: Speech & Audio](docs/phase73/SUMMARY.md) →
 
 ---
 
@@ -17,4 +17,4 @@ Key takeaway: An agent is not a smarter model; it is a model wrapped in a contro
 
 ---
 
-← [Previous: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) | End →
+← [Previous: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) | [Next: Phase 73: Speech & Audio](docs/phase73/SUMMARY.md) →

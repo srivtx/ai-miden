@@ -112,7 +112,16 @@ ai-miden/
 │   ├── [phase69/](/docs/phase69/)         # Red-Teaming & Safety Evaluation
 │   ├── [phase70/](/docs/phase70/)         # Domain Adaptation — Custom Assistants
 │   ├── [phase71/](/docs/phase71/)         # Inference & Deployment
-│   └── [phase72/](/docs/phase72/)         # Real Agents with Tool Use
+│   ├── [phase72/](/docs/phase72/)         # Real Agents with Tool Use
+│   ├── [phase73/](/docs/phase73/)         # Speech & Audio
+│   ├── [phase74/](/docs/phase74/)         # Recommendation Systems
+│   ├── [phase75/](/docs/phase75/)         # Explainable AI (XAI)
+│   ├── [phase76/](/docs/phase76/)         # Fairness & Bias
+│   ├── [phase77/](/docs/phase77/)         # Unsupervised Learning
+│   ├── [phase78/](/docs/phase78/)         # Object Detection & Segmentation
+│   ├── [phase79/](/docs/phase79/)         # Causal Inference
+│   ├── [phase80/](/docs/phase80/)         # MLOps
+│   └── [phase81/](/docs/phase81/)         # Continual Learning
 └── README.md            # This file
 ```
 
@@ -1033,6 +1042,60 @@ python src/phase70/phase70_domain_adaptation.py
 
 # [Phase 72: Real Agents with Tool Use (Colab)](docs/phase72/)
 # Upload src/phase72/phase72_real_agents_colab.py to Colab T4
+
+# [Phase 73: Speech & Audio](docs/phase73/)
+python src/phase73/phase73_speech_audio.py
+
+# [Phase 73: Speech & Audio (Colab)](docs/phase73/)
+# Upload src/phase73/phase73_speech_audio_colab.py to Colab T4
+
+# [Phase 74: Recommendation Systems](docs/phase74/)
+python src/phase74/phase74_recommendation_systems.py
+
+# [Phase 74: Recommendation Systems (Colab)](docs/phase74/)
+# Upload src/phase74/phase74_recommendation_systems_colab.py to Colab T4
+
+# [Phase 75: Explainable AI (XAI)](docs/phase75/)
+python src/phase75/phase75_xai_numpy.py
+
+# [Phase 75: Explainable AI (XAI) (Colab)](docs/phase75/)
+# Upload src/phase75/phase75_xai_colab.py to Colab T4
+
+# [Phase 76: Fairness & Bias](docs/phase76/)
+python src/phase76/phase76_fairness_bias.py
+
+# [Phase 76: Fairness & Bias (Colab)](docs/phase76/)
+# Upload src/phase76/phase76_fairness_bias_colab.py to Colab T4
+
+# [Phase 77: Unsupervised Learning](docs/phase77/)
+python src/phase77/phase77_unsupervised_learning.py
+
+# [Phase 77: Unsupervised Learning (Colab)](docs/phase77/)
+# Upload src/phase77/phase77_unsupervised_learning_colab.py to Colab T4
+
+# [Phase 78: Object Detection & Segmentation](docs/phase78/)
+python src/phase78/phase78_object_detection.py
+
+# [Phase 78: Object Detection & Segmentation (Colab)](docs/phase78/)
+# Upload src/phase78/phase78_object_detection_colab.py to Colab T4
+
+# [Phase 79: Causal Inference](docs/phase79/)
+python src/phase79/phase79_causal_inference.py
+
+# [Phase 79: Causal Inference (Colab)](docs/phase79/)
+# Upload src/phase79/phase79_causal_inference_colab.py to Colab T4
+
+# [Phase 80: MLOps](docs/phase80/)
+python src/phase80/phase80_mlops.py
+
+# [Phase 80: MLOps (Colab)](docs/phase80/)
+# Upload src/phase80/phase80_mlops_colab.py to Colab T4
+
+# [Phase 81: Continual Learning](docs/phase81/)
+python src/phase81/phase81_continual_learning.py
+
+# [Phase 81: Continual Learning (Colab)](docs/phase81/)
+# Upload src/phase81/phase81_continual_learning_colab.py to Colab T4
 ```
 
 ---
@@ -1124,7 +1187,16 @@ python src/phase70/phase70_domain_adaptation.py
 | Phase 70 | 4 | 2 | 4 |
 | Phase 71 | 4 | 2 | 4 |
 | Phase 72 | 4 | 2 | 4 |
-| **Total** | **269** | **112** | **269** |
+| Phase 73 | 4 | 2 | 4 |
+| Phase 74 | 4 | 2 | 4 |
+| Phase 75 | 4 | 2 | 4 |
+| Phase 76 | 4 | 2 | 4 |
+| Phase 77 | 4 | 2 | 4 |
+| Phase 78 | 4 | 2 | 4 |
+| Phase 79 | 4 | 2 | 4 |
+| Phase 80 | 4 | 2 | 4 |
+| Phase 81 | 4 | 2 | 4 |
+| **Total** | **303** | **127** | **303** |
 
 ---
 
@@ -1132,7 +1204,7 @@ python src/phase70/phase70_domain_adaptation.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI. Through seventy-two phases, you went from simple predictions all the way to building production-ready applied AI systems.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI. Through eighty-two phases, you went from simple predictions all the way to building production-ready applied AI systems.
 
 ---
 
@@ -1162,8 +1234,8 @@ You broke the data wall with synthetic generation and self-improvement, adapted 
 **Robustness and Uncertainty (Phases 57-62)**
 You defended models against adversarial attacks with FGSM, PGD, and adversarial training. You forecasted temporal sequences with autoregressive models and exponential smoothing. You trained on decentralized data without centralization through federated learning and differential privacy. You quantified prediction uncertainty with Bayesian neural networks and Monte Carlo dropout. You automated model selection with AutoML and successive halving. And you intelligently selected which data to label when labeling is expensive through active learning.
 
-**Applied AI (Phases 63-72)**
-You curated real instruction-following datasets, applied chat templates, and packed sequences for GPU efficiency. You fine-tuned open-source models with LoRA and QLoRA on consumer hardware. You aligned models with human preferences using DPO and ORPO. You executed and defended against jailbreak attacks — from basic roleplay and encoding tricks to automated GCG adversarial suffix optimization. You red-teamed models for safety vulnerabilities across harm taxonomies. You built domain-specific assistants for medicine, law, and coding. You deployed models at scale with vLLM, dynamic batching, and ONNX export. And you built real agentic systems with ReAct loops, function calling, and multi-turn tool use.
+**Applied AI (Phases 63-78)**
+You curated real instruction-following datasets, applied chat templates, and packed sequences for GPU efficiency. You fine-tuned open-source models with LoRA and QLoRA on consumer hardware. You aligned models with human preferences using DPO and ORPO. You executed and defended against jailbreak attacks — from basic roleplay and encoding tricks to automated GCG adversarial suffix optimization. You red-teamed models for safety vulnerabilities across harm taxonomies. You built domain-specific assistants for medicine, law, and coding. You deployed models at scale with vLLM, dynamic batching, and ONNX export. You built real agentic systems with ReAct loops, function calling, and multi-turn tool use. You personalized content at scale with collaborative filtering, matrix factorization, two-tower retrieval, and ranking losses. You closed the sensory loop by teaching machines to hear and speak with ASR, TTS, mel-spectrograms, and Speech Transformers. You discovered hidden structure in unlabeled data with K-means, PCA, t-SNE, and DBSCAN. And you taught machines to see not just what is in an image, but where objects are and what shape they take, using bounding boxes, single-shot detectors, and pixel-perfect segmentation masks.
 
 ---
 
@@ -1187,7 +1259,9 @@ These are not magic. They are systematic ways of doing the same five things:
 
 **Safety:** adversarial example, FGSM, PGD, adversarial training, jailbreak, red-teaming, safety benchmark, harm taxonomy, content moderation, differential privacy, constitutional AI
 
-**Specialized domains:** graph neural network, GCN, GAT, message passing, federated learning, federated averaging, non-IID data, Bayesian neural network, Monte Carlo dropout, variational inference, epistemic uncertainty, time series, autoregressive model, exponential smoothing, seasonality decomposition, AutoML, hyperparameter search, neural architecture search, successive halving, active learning, uncertainty sampling
+**Specialized domains:** graph neural network, GCN, GAT, message passing, federated learning, federated averaging, non-IID data, Bayesian neural network, Monte Carlo dropout, variational inference, epistemic uncertainty, time series, autoregressive model, exponential smoothing, seasonality decomposition, AutoML, hyperparameter search, neural architecture search, successive halving, active learning, uncertainty sampling, ASR, TTS, spectrogram, mel-filterbank, MFCC, CTC, vocoder, wav2vec, Whisper, object detection, bounding box, IoU, non-maximum suppression, anchor box, YOLO, R-CNN, Faster R-CNN, Region Proposal Network, semantic segmentation, instance segmentation, panoptic segmentation, mask, U-Net, SAM, Segment Anything
+
+**Unsupervised learning:** K-means, PCA, t-SNE, DBSCAN, clustering, centroid, elbow method, eigenvector, eigenvalue, dimensionality reduction, density-based clustering
 
 ---
 

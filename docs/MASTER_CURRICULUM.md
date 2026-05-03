@@ -1502,13 +1502,186 @@ PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
 
 **What We Build:** NumPy simulation of a ReAct agent with calculator and search tools, achieving 100% success over 8 turns. Colab script with real function calling, JSON schemas, and multi-turn execution trace.
 
-**Connects To:** The end of the course. You now have a complete education in AI from absolute zero to applied production systems.
+**Connects To:** Phase 73 (agents can act, but they also need to hear and speak to interact with humans naturally).
+
+---
+
+## Phase 73: Speech & Audio (COMPLETED)
+
+**The Question:** "Models can read and write text, but how do they hear and speak?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|---|
+| Audio Feature Extraction | Raw audio has too many samples; we need compact perceptual features | A wine tasting note instead of a chemical analysis |
+| ASR | Converting spoken sound into written text | A courtroom stenographer typing everything said aloud |
+| TTS | Converting written text into natural speech | An audiobook narrator reading a book aloud |
+| Speech Transformer | Self-attention processes long audio sequences in parallel | A conductor seeing every musician at once |
+
+**Why It Is Needed:** Voice is the most natural human interface. ASR makes machines accessible to the illiterate, the visually impaired, and anyone with their hands full. TTS makes machines accessible to the deaf and enables hands-free consumption of information. Speech Transformers bring the power of attention to audio, replacing slow recurrent loops with parallel processing.
+
+**What We Build:** NumPy demo generating sine waves, computing STFT and mel-filterbanks from scratch, extracting MFCCs, and simulating a greedy CTC alignment. Colab script loading Whisper for real transcription and Griffin-Lim for TTS reconstruction.
+
+**Connects To:** Phase 74 (how do we personalize what every user sees from an infinite catalog?)
+
+---
+
+## Phase 74: Recommendation Systems (COMPLETED)
+
+**The Question:** "My application has thousands of users and millions of items. How do I show each user exactly what they want without manually curating lists?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Collaborative Filtering | Recommending based on similarity between users or items | A book club where friends suggest books based on shared taste |
+| Matrix Factorization | Learning latent factors that explain user preferences and item properties | Music genres: users and songs both have 'jazz-ness' and 'rock-ness' scores |
+| Two-Tower Model | Separating user and item encoding for fast billion-scale retrieval | Two key makers: one for your house key, one for door locks; only matching shapes open |
+| Ranking Loss (BPR/WARP) | Optimizing the order of recommendations rather than exact ratings | Olympic medals: you care who wins, not their exact time |
+
+**Why It Is Needed:** Every major platform (Netflix, Spotify, Amazon, YouTube) relies on recommendation systems to surface relevant content from infinite catalogs. Collaborative filtering leverages collective behavior. Matrix factorization generalizes to unseen interactions. Two-tower models make real-time retrieval feasible at scale. Ranking losses align training with the actual goal: put the best items at the top.
+
+**What We Build:** A NumPy demo that constructs a sparse rating matrix, implements user-based collaborative filtering and SVD-style matrix factorization, and compares recommendations against a popularity baseline. A Colab script trains real MF and two-tower models on MovieLens 100k with BPR loss, evaluating with Hit Rate and NDCG.
+
+**Connects To:** Phase 75 (models make predictions, but can we trust them? How do we explain *why* a model made a specific decision?)
+
+---
+
+## Phase 75: Explainable AI (XAI) (COMPLETED)
+
+**The Question:** "My model is accurate, but I have no idea why it makes any given prediction. How do I open the black box?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Model Explainability | Black-box decisions are untrustworthy and un-auditable | A judge who delivers verdicts but refuses to cite reasoning |
+| Feature Importance | Ranking which inputs matter most across the dataset | A recipe critic rating which ingredients define the dish |
+| LIME | Explaining one prediction by fitting a simple local model | Asking a strict bouncer why *you* were rejected, not his general rules |
+| Attention Visualization | Seeing which tokens a Transformer focused on | A group discussion map showing who looked at whom while speaking |
+
+**Why It Is Needed:** High-stakes domains (medicine, finance, law) require justification. Regulators demand it. Users deserve it. Explainability also surfaces bugs and biases that accuracy alone hides.
+
+**What We Build:** NumPy demo training a tiny MLP, then computing saliency maps (input gradients), exact SHAP values by enumerating all feature subsets, LIME surrogate coefficients, and a single-head attention heatmap. Colab script implements SmoothGrad and Integrated Gradients in PyTorch, plus multi-head attention visualization.
+
+**Connects To:** Phase 76 (explanations reveal bias. Once we see unfair patterns, how do we measure and fix them?)
+
+---
+
+## Phase 76: Fairness & Bias (COMPLETED)
+
+**The Question:** "My model performs well on average, but does it discriminate against specific groups?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Algorithmic Bias | Models replicate historical discrimination from training data | A hiring manager who only promotes people who look like previous managers |
+| Demographic Parity | Equal positive prediction rates across groups | A lottery with the same win rate in every neighborhood |
+| Equalized Odds | Equal TPR and FPR across groups | A medical test with the same error rate for every ethnicity |
+| Bias Mitigation | Pre-, in-, and post-processing techniques to reduce unfairness | Affirmative action: adjusting inputs so outcomes balance over time |
+
+**Why It Is Needed:** Fairness is not a single number; it is a set of competing constraints. Demographic parity and equalized odds are mathematically incompatible when base rates differ. Practitioners must choose which ethical intuition matters for their use case.
+
+**What We Build:** NumPy synthetic loan data with injected gender bias, logistic classifier, per-group TPR/FPR computation, re-weighting mitigation, and before/after visualization. Colab script audits the Adult Census dataset with fairlearn metrics and constrained optimization.
+
+**Connects To:** Phase 77 (before building complex systems, you must explore and understand raw, unlabeled data)
+
+---
+
+## Phase 77: Unsupervised Learning (COMPLETED)
+
+**The Question:** "Most data has no labels. How do we discover hidden structure, reduce dimensions, and visualize clusters without any ground truth?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| K-Means | Partition data into K groups by minimizing distance to cluster centers | A teacher placing cones in a gym and having students gather around the nearest one |
+| PCA | Compress high-D data by keeping axes of maximum variance | Photographing a bird flock from above and describing positions along the long axis of the cloud |
+| t-SNE | Visualize high-D data by preserving local neighborhoods in 2D | Drawing a flat map that keeps neighboring buildings close, even if city-wide distances distort |
+| DBSCAN | Discover clusters of arbitrary shape and explicitly mark noise | A security guard grouping dense crowds and ignoring isolated people |
+
+**Why It Is Needed:** Before building predictive models, data scientists must explore datasets. Clustering finds natural segments. Dimensionality reduction speeds up training and removes redundancy. Visualization reveals patterns that summary statistics hide.
+
+**What We Build:** NumPy from-scratch implementations of K-means (with K-means++ initialization and elbow method), PCA (eigen-decomposition and projection), simplified t-SNE (per-point sigma, early exaggeration, momentum), and DBSCAN (core points, BFS expansion, noise labeling). Visualized on synthetic 2D data with three true clusters and scattered noise.
+
+**Connects To:** Phase 78 (once we understand data structure, we can localize objects in images with detection and segmentation)
+
+---
+
+## Phase 78: Object Detection & Segmentation (COMPLETED)
+
+**The Question:** "Models can classify images, but how do they know WHERE objects are and WHAT SHAPE they have?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Object Detection | Classification tells you WHAT; detection tells you WHERE | A security guard pointing at every person in a room and naming them |
+| IoU | We need a number to measure box overlap | Two Venn diagrams: the overlap divided by the total area |
+| NMS | Detectors fire multiple boxes for one object; we need to clean duplicates | A teacher collecting one answer sheet per student, ignoring photocopies |
+| YOLO | Two-stage detectors are too slow for real-time video | A teacher glancing at a classroom photo and instantly pointing at every student |
+| R-CNN | Brute-force sliding windows are impossibly slow | A detective first noting suspicious spots, then inspecting only those |
+| Segmentation | Bounding boxes are crude rectangles that include background | A coloring book where every pixel gets the exact right color |
+| SAM | Sometimes you do not know the class; you just want the mask | An artist who outlines any object you tap with your finger |
+
+**Why It Is Needed:** Classification is insufficient for robotics, self-driving cars, and medical imaging. Detection adds spatial localization. Segmentation adds pixel-perfect boundaries. YOLO trades a little accuracy for massive speed. R-CNN keeps accuracy high by separating region proposal from classification. SAM removes the need for class labels entirely, enabling promptable zero-shot segmentation.
+
+**What We Build:** NumPy synthetic image with circles and squares, sliding-window concept, IoU matrix computation, non-maximum suppression, and YOLO-style grid prediction simulation. Four-panel visualization showing ground truth, raw predictions, IoU heatmap, and cleaned NMS output. Colab script loading pre-trained Faster R-CNN and FCN-ResNet50 for real detection and segmentation on sample images.
+
+**Connects To:** Phase 79 (objects move through time; how do we track the same car across 30 frames of video?)
+
+---
+
+## Phase 79: Causal Inference (COMPLETED)
+
+**The Question:** "Correlation is not causation. How do we measure true causal effects when we cannot run perfect experiments?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Randomized Control Trial (RCT) | The gold standard for isolating cause from effect | Flipping a coin to decide who gets a drug, so no hidden bias sneaks in |
+| Propensity Score Matching | Approximating randomization from observational data | Pairing marathon runners by age and training so the only difference is their shoes |
+| Instrumental Variables | Estimating causality when confounders are unmeasured | Using draft lottery numbers to study education's effect on income |
+
+**Why It Is Needed:** Business, medicine, and policy require causal answers, not just predictions. Did the ad campaign increase sales, or did sales rise for unrelated reasons? Without causal tools, you waste billions on ineffective interventions.
+
+**What We Build:** NumPy synthetic data where ice-cream sales and drowning are spuriously correlated through temperature. We show correlation collapses under randomization, then use propensity matching to recover the true causal effect from observational data. Colab script implements inverse probability weighting and two-stage least squares.
+
+**Connects To:** Phase 80 (causal models are deployed. How do we keep them accurate as the world changes?)
+
+---
+
+## Phase 80: MLOps (COMPLETED)
+
+**The Question:** "My model works in the notebook, but how do I keep it working in production as data and behavior drift over time?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Data Drift | Input distributions change, making old models stale | A weather app trained on summer data failing in winter |
+| Concept Drift | The relationship between inputs and outputs changes | A spam filter that fails when scammers switch from text to images |
+| Monitoring & Alerting | You cannot fix what you do not measure | A smoke detector for your model's predictions |
+| Retraining Pipelines | Automating the loop from drift detection to model refresh | A self-driving car that updates its map after every new road is built |
+
+**Why It Is Needed:** Production models are not fire-and-forget. User behavior changes, adversaries adapt, and sensors degrade. MLOps provides the infrastructure to detect degradation and retrain before users notice.
+
+**What We Build:** NumPy simulation of feature drift (KL divergence, PSI), label shift, and concept drift. We trigger a retraining pipeline when accuracy drops below a threshold. Colab script uses Evidently AI or manual drift detection on a real dataset.
+
+**Connects To:** Phase 81 (models must learn new tasks over time without forgetting what they already know)
+
+---
+
+## Phase 81: Continual Learning (COMPLETED)
+
+**The Question:** "How do I teach a model new tasks without erasing everything it learned before?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Catastrophic Forgetting | Neural networks overwrite old weights when trained on new tasks | A student who memorizes French and suddenly forgets Spanish |
+| Elastic Weight Consolidation (EWC) | Protecting important parameters for old tasks | A sculptor hardening clay in finished sections before working on new ones |
+| Replay Buffers | Rehearsing old examples while learning new ones | A musician practicing old songs daily while learning new ones |
+| Parameter Isolation | Allocating separate sub-networks for each task | A hotel with separate wings so renovations in one do not disturb the other |
+
+**Why It Is Needed:** Real-world AI agents must learn continuously. A personal assistant should learn your new habits without forgetting old ones. A robot should master new rooms without forgetting how to navigate old ones.
+
+**What We Build:** NumPy MLP trained on Task A (binary classification in one region), then fine-tuned on Task B (different region). We show accuracy on Task A collapses from ~98% to ~60% (catastrophic forgetting). EWC and replay buffers preserve old-task performance while learning the new task. Colab script implements experience replay and regularization-based continual learning in PyTorch.
+
+**Connects To:** End of curriculum. The student is ready to specialize, contribute to research, or build production AI systems.
 
 ---
 
 ## The Promise
 
-By the end of Phase 72, the student will:
+By the end of Phase 81, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
@@ -1528,6 +1701,31 @@ By the end of Phase 72, the student will:
 - BUILD domain-specific assistants (medical, legal, coding)
 - DEPLOY models for inference with vLLM and batch optimization
 - BUILD real agentic systems with function calling and tool use
+- DISCOVER hidden structure in unlabeled data with K-means, PCA, t-SNE, and DBSCAN
+- CHOOSE the right number of clusters using the elbow method and silhouette analysis
+- REDUCE dimensionality while preserving variance through eigen-decomposition
+- VISUALIZE high-dimensional clusters in 2D without distorting local neighborhoods
+- SEPARATE dense clusters from noise using density-based spatial clustering
+- LOCALIZE objects in images using bounding boxes, anchors, and single-shot detectors
+- COMPUTE spatial overlap with Intersection Over Union (IoU) and evaluate with mean Average Precision (mAP)
+- REMOVE duplicate detections with Non-Maximum Suppression (NMS)
+- DISTINGUISH single-shot detectors (YOLO) from two-stage detectors (R-CNN) and know when to use each
+- SEGMENT images at the pixel level with semantic and instance segmentation masks
+- USE promptable segmentation models (SAM) to extract object boundaries without predefined classes
+- PROCESS raw audio into perceptual features with STFT, mel-filterbanks, and MFCCs
+- TRANSCRIBE speech to text with CTC alignment and Transformer-based ASR
+- GENERATE personalized recommendations with collaborative filtering, matrix factorization, and two-tower retrieval
+- OPTIMIZE recommendation ranking with BPR and evaluate with Hit Rate and NDCG
+- EXPLAIN black-box predictions with saliency maps, SHAP values, LIME surrogates, and attention visualization
+- DISTINGUISH global explanations (feature importance) from local explanations (instance-level justification)
+- DETECT algorithmic bias with demographic parity and equalized odds metrics
+- MITIGATE unfairness through pre-processing, in-processing, and post-processing techniques
+- MEASURE true causal effects with randomized control trials, propensity score matching, and instrumental variables
+- DISTINGUISH correlation from causation in observational data
+- MONITOR production models for data drift and concept drift using KL divergence and PSI
+- AUTOMATE retraining pipelines when model performance degrades in production
+- PREVENT catastrophic forgetting with Elastic Weight Consolidation (EWC) and replay buffers
+- DESIGN continual learning systems that acquire new skills without erasing old ones
 
 **This is not a race to GPT. This is a complete education in artificial intelligence.**
 
