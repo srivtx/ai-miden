@@ -834,6 +834,25 @@ Each phase has:
 
 ---
 
+## Phase 43: Model Merging & Ensembles (COMPLETED)
+
+**The Question:** "You have three specialist models — one for coding, one for medical, one for legal. Each is great at its task but terrible at the others. How do you combine them into a single generalist without retraining?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Model Merging | Combining fine-tuned models by averaging weights in parameter space | Three chefs combining their specialty menus into one super-menu |
+| Task Arithmetic | Adding task-specific deltas back to the base model | Keeping the standard recipe book and adding each chef's unique innovations as notes |
+| SLERP | Spherical interpolation preserving weight vector norms | Flying the great-circle route instead of tunneling through the Earth |
+| TIES-Merging | Trimming noise, electing majority sign, merging only agreed changes | Senior architect ignoring tiny changes and resolving conflicts by majority vote |
+
+**Why It Is Needed:** Open-source communities create hundreds of fine-tuned models. Merging them in seconds on a CPU produces powerful multi-task models without any training cost. Many LLM leaderboard winners are merged models.
+
+**What We Build:** A base linear model fine-tuned on three different synthetic tasks. We merge the three specialists using simple averaging, task arithmetic, SLERP, and TIES-Merging, then evaluate multi-task performance.
+
+**Connects To:** Phase 44 (we can combine models. How do we handle inputs longer than the training sequence length?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -876,7 +895,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-42: THE FUTURE & SCALING
+PHASE 32-43: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -887,7 +906,8 @@ PHASE 32-42: THE FUTURE & SCALING
   ├─ Knowledge Distillation (Tiny Deployment)
   ├─ Flow Matching & DiT (Fast Generation)
   ├─ VLM Instruction Tuning (Multimodal Conversation)
-  └─ Verifiable Rewards & GRPO (Self-Play Reasoning)
+  ├─ Verifiable Rewards & GRPO (Self-Play Reasoning)
+  └─ Model Merging & Ensembles (Multi-Task Combination)
 ```
 
 ---
@@ -896,18 +916,18 @@ PHASE 32-42: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 43 (0-42) |
-| Concepts Covered | 160+ |
-| Code Projects | 39 (Phases 5-42, plus 0-4 done) |
+| Total Phases | 44 (0-43) |
+| Concepts Covered | 164+ |
+| Code Projects | 40 (Phases 5-43, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 24,500+ |
-| Estimated Lines of Code | 9,800+ |
+| Estimated Lines of Documentation | 25,000+ |
+| Estimated Lines of Code | 10,100+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 42, the student will:
+By the end of Phase 43, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
