@@ -853,6 +853,25 @@ Each phase has:
 
 ---
 
+## Phase 44: Long Context & Position Interpolation (COMPLETED)
+
+**The Question:** "Your model was trained on 4K-token sequences, but users want to process entire books and codebases. Re-training on 128K sequences costs millions. How do you extend the context window without retraining from scratch?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Position Interpolation | Scaling position indices to fit the training range | Shrinking a 32-octave piano into 4 octaves the musician already knows |
+| RoPE | Encoding position through rotation angles that preserve relative distances | Clock face where angles naturally wrap around |
+| YaRN | Frequency-aware interpolation preserving local precision | Keeping foreground details sharp while compressing the sky in a panorama |
+| NTK-Aware Scaling | Increasing RoPE base to stretch the frequency spectrum | Changing map projection to preserve local detail while expanding global coverage |
+
+**Why It Is Needed:** GPT-4, Claude 3, and Gemini support 100K+ to 1M+ token contexts. Position interpolation is the key technique enabling this without retraining from scratch.
+
+**What We Build:** A RoPE visualization showing how rotation angles scale with position. We compare basic interpolation, YaRN frequency-aware scaling, and NTK-aware base scaling. We verify that attention scores remain coherent after interpolation.
+
+**Connects To:** This completes the extended phase series. All modern AI techniques from sparse scaling to long context are now covered.
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -895,7 +914,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-43: THE FUTURE & SCALING
+PHASE 32-44: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -907,7 +926,8 @@ PHASE 32-43: THE FUTURE & SCALING
   ├─ Flow Matching & DiT (Fast Generation)
   ├─ VLM Instruction Tuning (Multimodal Conversation)
   ├─ Verifiable Rewards & GRPO (Self-Play Reasoning)
-  └─ Model Merging & Ensembles (Multi-Task Combination)
+  ├─ Model Merging & Ensembles (Multi-Task Combination)
+  └─ Long Context & Position Interpolation (Context Extension)
 ```
 
 ---
@@ -916,18 +936,18 @@ PHASE 32-43: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 44 (0-43) |
-| Concepts Covered | 164+ |
-| Code Projects | 40 (Phases 5-43, plus 0-4 done) |
+| Total Phases | 45 (0-44) |
+| Concepts Covered | 168+ |
+| Code Projects | 41 (Phases 5-44, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 25,000+ |
-| Estimated Lines of Code | 10,100+ |
+| Estimated Lines of Documentation | 25,500+ |
+| Estimated Lines of Code | 10,400+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 43, the student will:
+By the end of Phase 44, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
