@@ -1679,9 +1679,513 @@ PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
 
 ---
 
+## Phase 83: GPU Kernel Optimization (COMPLETED)
+
+**The Question:** "Why are GPUs 100x faster than CPUs for neural networks, and how do I write code that actually uses that speed?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| CUDA | A programming model that exposes thousands of parallel GPU cores to the programmer | A conductor directing hundreds of musicians to play the same note simultaneously |
+| GPU Memory Hierarchy | Different memory types (global, shared, local) with vastly different speeds and capacities | A workshop with a small workbench next to the worker and a distant warehouse for bulk storage |
+| Kernel Fusion | Combining multiple operations into a single GPU kernel launch to reduce memory round-trips | A chef preparing a full meal in one go instead of making each dish separately with breaks in between |
+
+**Why It Is Needed:** Neural networks are massively parallel, yet naive GPU code wastes most of that power through poor memory access patterns. Understanding kernels and memory hierarchy lets you squeeze 10x more performance from the same hardware.
+
+**What We Build:** A NumPy simulation comparing coalesced versus strided memory access patterns, plus a conceptual vector-add kernel that shows why fused operations matter.
+
+**Connects To:** Phase 84
+
+---
+
+## Phase 84: Memory Engineering (COMPLETED)
+
+**The Question:** "How do I train a model that is too big to fit in GPU memory?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Activation Checkpointing | Recomputing activations during backward pass instead of storing them all | A student solving a long math problem by rewriting intermediate steps instead of keeping every scrap of paper |
+| Gradient Accumulation | Splitting a large batch into smaller chunks and accumulating gradients across them | Filling a bucket with a small cup: many trips, same total water |
+| Memory Bandwidth | The rate at which data can move to and from memory, often the true bottleneck | Highway lanes: more lanes move more traffic, but toll booths can still slow everything down |
+
+**Why It Is Needed:** State-of-the-art models have billions of parameters and activations that exceed GPU memory. Without engineering tricks, you cannot even fit a forward pass, let alone training.
+
+**What We Build:** A NumPy simulation of peak memory usage during backprop, showing how activation checkpointing trades compute for memory and how gradient accumulation simulates large batches.
+
+**Connects To:** Phase 85
+
+---
+
+## Phase 85: Multi-Node Training (COMPLETED)
+
+**The Question:** "How do I train when one GPU is not enough?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| All-Reduce | Aggregating gradients from every device so all workers learn from the full batch | Four chefs each tasting a soup, then sharing their notes to agree on the final recipe adjustment |
+| Data Parallelism | Splitting the training batch across multiple devices and synchronizing updates | Four photocopiers each printing a quarter of a book, then stapling the chapters together |
+| Collective Communication | Coordinated operations across a group of nodes rather than pairwise messaging | A symphony orchestra following a shared conductor rather than soloists playing alone |
+
+**Why It Is Needed:** Modern training runs require dozens or thousands of GPUs working together. You must synchronize gradients efficiently so every device learns from the full batch.
+
+**What We Build:** A NumPy simulation of ring-allreduce across four ranks, demonstrating how data parallelism splits batches and aggregates gradients with minimal overhead.
+
+**Connects To:** Phase 86
+
+---
+
+## Phase 86: JAX & XLA (COMPLETED)
+
+**The Question:** "What if I want functional, composable ML code that compiles to fast kernels?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| JAX | A library for differentiable, array-oriented functional programming | A set of precision tools that always work the same way and can be assembled into any machine |
+| XLA | An optimizing compiler that fuses operations and targets GPUs/TPUs | A master carpenter who looks at your blueprint and rebuilds it with hidden support beams for strength |
+| JIT Compilation | Compiling Python functions into optimized kernels at runtime | Translating a speech live so the audience hears it fluently without pausing between every sentence |
+
+**Why It Is Needed:** Imperative frameworks are flexible but slow for research at scale. Functional, composable code that compiles to fused kernels gives you both speed and elegance.
+
+**What We Build:** A NumPy simulation of JIT fusion that merges element-wise operations into a single virtual kernel, plus a conceptual vmap demonstration for batching arbitrary functions.
+
+**Connects To:** Phase 87
+
+---
+
+## Phase 87: Checkpointing & Fault Tolerance (COMPLETED)
+
+**The Question:** "How do I recover when a 1000-GPU training job crashes after 3 days?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Checkpointing | Saving the full training state periodically so recovery is possible | Saving a video game before a boss fight so you do not restart from the beginning |
+| Deterministic Training | Ensuring the same inputs and seeds produce the exact same outputs every run | A recipe with exact gram measurements instead of "a pinch of salt" |
+| Fault Tolerance | Designing systems to continue operating despite hardware or software failures | A relay race where the next runner can start from the last baton pass even if one runner trips |
+
+**Why It Is Needed:** Large distributed jobs fail constantly due to hardware faults, network issues, or preemption. Losing days of training is unacceptable in production environments.
+
+**What We Build:** A NumPy simulation of training state save and load, plus deterministic seeding that guarantees the exact same weight updates after recovery.
+
+**Connects To:** Phase 88
+
+---
+
+## Phase 88: Docker, Kubernetes & Orchestration (COMPLETED)
+
+**The Question:** "How do I deploy training jobs reproducibly at scale?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Containerization | Packaging code with all its dependencies so it runs identically anywhere | Shipping a fully furnished, portable apartment so it looks identical anywhere it is placed |
+| Kubernetes | A system for automating the deployment, scaling, and management of containers | An air-traffic control tower directing hundreds of planes to the right gates and runways |
+| Orchestration | Coordinating many services, jobs, and resources into a coherent pipeline | A film director scheduling actors, cameras, and lighting so every scene happens in order |
+
+**Why It Is Needed:** Running experiments on your laptop is not reproducible and does not scale. Containers and schedulers let you deploy the same code on 2 nodes or 2000 nodes.
+
+**What We Build:** A NumPy simulation of a scheduler assigning training jobs to compute nodes based on resource requests, modeling queues, priorities, and node failures.
+
+**Connects To:** Phase 89
+
+---
+
+## Phase 89: Data Engineering at Scale (COMPLETED)
+
+**The Question:** "How do I turn terabytes of raw web data into clean training data?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Deduplication | Removing redundant documents so the model does not memorize repeated text | A librarian removing 500 identical copies of the same book to make shelf space |
+| Data Filtering | Discarding low-quality or toxic examples before training | A jeweler discarding cloudy stones before cutting the gems |
+| Perplexity Filtering | Keeping data that looks natural and well-formed to a language model | A language teacher selecting essays that use proper grammar for the class textbook |
+
+**Why It Is Needed:** Raw web scrapes are noisy, duplicated, and mostly low quality. Feeding garbage to a model wastes compute and produces garbage outputs.
+
+**What We Build:** A NumPy MinHash similarity implementation to find near-duplicate documents, plus a toy quality filter that uses perplexity scoring to keep well-formed text.
+
+**Connects To:** Phase 90
+
+---
+
+## Phase 90: Inference Serving (COMPLETED)
+
+**The Question:** "How do I serve LLMs to thousands of users without going bankrupt?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| PagedAttention | Managing the KV cache in fixed-size blocks like virtual memory pages | A hotel using a shared pool of rooms instead of reserving a whole floor for every guest |
+| Continuous Batching | Dynamically grouping new requests with ongoing ones to maximize GPU utilization | A food truck assembling orders as customers arrive instead of waiting for a full bus |
+| KV Cache Management | Storing and reusing key-value states so generation does not recompute the entire past | Keeping a cheat sheet of previous conversation topics so you do not re-read the entire chat history |
+
+**Why It Is Needed:** LLM inference is expensive, and naive serving wastes GPU memory on padding and fragmentation. Efficient batching and cache management slash costs.
+
+**What We Build:** A NumPy simulation of KV cache fragmentation versus paging, showing how PagedAttention enables higher throughput through dynamic memory blocks.
+
+**Connects To:** Phase 91
+
+---
+
+## Phase 91: Experiment Tracking & MLOps (COMPLETED)
+
+**The Question:** "How do I keep track of 500 training runs and know which one was best?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Experiment Tracking | Logging hyperparameters, metrics, and artifacts for every training run | A scientist’s lab notebook with dated entries for every variable tested |
+| MLflow | A platform for managing the ML lifecycle from experimentation to production | A library catalog that tracks every draft of a manuscript, not just the final book |
+| Model Registry | Versioning and staging models so production deployments are traceable | A museum archive labeling every restored painting with its condition, date, and exhibit status |
+
+**Why It Is Needed:** Training hundreds of experiments without records is chaos. You cannot reproduce a result if you do not remember the hyperparameters.
+
+**What We Build:** A NumPy training loop that writes hyperparameters, metrics, and artifacts to a JSON experiment logger, simulating a real MLOps workflow.
+
+**Connects To:** Phase 92
+
+---
+
+## Phase 92: Benchmark Design (COMPLETED)
+
+**The Question:** "How do I know if my model is actually good, or just memorizing the test set?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Benchmark | A standardized test that measures model capability fairly across time | The SAT: everyone takes the same test so colleges can compare applicants fairly |
+| Contamination | Training data accidentally leaking into the test set, inflating scores | A teacher accidentally using exam questions that were on yesterday’s homework |
+| Validity | Whether a test actually measures the skill it claims to measure | Weighing yourself to measure height: the scale works, but it answers the wrong question |
+
+**Why It Is Needed:** Leaderboard scores are meaningless if the test set leaked into training. Rigorous benchmark design separates real progress from memorization.
+
+**What We Build:** A NumPy toy benchmark where we deliberately contaminate the training set with test examples, then measure the resulting inflated accuracy.
+
+**Connects To:** Phase 93
+
+---
+
+## Phase 93: Paper Reading & Reproduction (COMPLETED)
+
+**The Question:** "How do I read an AI paper without getting lost in the math?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Paper Reproduction | Rebuilding a paper’s result from scratch to verify its claims | Cooking a famous chef’s recipe at home to verify it actually tastes good |
+| Method Archaeology | Tracing ideas back through prior work to understand their evolution | A detective following footprints through snow to find where a journey began |
+| Ablation | Removing individual components to measure their specific contribution | Testing a car by removing the battery to prove the engine alone will not start |
+
+**Why It Is Needed:** Papers are dense and often skip implementation details. Learning to extract the core idea and reproduce it is the fastest way to build real understanding.
+
+**What We Build:** A NumPy demo that reproduces a toy paper result step by step, then runs an ablation removing each component to isolate its true contribution.
+
+**Connects To:** Phase 94
+
+---
+
+## Phase 94: Statistical Rigor (COMPLETED)
+
+**The Question:** "How do I know if my model is really better, or just lucky?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Confidence Interval | A range that captures the true value with a known probability | A weather forecast saying "between 70 and 80 degrees" instead of guessing exactly 74 |
+| p-value | The probability that observed results occurred purely by chance | A jury deciding whether the evidence is strong enough to reject the "innocent until proven guilty" assumption |
+| Variance Reduction | Techniques to get more stable estimates from limited experiments | Averaging ten bathroom scales instead of trusting one that wobbles |
+
+**Why It Is Needed:** A single accuracy number hides uncertainty. You need statistical tools to know whether a 1% improvement is real or just random noise.
+
+**What We Build:** NumPy bootstrapping to estimate confidence intervals, plus a paired t-test simulation that compares two models across multiple random seeds.
+
+**Connects To:** Phase 95
+
+---
+
+## Phase 95: Open Source & Research Communication (COMPLETED)
+
+**The Question:** "How do I build a reputation in AI?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Open Source Contribution | Sharing code, models, and datasets with the community | A carpenter posting free blueprints so the whole town builds better houses |
+| Technical Writing | Explaining complex ideas clearly so others can build on them | A medical translator turning doctor jargon into instructions a patient can follow |
+| Code Review | Critiquing code for clarity, correctness, and maintainability | An editor marking a draft with red pen before it goes to print |
+
+**Why It Is Needed:** Brilliant ideas matter less if no one can use them. Clear code, documentation, and community contribution are how you turn skill into impact.
+
+**What We Build:** A NumPy BEFORE/AFTER demo showing the same algorithm written as spaghetti code versus clean, documented, reusable functions.
+
+**Connects To:** Phase 96
+
+---
+
+## Phase 96: Sparse MoE Training (COMPLETED)
+
+**The Question:** "How do I scale model capacity without proportional compute cost?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Mixture of Experts | Using only a subset of parameters for each input, scaling capacity cheaply | A hospital where each patient sees only the specialists they need, not the entire staff |
+| Load Balancing Loss | Preventing all inputs from routing to the same few experts | A manager penalizing a team if two workers do everything while the rest sit idle |
+| Expert Choice | Routing inputs to the best-suited experts for that example | A restaurant host seating guests at the station whose chef specializes in their order |
+
+**Why It Is Needed:** Dense models scale compute with every parameter. Mixture of Experts activates only a subset of weights per input, unlocking massive capacity cheaply.
+
+**What We Build:** A NumPy simulation of a tiny MoE layer with trainable gating, showing how inputs route to different experts and how load balancing prevents collapse.
+
+**Connects To:** Phase 97
+
+---
+
+## Phase 97: Extreme Context Windows (COMPLETED)
+
+**The Question:** "How do I process an entire book in one pass?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Ring Attention | Block-wise attention that reduces memory from quadratic to linear in sequence length | Reading a novel in chunks instead of memorizing every page before turning to the next |
+| Positional Extrapolation | Extending to sequences longer than the model saw during training | A violinist playing a piece in a larger hall than they rehearsed in by adjusting projection |
+| Context Compression | Summarizing long contexts into compact key states for efficient retrieval | A student reducing 500 pages of notes to a single crib sheet for the exam |
+
+**Why It Is Needed:** Standard attention runs out of memory on long documents. New algorithms reduce complexity so you can process entire books or codebases.
+
+**What We Build:** A NumPy simulation comparing O(n^2) memory scaling against O(n) approximations, demonstrating how block-wise methods handle extreme context.
+
+**Connects To:** Phase 98
+
+---
+
+## Phase 98: System-2 Reasoning (COMPLETED)
+
+**The Question:** "How do I train models to think step-by-step and check their own work?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Process Reward Model | Rewarding intermediate reasoning steps, not just final answers | A math teacher giving partial credit for showing work, not just the final answer |
+| Chain-of-Thought | Generating explicit intermediate steps before producing a final answer | A GPS listing every turn instead of just saying "arrive in ten miles" |
+| Self-Consistency | Generating multiple reasoning paths and trusting the majority answer | Asking three doctors for a diagnosis and trusting the majority opinion |
+
+**Why It Is Needed:** Some problems require deliberate thinking, not reflexive pattern matching. Teaching models to reason step by step and verify answers unlocks harder tasks.
+
+**What We Build:** A NumPy simulation of reasoning chains where the model generates intermediate steps, then uses self-consistency through majority voting to pick the best answer.
+
+**Connects To:** Phase 99
+
+---
+
+## Phase 99: Video & 3D Generation (COMPLETED)
+
+**The Question:** "How do I generate video and 3D objects, not just still images?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Latent Video Diffusion | Generating video in a compressed latent space to save compute | A puppeteer animating a small wireframe model that is later filmed and rendered in full HD |
+| 3D Gaussian Splatting | Rendering scenes with millions of 3D Gaussians instead of meshes | A sculptor building a statue from thousands of tiny clay dots instead of carving one solid block |
+| Spatiotemporal Attention | Attention that operates jointly across space and time dimensions | A film editor tracking how a character moves across rooms from frame to frame |
+
+**Why It Is Needed:** Images are just the beginning. Video, 3D scenes, and dynamic worlds require modeling time, depth, and motion, not just pixels.
+
+**What We Build:** A NumPy demo applying a 3D convolution to a synthetic 1D-plus-time signal, plus a toy diffusion process that generates simple spatiotemporal patterns.
+
+**Connects To:** Phase 100
+
+---
+
+## Phase 100: Automated Circuit Discovery (COMPLETED)
+
+**The Question:** "How do I understand what specific parts of a neural network actually do?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Mechanistic Interpretability | Reverse-engineering neural networks to find human-understandable circuits | Taking apart a watch to discover exactly which gear moves the hour hand |
+| Attribution Patching | Swapping activations between runs to identify causal components | Replacing one fuse in a car to prove it controls the headlights |
+| Sparse Autoencoder | Finding a small set of interpretable features that explain network activations | A microscope that highlights only the stained cells you care about in a tissue sample |
+
+**Why It Is Needed:** Neural networks are black boxes unless you can pinpoint which circuits cause which behavior. Reverse-engineering them is essential for safety and debugging.
+
+**What We Build:** A NumPy attribution patching demo that compares forward passes with and without intervening on specific activations to trace causal paths.
+
+**Connects To:** Phase 101
+
+---
+
+## Phase 101: Advanced Alignment (COMPLETED)
+
+**The Question:** "How do we align AI when human feedback is not enough?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Constitutional AI | Training models to critique and revise themselves against a set of principles | A judge deciding cases based on a written constitution rather than momentary mood |
+| Iterated Amplification | Bootstrapping supervision by having weaker models assist stronger ones | A student teaching a slightly younger student, who then teaches the next, gradually refining the lesson plan |
+| Debate Protocol | Two models argue to expose the truth to a human judge | A courtroom where prosecution and defense cross-examine to expose the facts |
+
+**Why It Is Needed:** Human feedback does not scale to superhuman systems. We need principled methods that align models even when humans cannot directly judge every output.
+
+**What We Build:** A NumPy simulation of a critique-and-revise loop where one model proposes answers and another critiques them according to a fixed constitution.
+
+**Connects To:** Phase 102
+
+---
+
+## Phase 102: Synthetic Data Bootstrapping (COMPLETED)
+
+**The Question:** "What if the best training data comes from the model itself?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Rejection Sampling | Keeping only high-quality generated samples that meet a threshold | A photographer taking 100 shots and keeping only the three that are in focus |
+| Self-Improvement | A model training on its own outputs to iteratively get better | A writer revising their own manuscript by reading what they wrote and spotting flaws |
+| Verifier-Augmented Generation | Using a separate checker to filter or score generated outputs | A factory where every product is inspected by a separate quality-control robot |
+
+**Why It Is Needed:** The best training data for a task is often generated by a capable model itself. Filtering and verification turn raw generation into high-quality supervision.
+
+**What We Build:** A NumPy rejection sampling demo that generates many candidate solutions and keeps only those that pass a simple verifier check.
+
+**Connects To:** Phase 103
+
+---
+
+## Phase 103: Multimodal Data Curation (COMPLETED)
+
+**The Question:** "How do I align billions of image-text pairs at scale?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Contrastive Filtering | Keeping pairs that are semantically similar yet distinct enough to teach | A matchmaker pairing couples who complement each other rather than are identical twins |
+| CLIP Scoring | Measuring image-text similarity with a pretrained dual encoder | A translator scoring how well a poem captures the mood of a painting |
+| Temporal Alignment | Synchronizing time-based modalities like video and audio | Dubbing a movie so the actor’s lips match the new language exactly |
+
+**Why It Is Needed:** Multimodal models need billions of aligned image-text pairs. Curating that scale requires automated scoring and synchronization, not manual labeling.
+
+**What We Build:** A NumPy CLIP-style dot-product similarity scorer that ranks image-text pairs, plus a temporal alignment check for video-caption matching.
+
+**Connects To:** Phase 104
+
+---
+
+## Phase 104: Architecture Search (COMPLETED)
+
+**The Question:** "How do I design the right architecture for a problem instead of guessing?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Neural Architecture Search | Automating the design of network structures for a given task | An architect using software to generate and test thousands of floor plans instead of sketching one by hand |
+| Inductive Bias | Built-in assumptions that help a model generalize from limited data | A GPS assuming you drive on roads rather than flying over buildings |
+| Scaling Laws | Predictable relationships between model size, data, and performance | A chef knowing that doubling a recipe predictably doubles the servings |
+
+**Why It Is Needed:** Hand-designing architectures is slow and often suboptimal. Understanding inductive bias and scaling laws lets you search systematically instead of guessing.
+
+**What We Build:** A NumPy demo comparing locally-connected layers versus fully-connected layers on structured data, showing how the right bias improves generalization.
+
+**Connects To:** Phase 105
+
+---
+
+## Phase 105: Tiny ML & Edge Deployment (COMPLETED)
+
+**The Question:** "How do I run AI on a phone or microcontroller?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Quantization-Aware Training | Training with low precision in mind so quantization does not destroy accuracy | A carpenter cutting wood while already planning which joints will use screws versus glue |
+| Knowledge Distillation | A small student model learning from a large teacher’s soft predictions | An apprentice watching a master craftsperson and learning the shortcuts without asking for every rule |
+| Neural Architecture Search for Latency | Designing networks that meet strict speed constraints on target hardware | A city planner optimizing traffic-light timing so no car waits longer than ten seconds |
+
+**Why It Is Needed:** Cloud inference is too slow and expensive for every use case. Phones, watches, and sensors need tiny models that run locally with minimal battery.
+
+**What We Build:** A NumPy knowledge distillation demo where a small student learns from a large teacher’s soft targets, outperforming the same student trained on hard labels alone.
+
+**Connects To:** Phase 106
+
+---
+
+## Phase 106: AI for Science (COMPLETED)
+
+**The Question:** "How do I apply AI to molecules, proteins, and physics?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Geometric Deep Learning | Learning on structured data like graphs, meshes, and point clouds | A social network analyst studying connections between people rather than treating everyone as isolated |
+| Equivariant Networks | Respecting symmetries like rotation so predictions do not change arbitrarily | A scale that still reads the same weight whether you place the object facing left or right |
+| Diffusion for Molecules | Generating valid molecular structures by reversing a noising process | A chemist gradually resolving a blurry microscope image until the molecular structure is crisp |
+
+**Why It Is Needed:** Scientific data has structure—symmetries, graphs, 3D coordinates—that generic models ignore. Specialized architectures exploit that structure for breakthrough results.
+
+**What We Build:** A NumPy demo computing rotation-invariant features from 3D point coordinates, illustrating geometric deep learning for molecules and physics.
+
+**Connects To:** Phase 107
+
+---
+
+## Phase 107: On-Device LLMs (COMPLETED)
+
+**The Question:** "How do I run a language model on my phone?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Mobile LLM | Compact language models optimized for memory and speed on devices | A pocket dictionary instead of an entire library |
+| Speculative Decoding | Drafting tokens quickly with a small model then verifying with the large one | A stenographer guessing the next word to keep up with a fast speaker, then the speaker confirming |
+| Flash Attention | IO-aware exact attention that minimizes memory round-trips | A student underlining key sentences while reading instead of copying the whole chapter into notes |
+
+**Why It Is Needed:** On-device assistants need fast, private inference without sending data to the cloud. Quantization and efficient attention make that possible on phone hardware.
+
+**What We Build:** A NumPy simulation of quantization reducing weight precision and model size, plus a conceptual demonstration of speculative decoding speedup.
+
+**Connects To:** Phase 108
+
+---
+
+## Phase 108: Multimodal Reasoning (COMPLETED)
+
+**The Question:** "How do models reason across vision and language together?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Multimodal CoT | Extending chain-of-thought reasoning across text and images | A detective describing aloud what they see in a photo to solve a case |
+| Visual Question Answering | Answering natural language questions about the content of images | A tour guide explaining what a painting depicts when a visitor asks |
+| Cross-Modal Attention | Letting information from one modality attend directly to another | Matching a song lyric to the melody that carries it |
+
+**Why It Is Needed:** Real-world intelligence combines sight and language. Models must attend across images and text to answer complex questions about the visual world.
+
+**What We Build:** A NumPy cross-modal attention matrix that maps text tokens to image patches, demonstrating how vision and language signals interact.
+
+**Connects To:** Phase 109
+
+---
+
+## Phase 109: World Models (COMPLETED)
+
+**The Question:** "How do I build an AI that imagines the future to plan better?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| World Model | An internal learned simulation of environment dynamics | A chess player imagining future board states before moving a piece |
+| Dreamer | Learning from imagined trajectories to improve real-world decisions | An athlete visualizing a perfect dive before standing on the board |
+| Model Predictive Control | Planning actions by rolling out a learned model and picking the best path | A navigator recalculating the route every mile based on updated traffic predictions |
+
+**Why It Is Needed:** Agents that plan in complex environments need to imagine consequences before acting. A learned world model turns raw trial and error into deliberate strategy.
+
+**What We Build:** A NumPy learned dynamics model that predicts next states from actions, combined with a simple model predictive control rollout that selects optimal trajectories.
+
+**Connects To:** Phase 110
+
+---
+
+## Phase 110: Test-Time Compute Scaling (COMPLETED)
+
+**The Question:** "What if spending more compute at inference time makes the model smarter?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Test-Time Compute | Using additional computation during inference rather than only during training | A student taking extra time to double-check every answer before handing in the exam |
+| Search Over Outputs | Exploring many possible outputs and selecting the best one | A writer brainstorming ten headlines and choosing the catchiest one |
+| Refinement Loop | Iteratively improving an answer through repeated critique and revision | A sculptor chipping away at marble, stepping back to evaluate, and chipping again |
+
+**Why It Is Needed:** Model size is not the only path to intelligence. Spending more compute at test time—searching, refining, verifying—can dramatically boost accuracy without retraining.
+
+**What We Build:** A NumPy best-of-N sampling demo that draws multiple answers and picks the best one, plotting how accuracy improves with more inference-time compute.
+
+**Connects To:** End of curriculum. The student is ready to push the boundaries of AI research and engineering.
+
+---
+
 ## The Promise
 
-By the end of Phase 81, the student will:
+By the end of Phase 110, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
@@ -1726,6 +2230,21 @@ By the end of Phase 81, the student will:
 - AUTOMATE retraining pipelines when model performance degrades in production
 - PREVENT catastrophic forgetting with Elastic Weight Consolidation (EWC) and replay buffers
 - DESIGN continual learning systems that acquire new skills without erasing old ones
+- WRITE optimized GPU kernels that exploit memory hierarchy and kernel fusion for massive speedups
+- TRAIN models across multiple nodes using data parallelism, efficient all-reduce, and JAX/XLA JIT compilation
+- RECOVER from failures in large distributed jobs through checkpointing, deterministic training, and container orchestration with Kubernetes
+- TRANSFORM terabytes of raw web data into clean training corpora through deduplication, perplexity filtering, and automated quality scoring
+- SERVE LLMs efficiently with continuous batching, PagedAttention, and KV cache management to minimize inference cost
+- TRACK hundreds of experiments with structured logging, model registries, and MLOps best practices
+- READ, reproduce, and rigorously evaluate AI research papers through ablation studies, confidence intervals, and hypothesis testing
+- SCALE model capacity without proportional compute cost using Mixture of Experts, load-balanced gating, and extreme context techniques like ring attention
+- TRAIN models to reason step-by-step with chain-of-thought, process reward models, and self-consistency
+- GENERATE video and 3D content with spatiotemporal attention, latent diffusion, and 3D Gaussian splatting
+- REVERSE-ENGINEER neural networks through mechanistic interpretability, attribution patching, and sparse autoencoders
+- ALIGN advanced AI systems with constitutional principles, iterated amplification, debate protocols, and synthetic data bootstrapping
+- CURATE multimodal datasets at scale with contrastive filtering, CLIP scoring, and temporal alignment
+- DESIGN the right architecture for a problem using inductive bias, scaling laws, and neural architecture search, then deploy tiny versions on edge devices with quantization and distillation
+- APPLY AI to scientific problems with geometric deep learning and equivariant networks, run on-device LLMs with speculative decoding, build world models for planning, and scale intelligence at test time through search and refinement
 
 **This is not a race to GPT. This is a complete education in artificial intelligence.**
 

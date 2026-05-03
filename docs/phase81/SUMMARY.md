@@ -75,6 +75,8 @@ This phase covers three major approaches to solving catastrophic forgetting, plu
 
 ## Next Steps
 
+Continue to Phase 83 for GPU kernel optimization and systems-level training infrastructure.
+
 ---
 
-← [Previous: Phase 80: MLOps](docs/phase80/SUMMARY.md) | End →
+← [Previous: Phase 80: MLOps](docs/phase80/SUMMARY.md) | [Next: Phase 83: GPU Kernel Optimization](docs/phase83/SUMMARY.md) →
