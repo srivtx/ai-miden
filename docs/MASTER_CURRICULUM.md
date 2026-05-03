@@ -739,6 +739,25 @@ Each phase has:
 
 ---
 
+## Phase 38: Scaling Laws & Compute-Optimal Training (COMPLETED)
+
+**The Question:** "Training large models costs millions. For a fixed budget, should you build a bigger model or train longer? The field got this wrong for years — what is the right answer?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Scaling Laws | Empirical power laws predicting loss from model size and data | Predicting how fast a car goes based on engine size and fuel |
+| Compute-Optimal Training | Balancing model size and data for fixed budgets | Building a library sized exactly for your book collection |
+| Chinchilla Rule | Practical guideline: D ≈ 20N for optimal training | Training athletes with both good genetics AND proper conditioning |
+| Data Wall | Finite high-quality training data limiting further scaling | Running out of textbooks to study from |
+
+**Why It Is Needed:** Every training run at frontier labs uses Chinchilla-optimal or over-trained schedules. Understanding scaling laws is essential for making cost-effective training decisions.
+
+**What We Build:** Simulated scaling law curves that show loss as a function of model size and data size. We compare Kaplan vs. Chinchilla frontiers, analyze real models (GPT-3, Gopher, Llama 3), and visualize the data wall.
+
+**Connects To:** This is the culmination of the scaling thread — we now understand how to build, adapt, speed up, ground, and efficiently train modern AI systems.
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -781,13 +800,14 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-37: THE FUTURE & SCALING
+PHASE 32-38: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
   ├─ LoRA & PEFT (Cheap Adaptation)
   ├─ Speculative Decoding (Fast Generation)
-  └─ RAG (Grounded Knowledge)
+  ├─ RAG (Grounded Knowledge)
+  └─ Scaling Laws (Efficient Training)
 ```
 
 ---
@@ -796,18 +816,18 @@ PHASE 32-37: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 38 (0-37) |
-| Concepts Covered | 140+ |
-| Code Projects | 34 (Phases 5-37, plus 0-4 done) |
+| Total Phases | 39 (0-38) |
+| Concepts Covered | 144+ |
+| Code Projects | 35 (Phases 5-38, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 20,000+ |
-| Estimated Lines of Code | 7,500+ |
+| Estimated Lines of Documentation | 21,000+ |
+| Estimated Lines of Code | 8,000+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 37, the student will:
+By the end of Phase 38, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
