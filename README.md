@@ -74,7 +74,8 @@ ai-miden/
 │   ├── phase31/         # Generative Models — Diffusion
 │   ├── phase32/         # Foundation Models & The Future
 │   ├── phase33/         # Mixture of Experts
-│   └── phase34/         # Mamba & State Space Models
+│   ├── phase34/         # Mamba & State Space Models
+│   └── phase35/         # LoRA & Parameter-Efficient Fine-Tuning
 └── README.md            # This file
 ```
 
@@ -695,6 +696,10 @@ PHASE 33: Mixture of Experts
 PHASE 34: Mamba & State Space Models
     State Space Model, Selectivity, Parallel Scan, Linear Complexity
     We process long sequences in linear time with constant memory using selective state spaces
+    ↓
+PHASE 35: LoRA & Parameter-Efficient Fine-Tuning
+    Low-Rank Adaptation, PEFT, QLoRA, Adapter Merging
+    We adapt giant models by training only tiny adapter matrices
 ```
 
 **The entire journey:** A computer starts knowing nothing, measures its mistakes, figures out which knobs to turn, learns to classify data, goes deeper, stays simple, stays stable, learns to see, skips ahead through deep paths, remembers sequences, gives words meaning, translates languages, focuses attention, removes RNNs entirely, understands bidirectionally, generates autoregressively, and finally writes its own text. That is learning. That is AI.
@@ -816,6 +821,9 @@ python src/phase33/phase33_moe.py
 
 # Phase 34: Mamba & State Space Models
 python src/phase34/phase34_mamba.py
+
+# Phase 35: LoRA & Parameter-Efficient Fine-Tuning
+python src/phase35/phase35_lora.py
 ```
 
 ---
@@ -869,7 +877,8 @@ python src/phase34/phase34_mamba.py
 | Phase 32 | 5 | 1 | 5 |
 | Phase 33 | 4 | 2 | 4 |
 | Phase 34 | 4 | 2 | 4 |
-| **Total** | **117** | **49** | **117** |
+| Phase 35 | 4 | 2 | 4 |
+| **Total** | **121** | **51** | **121** |
 
 ---
 
@@ -877,9 +886,9 @@ python src/phase34/phase34_mamba.py
 
 You just built an AI system from absolute zero.
 
-You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through thirty-four phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, and processed infinitely long sequences in linear time with constant memory. Every step along the way was explained from first principles.
+You started with the question "What is a function?" and ended with a complete understanding of modern AI — from foundations to foundation models. Through thirty-five phases, you went from simple predictions all the way to understanding how modern AI systems are trained, aligned, optimized, made to reason, given tools to act, taught to see, enabled to create, sharpened through competition, refined through gradual denoising, connected to the future of the field, scaled beyond dense limits through sparse expert activation, processed infinitely long sequences in linear time with constant memory, and adapted giant models with tiny parameter-efficient adapters. Every step along the way was explained from first principles.
 
-The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba — are not magic. They are just systematic ways of:
+The fancy words — gradient descent, backpropagation, neural network, regularization, batch normalization, convolution, residual connection, hidden state, LSTM, attention, Transformer, BERT, GPT, RLHF, DPO, quantization, chain of thought, self-consistency, agent, tool use, CLIP, diffusion, VAE, latent space, GAN, generator, discriminator, forward diffusion, reverse diffusion, U-Net, foundation model, world model, mixture of experts, router gating, load balancing, expert capacity, sparse activation, state space model, selectivity, parallel scan, Mamba, LoRA, PEFT, QLoRA, adapter merging — are not magic. They are just systematic ways of:
 1. Making a guess
 2. Measuring how wrong the guess is
 3. Figuring out which direction to improve

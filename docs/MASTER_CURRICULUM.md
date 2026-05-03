@@ -682,6 +682,25 @@ Each phase has:
 
 ---
 
+## Phase 35: LoRA & Parameter-Efficient Fine-Tuning (COMPLETED)
+
+**The Question:** "Fine-tuning a 70B model requires a terabyte of GPU memory. How do you adapt giant models without updating billions of parameters?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| LoRA (Low-Rank Adaptation) | Low-rank matrices for cheap model adaptation | Interchangeable drill bits on a universal power drill |
+| PEFT | Family of techniques for minimal-parameter adaptation | One motor, many cheap attachments |
+| QLoRA | 4-bit base model + high-precision adapters | Architect using compressed blueprints with full-resolution edits |
+| Adapter Merging | Combining BA into W for zero inference overhead | Printing a new permanent menu that includes popular daily specials |
+
+**Why It Is Needed:** Full fine-tuning is inaccessible for most practitioners. PEFT democratizes customization by training only 0.1–2% of parameters while achieving comparable quality.
+
+**What We Build:** A frozen base model and a tiny LoRA adapter (rank=2) that learns a low-rank adaptation. We compare parameter counts, show merging produces identical outputs, and demonstrate 80% parameter reduction.
+
+**Connects To:** Phase 36 (we can adapt models cheaply. How do we make them generate faster?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -724,10 +743,11 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-34: THE FUTURE & SCALING
+PHASE 32-35: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
-  └─ Mamba & State Space Models (Linear Time)
+  ├─ Mamba & State Space Models (Linear Time)
+  └─ LoRA & PEFT (Cheap Adaptation)
 ```
 
 ---
@@ -736,18 +756,18 @@ PHASE 32-34: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 35 (0-34) |
-| Concepts Covered | 128+ |
-| Code Projects | 31 (Phases 5-34, plus 0-4 done) |
+| Total Phases | 36 (0-35) |
+| Concepts Covered | 132+ |
+| Code Projects | 32 (Phases 5-35, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 17,000+ |
-| Estimated Lines of Code | 6,000+ |
+| Estimated Lines of Documentation | 18,000+ |
+| Estimated Lines of Code | 6,500+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 34, the student will:
+By the end of Phase 35, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
