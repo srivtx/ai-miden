@@ -891,6 +891,25 @@ Each phase has:
 
 ---
 
+## Phase 46: Mechanistic Interpretability (COMPLETED)
+
+**The Question:** "Neural networks work, but nobody knows exactly how. A GPT-4 has 1.8 trillion parameters. Which ones handle arithmetic? Which ones know Paris is in France? How do we open the black box?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Mechanistic Interpretability | Reverse-engineering neural networks to find specific computations | Building a repair manual for a car engine with billions of parts |
+| Activation Patching | Causal intervention proving which activations cause behavior | Swapping one car battery at a time to find what makes the engine stall |
+| Sparse Autoencoder | Decomposing dense activations into sparse, interpretable features | A 4096-page book decomposed into 5 relevant index cards |
+| Superposition | Representing more features than neurons by overlapping directions | 88 piano keys producing millions of sounds through combination |
+
+**Why It Is Needed:** Without interpretability, AI is a black box we cannot debug, trust, or safely deploy. Understanding internals is essential for alignment, safety, and model compression.
+
+**What We Build:** A tiny model with 2 hidden neurons representing 4 patterns. We visualize activations, patch neurons causally, train a sparse autoencoder (93.8% sparsity), and demonstrate superposition.
+
+**Connects To:** Phase 47 (we can understand models. How do we make them improve themselves?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -933,7 +952,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-45: THE FUTURE & SCALING
+PHASE 32-46: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -947,7 +966,8 @@ PHASE 32-45: THE FUTURE & SCALING
   ├─ Verifiable Rewards & GRPO (Self-Play Reasoning)
   ├─ Model Merging & Ensembles (Multi-Task Combination)
   ├─ Long Context & Position Interpolation (Context Extension)
-  └─ Quantization & GGUF (Consumer GPU Deployment)
+  ├─ Quantization & GGUF (Consumer GPU Deployment)
+  └─ Mechanistic Interpretability (Understanding Internals)
 ```
 
 ---
@@ -956,18 +976,18 @@ PHASE 32-45: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 46 (0-45) |
-| Concepts Covered | 172+ |
-| Code Projects | 42 (Phases 5-45, plus 0-4 done) |
+| Total Phases | 47 (0-46) |
+| Concepts Covered | 176+ |
+| Code Projects | 43 (Phases 5-46, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 26,000+ |
-| Estimated Lines of Code | 10,700+ |
+| Estimated Lines of Documentation | 26,500+ |
+| Estimated Lines of Code | 11,000+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 45, the student will:
+By the end of Phase 46, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
