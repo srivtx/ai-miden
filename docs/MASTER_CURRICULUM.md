@@ -1193,12 +1193,12 @@ PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
 
 | Metric | Count |
 |---|---|
-| Total Phases | 70 (0-69) |
-| Concepts Covered | 240+ |
-| Code Projects | 60 (Phases 5-69, plus 0-4 done) |
+| Total Phases | 71 (0-70) |
+| Concepts Covered | 244+ |
+| Code Projects | 61 (Phases 5-70, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 38,000+ |
-| Estimated Lines of Code | 15,800+ |
+| Estimated Lines of Documentation | 39,000+ |
+| Estimated Lines of Code | 16,100+ |
 
 ---
 
@@ -1332,6 +1332,25 @@ PHASE 63-72: APPLIED AI & PRACTICAL WORKFLOWS
 **What We Build:** A complete data pipeline simulation: 20 raw examples → chat template formatting → tokenization → deduplication → safety filtering → quality scoring → sequence packing. We show before/after statistics and GPU efficiency improvements.
 
 **Connects To:** Phase 64 (data is ready. Now how do we actually fine-tune a model with LoRA?)
+
+---
+
+## Phase 64: Practical SFT with LoRA (COMPLETED)
+
+**The Question:** "Full fine-tuning a 7B model needs 28GB GPU memory. How do you adapt a giant model to your task on a single consumer GPU?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| LoRA | Freezing base weights and training only low-rank adapter matrices | Adding a spice rack to a master chef's kitchen instead of rebuilding it |
+| SFT | Teaching pre-trained models to follow instructions via supervised fine-tuning | A professor practicing office hours to answer questions directly |
+| Target Module | Selecting which layers receive LoRA adapters | Upgrading a car's steering and brakes instead of the radio |
+| Adapter Merging | Combining multiple LoRA adapters into one model | Layering sound modules in a synthesizer |
+
+**Why It Is Needed:** LoRA reduces trainable parameters by 100-1000×, enabling fine-tuning on consumer GPUs. SFT is the first step in building any chatbot. Target modules control where adaptation happens. Adapter merging lets one model handle multiple tasks.
+
+**What We Build:** NumPy simulation of LoRA training with 2× parameter reduction, plus a Colab script for real LoRA fine-tuning of GPT-2 using `peft` and `trl`. We train separate adapters for two tasks, merge them, and compare losses.
+
+**Connects To:** Phase 65 (LoRA is efficient, but what if the model is so large it does not fit in memory?)
 
 ---
 
