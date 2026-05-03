@@ -986,6 +986,81 @@ Each phase has:
 
 ---
 
+## Phase 51: Evaluation Metrics (COMPLETED)
+
+**The Question:** "Training loss goes down, but is the model actually good? How do we measure quality, fairness, and calibration in ways that matter?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Accuracy / Precision / Recall / F1 | Different views on classification quality | A spam filter: catching all spam (recall) vs. never blocking real email (precision) |
+| Perplexity | Measuring how surprised a language model is by real text | A bookworm who has read every book is less surprised by the next word |
+| BLEU Score | Automatic translation quality without human judges | A student essay graded by how many phrases match a model answer |
+| ECE (Expected Calibration Error) | Checking if confidence matches actual accuracy | A weather forecaster who says "90% rain" but it only rains 50% of the time |
+
+**Why It Is Needed:** Metrics guide development. Without them, you optimize the wrong thing. Perplexity drives language model training. BLEU drives machine translation. ECE tells you when to trust a model's confidence.
+
+**What We Build:** Classification metrics on synthetic data, perplexity computation on a tiny language model, BLEU score for translation candidates, and ECE calibration curves.
+
+**Connects To:** Phase 52 (we can measure models. But how do we build better training data?)
+
+---
+
+## Phase 52: Data Augmentation & Tokenization (COMPLETED)
+
+**The Question:** "Good models need good data. How do we create more training examples from limited data, and how do we turn raw text into numbers the model can process?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Data Augmentation | Artificially expanding training data by transforming examples | A art student who practices by drawing the same object from different angles |
+| BPE Tokenization | Compressing text into the most frequent subword pieces | A shorthand system where common phrases get their own symbol |
+| MinHash Deduplication | Finding near-duplicate documents efficiently | A librarian who spots two books with nearly identical chapters |
+
+**Why It Is Needed:** Data augmentation prevents overfitting when data is scarce. BPE is how GPT and BERT read text. Deduplication prevents memorization and reduces training cost by removing redundant data.
+
+**What We Build:** Image augmentation (rotation, flip, noise), BPE merge training on toy text, and MinHash signature matching for deduplication.
+
+**Connects To:** Phase 53 (we can prepare data. But how do models learn to act in environments?)
+
+---
+
+## Phase 53: Classical Reinforcement Learning (COMPLETED)
+
+**The Question:** "Some problems have no labeled answers — only rewards. How does an agent learn to make decisions by trial and error?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Q-Learning | Learning the value of every state-action pair | A tourist who memorizes which streets lead to the best restaurants |
+| Policy Gradient (REINFORCE) | Directly optimizing the policy via reward gradients | A poker player who tweaks their strategy based on winnings |
+| Actor-Critic | Combining value estimation with policy learning | A chess player who both evaluates positions and chooses moves |
+| Replay Buffer | Storing past experiences for efficient re-use | A sports team that watches game tapes to learn from past plays |
+
+**Why It Is Needed:** RL is how agents learn without supervision. It powers game-playing AI, robotics, recommendation systems, and the reward modeling behind RLHF. Classical RL is the foundation of all modern reinforcement learning.
+
+**What We Build:** A grid-world environment where Q-learning, REINFORCE, and Actor-Critic agents learn to navigate to a goal. We compare their learning curves and show how each approach converges.
+
+**Connects To:** Phase 54 (agents can learn from rewards. But how do we handle graph-structured data like molecules or social networks?)
+
+---
+
+## Phase 54: Graph Neural Networks (COMPLETED)
+
+**The Question:** "Images are grids and text is sequences. But what about social networks, molecules, and knowledge graphs? How do neural networks handle data with arbitrary connections?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Graph Neural Network (GNN) | Applying deep learning to graph-structured data | A social network where each person updates their opinion based on friends |
+| GCN | Normalized neighbor aggregation for stable learning | Averaging exam scores within study groups, weighted by group size |
+| Graph Attention (GAT) | Learning which neighbors matter most | A committee chair who learns whose opinion to weight most heavily |
+| Message Passing | The general framework unifying all GNNs | Gossip spreading through a network, with each person summarizing what they hear |
+
+**Why It Is Needed:** GNNs power drug discovery (molecules), recommendation (social networks), fraud detection (transaction graphs), and reasoning (knowledge graphs). They extend deep learning beyond grids and sequences.
+
+**What We Build:** A synthetic graph with community structure. We implement message passing, GCN layer propagation, and graph attention to classify nodes based on their neighborhood. We visualize how information flows through the graph.
+
+**Connects To:** Phase 55 (graphs connect data. How do we train models across many machines?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -1028,7 +1103,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-50: THE FUTURE & SCALING
+PHASE 32-54: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -1047,7 +1122,11 @@ PHASE 32-50: THE FUTURE & SCALING
   ├─ Synthetic Data & Self-Improvement (Breaking the Data Wall)
   ├─ Test-Time Training (Real-Time Adaptation)
   ├─ Advanced Optimizers (Efficient Training)
-  └─ Self-Supervised Learning (Learning Without Labels)
+  ├─ Self-Supervised Learning (Learning Without Labels)
+  ├─ Evaluation Metrics (Measuring Quality)
+  ├─ Data Augmentation & Tokenization (Better Data)
+  ├─ Classical Reinforcement Learning (Trial-and-Error Learning)
+  └─ Graph Neural Networks (Learning on Graphs)
 ```
 
 ---
@@ -1056,18 +1135,18 @@ PHASE 32-50: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 51 (0-50) |
-| Concepts Covered | 192+ |
-| Code Projects | 47 (Phases 5-50, plus 0-4 done) |
+| Total Phases | 55 (0-54) |
+| Concepts Covered | 208+ |
+| Code Projects | 51 (Phases 5-54, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 28,500+ |
-| Estimated Lines of Code | 12,100+ |
+| Estimated Lines of Documentation | 31,000+ |
+| Estimated Lines of Code | 13,200+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 50, the student will:
+By the end of Phase 54, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
