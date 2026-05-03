@@ -796,6 +796,25 @@ Each phase has:
 
 ---
 
+## Phase 41: Vision-Language Instruction Tuning (COMPLETED)
+
+**The Question:** "You have a model that sees images and a model that writes text. How do you connect them so a user can ask 'What color is the cat in this image?' and get a real answer?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Vision-Language Instruction Tuning | Connecting vision encoders to language models for conversation | Translator at an art museum enabling the tour guide to describe paintings |
+| Vision Encoder | Converting images into patch embeddings | Security camera noting visual features of a painting |
+| Projection Layer | Mapping vision embeddings to language model space | Translator converting camera notes into words the tour guide understands |
+| Multimodal Instruction Tuning | Training on visual Q&A conversations | Teaching a sighted person to actually look before answering |
+
+**Why It Is Needed:** GPT-4V, Claude 3, and Gemini are all multimodal. VLMs power OCR, chart understanding, document QA, and robotics.
+
+**What We Build:** A toy VLM on synthetic 4×4 images. With visual context: 95.6% accuracy. Without visual context: 20.6% accuracy (blind guessing). The architecture mirrors real VLMs: encoder → projection → classifier.
+
+**Connects To:** Phase 42 (we can see and talk. How do we train models to reason deeply through self-play?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -838,7 +857,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-40: THE FUTURE & SCALING
+PHASE 32-41: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -847,7 +866,8 @@ PHASE 32-40: THE FUTURE & SCALING
   ├─ RAG (Grounded Knowledge)
   ├─ Scaling Laws (Efficient Training)
   ├─ Knowledge Distillation (Tiny Deployment)
-  └─ Flow Matching & DiT (Fast Generation)
+  ├─ Flow Matching & DiT (Fast Generation)
+  └─ VLM Instruction Tuning (Multimodal Conversation)
 ```
 
 ---
@@ -856,18 +876,18 @@ PHASE 32-40: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 41 (0-40) |
-| Concepts Covered | 152+ |
-| Code Projects | 37 (Phases 5-40, plus 0-4 done) |
+| Total Phases | 42 (0-41) |
+| Concepts Covered | 156+ |
+| Code Projects | 38 (Phases 5-41, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 23,000+ |
-| Estimated Lines of Code | 9,000+ |
+| Estimated Lines of Documentation | 24,000+ |
+| Estimated Lines of Code | 9,500+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 40, the student will:
+By the end of Phase 41, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
