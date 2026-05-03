@@ -2,17 +2,28 @@
 
 ## What We Learned
 
-This phase introduced model-based reinforcement learning, where agents learn an internal model of the environment to plan and imagine rather than relying solely on trial-and-error.
+1. **A world model predicts next states and rewards**, enabling agents to learn through imagination rather than exhaustive real-world trial-and-error, which is critical in robotics and autonomous systems.
+2. **Dreamer demonstrates that planning in a compact latent space is orders of magnitude more efficient** than planning in raw high-dimensional observations, achieving higher reward with 100x fewer environment steps.
+3. **Model Predictive Control compensates for model imperfections by re-planning at every step**, executing only the first action of the best predicted trajectory and reducing deviation by over 70% compared to open-loop planning.
+4. **Model-based RL reduces environment interactions by 10x-100x**, making it essential for domains where real-world interaction is expensive, dangerous, or slow.
+5. **The accuracy of the learned dynamics model directly determines planning quality**; small prediction errors compound over long horizons, so frequent validation and short planning horizons are practical necessities.
 
-## Key Takeaways
+## Prerequisites
 
-1. **World Models** learn to predict next states and rewards, enabling agents to simulate experience.
-2. **Dreamer** plans in a compact latent space learned from high-dimensional observations, making long-horizon planning tractable.
-3. **Model Predictive Control** uses the learned model to evaluate action sequences online, executing only the first action before re-planning.
+- Phase 40: Reinforcement Learning Basics (states, actions, rewards)
+- Phase 55: Q-Learning and Value Functions (temporal difference learning)
+- Phase 70: Domain Adaptation (distribution shift, model transfer)
 
-## Why It Matters
+## Recommended Reading Order
 
-Model-based RL is the path to sample-efficient learning in robotics, autonomous driving, and any domain where real-world interaction is expensive or risky. Understanding world models and MPC is essential for building agents that think before they act.
+1. `what_is_world_model.md` — The foundation: learning environment dynamics
+2. `what_is_dreamer.md` — Latent-space planning for high-dimensional observations
+3. `what_is_model_predictive_control.md` — Online control through receding-horizon planning
+4. `SUMMARY.md` — Phase recap and curriculum connections
+
+## Visual Outputs
+
+- `src/phase109/mpc_trajectory.png` — Position, velocity, and action trajectories showing how MPC drives the system toward the target state over 50 steps.
 
 ## Navigation
 
