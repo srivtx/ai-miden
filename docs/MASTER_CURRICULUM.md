@@ -701,6 +701,25 @@ Each phase has:
 
 ---
 
+## Phase 36: Speculative Decoding (COMPLETED)
+
+**The Question:** "Autoregressive generation produces one token per forward pass. For a 1000-token response, you need 1000 sequential passes. How do you generate multiple tokens without sacrificing quality?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Speculative Decoding | Using a fast draft model to predict multiple tokens verified by a slow target | Student taking practice exam, teacher grading all answers in one pass |
+| Draft Model | Small approximate model for generating candidate tokens | Junior editor suggesting changes for senior editor review |
+| Acceptance Sampling | Statistical guarantee that output matches target distribution exactly | Quality inspector using calibrated acceptance rules |
+| Medusa Decoding | Multiple prediction heads on the target model itself | Chess player thinking several moves ahead and evaluating the line |
+
+**Why It Is Needed:** LLM inference latency is dominated by the serial nature of autoregressive generation. Speculative decoding achieves 2–3× speedup with zero quality loss.
+
+**What We Build:** A simulated draft model and target model over a small vocabulary. We implement the acceptance/rejection algorithm, measure speedup, and verify that the output distribution matches pure autoregressive sampling.
+
+**Connects To:** Phase 37 (we can generate fast. How do we ground generation in external knowledge?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -743,11 +762,12 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-35: THE FUTURE & SCALING
+PHASE 32-36: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
-  └─ LoRA & PEFT (Cheap Adaptation)
+  ├─ LoRA & PEFT (Cheap Adaptation)
+  └─ Speculative Decoding (Fast Generation)
 ```
 
 ---
@@ -756,18 +776,18 @@ PHASE 32-35: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 36 (0-35) |
-| Concepts Covered | 132+ |
-| Code Projects | 32 (Phases 5-35, plus 0-4 done) |
+| Total Phases | 37 (0-36) |
+| Concepts Covered | 136+ |
+| Code Projects | 33 (Phases 5-36, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 18,000+ |
-| Estimated Lines of Code | 6,500+ |
+| Estimated Lines of Documentation | 19,000+ |
+| Estimated Lines of Code | 7,000+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 35, the student will:
+By the end of Phase 36, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
