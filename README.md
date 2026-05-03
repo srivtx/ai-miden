@@ -90,7 +90,8 @@ ai-miden/
 │   ├── phase47/         # Synthetic Data & Self-Improvement
 │   ├── phase48/         # Test-Time Training
 │   ├── phase49/         # Advanced Optimizers
-│   └── phase50/         # Self-Supervised Learning
+│   ├── phase50/         # Self-Supervised Learning
+│   └── phase51/         # Evaluation Metrics
 └── README.md            # This file
 ```
 
@@ -936,6 +937,10 @@ python src/phase49/phase49_advanced_optimizers.py
 
 # Phase 50: Self-Supervised Learning
 python src/phase50/phase50_self_supervised_learning.py
+
+# Phase 51: Evaluation Metrics
+python src/phase51/phase51_evaluation_metrics.py
+python src/phase50/phase50_self_supervised_learning.py
 ```
 
 ---
@@ -1005,7 +1010,8 @@ python src/phase50/phase50_self_supervised_learning.py
 | Phase 48 | 4 | 2 | 4 |
 | Phase 49 | 4 | 1 | 4 |
 | Phase 50 | 4 | 1 | 4 |
-| **Total** | **181** | **79** | **181** |
+| Phase 51 | 4 | 1 | 4 |
+| **Total** | **185** | **80** | **185** |
 
 ---
 
