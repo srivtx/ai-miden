@@ -37,121 +37,40 @@ Every technical term has its own documentation file. If you see a word you do no
 
 ## Project Structure
 
-```
-ai-miden/
-├── docs/
-│   ├── [phase0/](/docs/phase0/)          # The absolute basics
-│   ├── [phase1/](/docs/phase1/)          # Our first model
-│   ├── [phase2/](/docs/phase2/)          # How we measure wrongness
-│   ├── [phase3/](/docs/phase3/)          # How the model learns
-│   ├── [phase4/](/docs/phase4/)          # Neural networks
-│   ├── [phase5/](/docs/phase5/)          # Binary classification
-│   ├── [phase6/](/docs/phase6/)          # Multi-class classification
-│   ├── [phase7/](/docs/phase7/)          # Deep networks
-│   ├── [phase8/](/docs/phase8/)          # L2 regularization
-│   ├── [phase9/](/docs/phase9/)          # Dropout
-│   ├── [phase10/](/docs/phase10/)         # Batch normalization
-│   ├── [phase11/](/docs/phase11/)         # CNNs Part 1
-│   ├── [phase12/](/docs/phase12/)         # Residual Networks
-│   ├── [phase13/](/docs/phase13/)         # RNNs
-│   ├── [phase14/](/docs/phase14/)         # LSTMs
-│   ├── [phase15/](/docs/phase15/)         # Word Embeddings
-│   ├── [phase16/](/docs/phase16/)         # Seq2Seq
-│   ├── [phase17/](/docs/phase17/)         # Attention
-│   ├── [phase18/](/docs/phase18/)         # Transformer
-│   ├── [phase19/](/docs/phase19/)         # BERT
-│   ├── [phase20/](/docs/phase20/)         # GPT Architecture
-│   ├── [phase21/](/docs/phase21/)         # Training a Tiny GPT
-│   ├── [phase22/](/docs/phase22/)         # Supervised Fine-Tuning
-│   ├── [phase23/](/docs/phase23/)         # RLHF
-│   ├── [phase24/](/docs/phase24/)         # DPO & GRPO
-│   ├── [phase25/](/docs/phase25/)         # Inference Optimization
-│   ├── [phase26/](/docs/phase26/)         # Test-Time Compute & Reasoning
-│   ├── [phase27/](/docs/phase27/)         # Agentic AI
-│   ├── [phase28/](/docs/phase28/)         # Multimodal AI
-│   ├── [phase29/](/docs/phase29/)         # Generative Models — VAEs
-│   ├── [phase30/](/docs/phase30/)         # Generative Models — GANs
-│   ├── [phase31/](/docs/phase31/)         # Generative Models — Diffusion
-│   ├── [phase32/](/docs/phase32/)         # Foundation Models & The Future
-│   ├── [phase33/](/docs/phase33/)         # Mixture of Experts
-│   ├── [phase34/](/docs/phase34/)         # Mamba & State Space Models
-│   ├── [phase35/](/docs/phase35/)         # LoRA & Parameter-Efficient Fine-Tuning
-│   ├── [phase36/](/docs/phase36/)         # Speculative Decoding
-│   ├── [phase37/](/docs/phase37/)         # Retrieval-Augmented Generation
-│   ├── [phase38/](/docs/phase38/)         # Scaling Laws & Compute-Optimal Training
-│   ├── [phase39/](/docs/phase39/)         # Knowledge Distillation
-│   ├── [phase40/](/docs/phase40/)         # Flow Matching & Diffusion Transformers
-│   ├── [phase41/](/docs/phase41/)         # Vision-Language Instruction Tuning
-│   ├── [phase42/](/docs/phase42/)         # Reasoning with Verifiable Rewards
-│   ├── [phase43/](/docs/phase43/)         # Model Merging & Ensembles
-│   ├── [phase44/](/docs/phase44/)         # Long Context & Position Interpolation
-│   ├── [phase45/](/docs/phase45/)         # Quantization & GGUF
-│   ├── [phase46/](/docs/phase46/)         # Mechanistic Interpretability
-│   ├── [phase47/](/docs/phase47/)         # Synthetic Data & Self-Improvement
-│   ├── [phase48/](/docs/phase48/)         # Test-Time Training
-│   ├── [phase49/](/docs/phase49/)         # Advanced Optimizers
-│   ├── [phase50/](/docs/phase50/)         # Self-Supervised Learning
-│   ├── [phase51/](/docs/phase51/)         # Evaluation Metrics
-│   ├── [phase52/](/docs/phase52/)         # Data Augmentation & Tokenization
-│   ├── [phase53/](/docs/phase53/)         # Classical Reinforcement Learning
-│   ├── [phase54/](/docs/phase54/)         # Graph Neural Networks
-│   ├── [phase55/](/docs/phase55/)         # Distributed Training
-│   ├── [phase56/](/docs/phase56/)         # Gradient Boosting
-│   ├── [phase57/](/docs/phase57/)         # Adversarial Robustness
-│   ├── [phase58/](/docs/phase58/)         # Time Series Forecasting
-│   ├── [phase59/](/docs/phase59/)         # Federated Learning
-│   ├── [phase60/](/docs/phase60/)         # Bayesian Neural Networks
-│   ├── [phase61/](/docs/phase61/)         # AutoML & Hyperparameter Search
-│   ├── [phase62/](/docs/phase62/)         # Active Learning
-│   ├── [phase63/](/docs/phase63/)         # Dataset Curation for Fine-Tuning
-│   ├── [phase64/](/docs/phase64/)         # Practical SFT with LoRA
-│   ├── [phase65/](/docs/phase65/)         # QLoRA & Memory-Efficient Training
-│   ├── [phase66/](/docs/phase66/)         # Preference Alignment (DPO & ORPO)
-│   ├── [phase67/](/docs/phase67/)         # Jailbreaking — Basic Attacks
-│   ├── [phase68/](/docs/phase68/)         # Jailbreaking — Advanced (GCG & AutoDAN)
-│   ├── [phase69/](/docs/phase69/)         # Red-Teaming & Safety Evaluation
-│   ├── [phase70/](/docs/phase70/)         # Domain Adaptation — Custom Assistants
-│   ├── [phase71/](/docs/phase71/)         # Inference & Deployment
-│   ├── [phase72/](/docs/phase72/)         # Real Agents with Tool Use
-│   ├── [phase73/](/docs/phase73/)         # Speech & Audio
-│   ├── [phase74/](/docs/phase74/)         # Recommendation Systems
-│   ├── [phase75/](/docs/phase75/)         # Explainable AI (XAI)
-│   ├── [phase76/](/docs/phase76/)         # Fairness & Bias
-│   ├── [phase77/](/docs/phase77/)         # Unsupervised Learning
-│   ├── [phase78/](/docs/phase78/)         # Object Detection & Segmentation
-│   ├── [phase79/](/docs/phase79/)         # Causal Inference
-│   ├── [phase80/](/docs/phase80/)         # MLOps
-│   ├── [phase81/](/docs/phase81/)         # Continual Learning
-│   ├── [phase83/](/docs/phase83/)         # GPU Kernel Optimization
-│   ├── [phase84/](/docs/phase84/)         # Memory Engineering
-│   ├── [phase85/](/docs/phase85/)         # Multi-Node Training
-│   ├── [phase86/](/docs/phase86/)         # JAX & XLA
-│   ├── [phase87/](/docs/phase87/)         # Checkpointing & Fault Tolerance
-│   ├── [phase88/](/docs/phase88/)         # Docker, Kubernetes & Orchestration
-│   ├── [phase89/](/docs/phase89/)         # Data Engineering at Scale
-│   ├── [phase90/](/docs/phase90/)         # Inference Serving
-│   ├── [phase91/](/docs/phase91/)         # Experiment Tracking & MLOps
-│   ├── [phase92/](/docs/phase92/)         # Benchmark Design
-│   ├── [phase93/](/docs/phase93/)         # Paper Reading & Reproduction
-│   ├── [phase94/](/docs/phase94/)         # Statistical Rigor
-│   ├── [phase95/](/docs/phase95/)         # Open Source & Research Communication
-│   ├── [phase96/](/docs/phase96/)         # Sparse MoE Training
-│   ├── [phase97/](/docs/phase97/)         # Extreme Context Windows
-│   ├── [phase98/](/docs/phase98/)         # System-2 Reasoning
-│   ├── [phase99/](/docs/phase99/)         # Video & 3D Generation
-│   ├── [phase100/](/docs/phase100/)       # Automated Circuit Discovery
-│   ├── [phase101/](/docs/phase101/)       # Advanced Alignment
-│   ├── [phase102/](/docs/phase102/)       # Synthetic Data Bootstrapping
-│   ├── [phase103/](/docs/phase103/)       # Multimodal Data Curation
-│   ├── [phase104/](/docs/phase104/)       # Architecture Search
-│   ├── [phase105/](/docs/phase105/)       # Tiny ML & Edge Deployment
-│   ├── [phase106/](/docs/phase106/)       # AI for Science
-│   ├── [phase107/](/docs/phase107/)       # On-Device LLMs
-│   ├── [phase108/](/docs/phase108/)       # Multimodal Reasoning
-│   ├── [phase109/](/docs/phase109/)       # World Models
-│   └── [phase110/](/docs/phase110/)       # Test-Time Compute Scaling
-└── README.md            # This file
-```
+Every phase has docs (what it is) and code (see it work). Click any phase to jump to its docs.
+
+### Foundations (Phases 0-10)
+[Phase 0: Absolute Zero](/docs/phase0/) | [Phase 1: First Model](/docs/phase1/) | [Phase 2: Learning Process](/docs/phase2/) | [Phase 3: Learning Mechanism](/docs/phase3/) | [Phase 4: Neural Networks](/docs/phase4/) | [Phase 5: Binary Classification](/docs/phase5/) | [Phase 6: Multi-Class](/docs/phase6/) | [Phase 7: Deep Networks](/docs/phase7/) | [Phase 8: L2 Regularization](/docs/phase8/) | [Phase 9: Dropout](/docs/phase9/) | [Phase 10: Batch Normalization](/docs/phase10/)
+
+### Seeing & Remembering (Phases 11-14)
+[Phase 11: CNNs](/docs/phase11/) | [Phase 12: Residual Networks](/docs/phase12/) | [Phase 13: RNNs](/docs/phase13/) | [Phase 14: LSTMs](/docs/phase14/)
+
+### Understanding Language (Phases 15-24)
+[Phase 15: Word Embeddings](/docs/phase15/) | [Phase 16: Seq2Seq](/docs/phase16/) | [Phase 17: Attention](/docs/phase17/) | [Phase 18: Transformer](/docs/phase18/) | [Phase 19: BERT](/docs/phase19/) | [Phase 20: GPT Architecture](/docs/phase20/) | [Phase 21: Training a Tiny GPT](/docs/phase21/) | [Phase 22: SFT](/docs/phase22/) | [Phase 23: RLHF](/docs/phase23/) | [Phase 24: DPO & GRPO](/docs/phase24/)
+
+### Making AI Useful (Phases 25-28)
+[Phase 25: Inference Optimization](/docs/phase25/) | [Phase 26: Test-Time Compute](/docs/phase26/) | [Phase 27: Agentic AI](/docs/phase27/) | [Phase 28: Multimodal AI](/docs/phase28/)
+
+### Creating Data (Phases 29-31)
+[Phase 29: VAEs](/docs/phase29/) | [Phase 30: GANs](/docs/phase30/) | [Phase 31: Diffusion](/docs/phase31/)
+
+### The Future (Phases 32-46)
+[Phase 32: Foundation Models](/docs/phase32/) | [Phase 33: MoE](/docs/phase33/) | [Phase 34: Mamba](/docs/phase34/) | [Phase 35: LoRA](/docs/phase35/) | [Phase 36: Speculative Decoding](/docs/phase36/) | [Phase 37: RAG](/docs/phase37/) | [Phase 38: Scaling Laws](/docs/phase38/) | [Phase 39: Knowledge Distillation](/docs/phase39/) | [Phase 40: Flow Matching](/docs/phase40/) | [Phase 41: Vision-Language](/docs/phase41/) | [Phase 42: Reasoning](/docs/phase42/) | [Phase 43: Model Merging](/docs/phase43/) | [Phase 44: Long Context](/docs/phase44/) | [Phase 45: Quantization](/docs/phase45/) | [Phase 46: MechInterp](/docs/phase46/)
+
+### Data & Training (Phases 47-56)
+[Phase 47: Synthetic Data](/docs/phase47/) | [Phase 48: Test-Time Training](/docs/phase48/) | [Phase 49: Advanced Optimizers](/docs/phase49/) | [Phase 50: Self-Supervised Learning](/docs/phase50/) | [Phase 51: Evaluation Metrics](/docs/phase51/) | [Phase 52: Data Augmentation](/docs/phase52/) | [Phase 53: Classical RL](/docs/phase53/) | [Phase 54: GNNs](/docs/phase54/) | [Phase 55: Distributed Training](/docs/phase55/) | [Phase 56: Gradient Boosting](/docs/phase56/)
+
+### Robustness & Uncertainty (Phases 57-62)
+[Phase 57: Adversarial Robustness](/docs/phase57/) | [Phase 58: Time Series](/docs/phase58/) | [Phase 59: Federated Learning](/docs/phase59/) | [Phase 60: Bayesian NNs](/docs/phase60/) | [Phase 61: AutoML](/docs/phase61/) | [Phase 62: Active Learning](/docs/phase62/)
+
+### Applied AI (Phases 63-81)
+[Phase 63: Dataset Curation](/docs/phase63/) | [Phase 64: Practical SFT](/docs/phase64/) | [Phase 65: QLoRA](/docs/phase65/) | [Phase 66: Preference Alignment](/docs/phase66/) | [Phase 67: Jailbreaking Basic](/docs/phase67/) | [Phase 68: Jailbreaking Advanced](/docs/phase68/) | [Phase 69: Red-Teaming](/docs/phase69/) | [Phase 70: Domain Adaptation](/docs/phase70/) | [Phase 71: Inference & Deployment](/docs/phase71/) | [Phase 72: Real Agents](/docs/phase72/) | [Phase 73: Speech & Audio](/docs/phase73/) | [Phase 74: RecSys](/docs/phase74/) | [Phase 75: XAI](/docs/phase75/) | [Phase 76: Fairness](/docs/phase76/) | [Phase 77: Unsupervised Learning](/docs/phase77/) | [Phase 78: Object Detection](/docs/phase78/) | [Phase 79: Causal Inference](/docs/phase79/) | [Phase 80: MLOps](/docs/phase80/) | [Phase 81: Continual Learning](/docs/phase81/)
+
+### Systems & Scale (Phases 83-95)
+[Phase 83: GPU Kernels](/docs/phase83/) | [Phase 84: Memory Engineering](/docs/phase84/) | [Phase 85: Multi-Node Training](/docs/phase85/) | [Phase 86: JAX & XLA](/docs/phase86/) | [Phase 87: Checkpointing](/docs/phase87/) | [Phase 88: Kubernetes](/docs/phase88/) | [Phase 89: Data Engineering](/docs/phase89/) | [Phase 90: Inference Serving](/docs/phase90/) | [Phase 91: Experiment Tracking](/docs/phase91/) | [Phase 92: Benchmark Design](/docs/phase92/) | [Phase 93: Paper Reading](/docs/phase93/) | [Phase 94: Statistical Rigor](/docs/phase94/) | [Phase 95: Open Source](/docs/phase95/)
+
+### Frontier Research (Phases 96-110)
+[Phase 96: Sparse MoE](/docs/phase96/) | [Phase 97: Long Context](/docs/phase97/) | [Phase 98: System-2 Reasoning](/docs/phase98/) | [Phase 99: Video & 3D](/docs/phase99/) | [Phase 100: Circuit Discovery](/docs/phase100/) | [Phase 101: Advanced Alignment](/docs/phase101/) | [Phase 102: Synthetic Data](/docs/phase102/) | [Phase 103: Multimodal Data](/docs/phase103/) | [Phase 104: Architecture Search](/docs/phase104/) | [Phase 105: Tiny ML](/docs/phase105/) | [Phase 106: AI for Science](/docs/phase106/) | [Phase 107: On-Device LLMs](/docs/phase107/) | [Phase 108: Multimodal Reasoning](/docs/phase108/) | [Phase 109: World Models](/docs/phase109/) | [Phase 110: Test-Time Compute](/docs/phase110/)
 
 ---
 
