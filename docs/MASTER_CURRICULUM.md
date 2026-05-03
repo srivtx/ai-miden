@@ -944,7 +944,45 @@ Each phase has:
 
 **What We Build:** A meta-learned linear classifier that adapts to new tasks with 5 examples. We demonstrate test-time training improving accuracy on shifted data from 60% to 70% without labels, and online learning adapting to a distribution shift in real-time.
 
-**Connects To:** This completes the extended research phase series. The course now spans 49 phases covering every major concept from absolute zero to cutting-edge research.
+**Connects To:** Phase 49 (we can adapt models at test time. But how do we train them efficiently in the first place?)
+
+---
+
+## Phase 49: Advanced Optimizers (COMPLETED)
+
+**The Question:** "Vanilla SGD uses the same step size for every parameter and forgets past gradients. How do modern optimizers like Adam adapt per-parameter learning rates and use momentum to converge faster?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Adam | Adaptive per-parameter learning rates with momentum | A hiker with a GPS that personalizes stride length for every direction |
+| AdamW | Decoupled weight decay that treats all parameters uniformly | Two budget envelopes: one for adaptive spending, one for flat wealth tax |
+| Learning Rate Schedule | Changing LR over training for better convergence | A driver smoothly decelerating as they approach their destination |
+| Warmup | Starting at zero LR to prevent early divergence | Warming up a car engine before accelerating |
+
+**Why It Is Needed:** Adam and AdamW train virtually all modern deep learning models. Learning rate schedules and warmup are essential for stable, fast convergence. Without them, large models diverge or plateau.
+
+**What We Build:** A Rosenbrock function optimization comparing SGD, Momentum, RMSprop, Adam, and AdamW. We visualize trajectories and loss curves. We also compare constant LR vs. cosine annealing vs. warmup+cosine.
+
+**Connects To:** Phase 50 (we can optimize efficiently. How do we learn without any labels at all?)
+
+---
+
+## Phase 50: Self-Supervised Learning (COMPLETED)
+
+**The Question:** "Labeled data is expensive and finite. The internet has billions of unlabeled images. How do you learn useful representations without any human-provided labels?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Self-Supervised Learning | Creating supervision signals from data structure itself | A child learning object permanence by predicting what happens next |
+| Contrastive Learning | Pulling augmented views together, pushing different images apart | A police witness learning to identify the same person from different angles |
+| Masked Autoencoding | Reconstructing hidden patches from visible context | A restorer reconstructing a damaged painting from surviving fragments |
+| Pretext Task | An artificial task designed to teach real skills | Learning vocabulary by solving crossword puzzles |
+
+**Why It Is Needed:** Self-supervised learning breaks the label bottleneck. BERT, CLIP, SimCLR, and MAE all use SSL to learn from unlabeled data. This is how modern models are pre-trained before fine-tuning.
+
+**What We Build:** Contrastive learning on 2D point clusters, masked autoencoding on tiny images, and rotation prediction as a pretext task. We show the encoder learns useful features without labels.
+
+**Connects To:** Phase 51 (we can learn without labels. But how do we measure if the model is actually good?)
 
 ---
 
@@ -990,7 +1028,7 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-48: THE FUTURE & SCALING
+PHASE 32-50: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
   ├─ Mixture of Experts (Sparse Activation)
   ├─ Mamba & State Space Models (Linear Time)
@@ -1007,7 +1045,9 @@ PHASE 32-48: THE FUTURE & SCALING
   ├─ Quantization & GGUF (Consumer GPU Deployment)
   ├─ Mechanistic Interpretability (Understanding Internals)
   ├─ Synthetic Data & Self-Improvement (Breaking the Data Wall)
-  └─ Test-Time Training (Real-Time Adaptation)
+  ├─ Test-Time Training (Real-Time Adaptation)
+  ├─ Advanced Optimizers (Efficient Training)
+  └─ Self-Supervised Learning (Learning Without Labels)
 ```
 
 ---
@@ -1016,18 +1056,18 @@ PHASE 32-48: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 49 (0-48) |
-| Concepts Covered | 184+ |
-| Code Projects | 45 (Phases 5-48, plus 0-4 done) |
+| Total Phases | 51 (0-50) |
+| Concepts Covered | 192+ |
+| Code Projects | 47 (Phases 5-50, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 27,500+ |
-| Estimated Lines of Code | 11,600+ |
+| Estimated Lines of Documentation | 28,500+ |
+| Estimated Lines of Code | 12,100+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 48, the student will:
+By the end of Phase 50, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
