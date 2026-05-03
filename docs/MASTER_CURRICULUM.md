@@ -109,7 +109,7 @@ Each phase has:
 
 ---
 
-## Phase 5: Binary Classification
+## Phase 5: Binary Classification (COMPLETED)
 
 **The Question:** "Can the network tell me YES or NO?"
 
@@ -127,7 +127,7 @@ Each phase has:
 
 ---
 
-## Phase 6: Multi-Class Classification
+## Phase 6: Multi-Class Classification (COMPLETED)
 
 **The Question:** "What if there are MORE than two possible answers?"
 
@@ -145,7 +145,7 @@ Each phase has:
 
 ---
 
-## Phase 7: Deep Networks
+## Phase 7: Deep Networks (COMPLETED)
 
 **The Question:** "What if I add MORE hidden layers?"
 
@@ -163,7 +163,7 @@ Each phase has:
 
 ---
 
-## Phase 8: L2 Regularization (Weight Decay)
+## Phase 8: L2 Regularization (Weight Decay) (COMPLETED)
 
 **The Question:** "My network gets 100% on training but fails on new data. How do I stop memorizing?"
 
@@ -181,7 +181,7 @@ Each phase has:
 
 ---
 
-## Phase 9: Dropout
+## Phase 9: Dropout (COMPLETED)
 
 **The Question:** "L2 shrinks weights but keeps every neuron active. Can we randomly 'damage' the network during training?"
 
@@ -199,7 +199,7 @@ Each phase has:
 
 ---
 
-## Phase 10: Batch Normalization
+## Phase 10: Batch Normalization (COMPLETED)
 
 **The Question:** "Training deep nets is unstable — activations explode or vanish. How do I stabilize them?"
 
@@ -217,7 +217,7 @@ Each phase has:
 
 ---
 
-## Phase 11: CNNs Part 1 — Convolutions & Pooling
+## Phase 11: CNNs Part 1 — Convolutions & Pooling (COMPLETED)
 
 **The Question:** "Images have thousands of pixels. How do I process them without millions of weights?"
 
@@ -237,7 +237,7 @@ Each phase has:
 
 ---
 
-## Phase 12: CNNs Part 2 — Residual Networks
+## Phase 12: CNNs Part 2 — Residual Networks (COMPLETED)
 
 **The Question:** "I added more layers to my CNN and accuracy DROPPED. Why?"
 
@@ -255,7 +255,7 @@ Each phase has:
 
 ---
 
-## Phase 13: Recurrent Neural Networks (RNNs)
+## Phase 13: Recurrent Neural Networks (RNNs) (COMPLETED)
 
 **The Question:** "What if my input is a sentence or time series where order matters?"
 
@@ -273,7 +273,7 @@ Each phase has:
 
 ---
 
-## Phase 14: LSTMs & GRUs
+## Phase 14: LSTMs & GRUs (COMPLETED)
 
 **The Question:** "My RNN works for short words but forgets the subject in long sentences. How do I give it longer memory?"
 
@@ -293,7 +293,7 @@ Each phase has:
 
 ---
 
-## Phase 15: Word Embeddings (Word2Vec)
+## Phase 15: Word Embeddings (Word2Vec) (COMPLETED)
 
 **The Question:** "If I have 50,000 words, my input layer is huge. How do I give words MEANING?"
 
@@ -313,7 +313,7 @@ Each phase has:
 
 ---
 
-## Phase 16: Seq2Seq (Encoder-Decoder)
+## Phase 16: Seq2Seq (Encoder-Decoder) (COMPLETED)
 
 **The Question:** "How do I translate a sentence when input and output are different lengths?"
 
@@ -332,7 +332,7 @@ Each phase has:
 
 ---
 
-## Phase 17: Attention Mechanism
+## Phase 17: Attention Mechanism (COMPLETED)
 
 **The Question:** "When translating long sentences, my model loses details. How can it focus on relevant parts?"
 
@@ -351,7 +351,7 @@ Each phase has:
 
 ---
 
-## Phase 18: The Transformer Architecture
+## Phase 18: The Transformer Architecture (COMPLETED)
 
 **The Question:** "GPUs have thousands of cores, but my LSTM uses only one at a time. Can I process ALL words in parallel?"
 
@@ -372,7 +372,7 @@ Each phase has:
 
 ---
 
-## Phase 19: BERT (Bidirectional Encoder)
+## Phase 19: BERT (Bidirectional Encoder) (COMPLETED)
 
 **The Question:** "The Transformer encoder reads the whole sentence in both directions. Can I use ONLY this for understanding tasks?"
 
@@ -391,7 +391,7 @@ Each phase has:
 
 ---
 
-## Phase 20: GPT Architecture
+## Phase 20: GPT Architecture (COMPLETED)
 
 **The Question:** "BERT is bidirectional, so it cannot write a story word-by-word. What does a purely generative model look like?"
 
@@ -410,7 +410,7 @@ Each phase has:
 
 ---
 
-## Phase 21: Training a Tiny GPT
+## Phase 21: Training a Tiny GPT (COMPLETED)
 
 **The Question:** "Can I put everything together and train a model that writes coherent sentences?"
 
@@ -429,7 +429,7 @@ Each phase has:
 
 ---
 
-## Phase 22: Supervised Fine-Tuning (SFT)
+## Phase 22: Supervised Fine-Tuning (SFT) (COMPLETED)
 
 **The Question:** "My GPT completes text, but it does not answer questions helpfully. How do I teach it to be an assistant?"
 
@@ -448,7 +448,7 @@ Each phase has:
 
 ---
 
-## Phase 23: RLHF — Reinforcement Learning from Human Feedback
+## Phase 23: RLHF — Reinforcement Learning from Human Feedback (COMPLETED)
 
 **The Question:** "My assistant answers questions, but sometimes it is rude, biased, or unhelpful. How do I align it with human values?"
 
@@ -468,7 +468,7 @@ Each phase has:
 
 ---
 
-## Phase 24: DPO & GRPO (Simpler Alignment)
+## Phase 24: DPO & GRPO (Simpler Alignment) (COMPLETED)
 
 **The Question:** "RLHF requires three models and is unstable. Is there a simpler way to align models?"
 
@@ -487,7 +487,7 @@ Each phase has:
 
 ---
 
-## Phase 25: Inference Optimization
+## Phase 25: Inference Optimization (COMPLETED)
 
 **The Question:** "My model takes forever to generate text. How do I make it fast?"
 
@@ -506,7 +506,7 @@ Each phase has:
 
 ---
 
-## Phase 26: Test-Time Compute & Reasoning
+## Phase 26: Test-Time Compute & Reasoning (COMPLETED)
 
 **The Question:** "My model blurts answers. Can I make it think longer on hard problems?"
 
@@ -526,7 +526,7 @@ Each phase has:
 
 ---
 
-## Phase 27: Agentic AI
+## Phase 27: Agentic AI (COMPLETED)
 
 **The Question:** "My model can talk. Can I give it tools to actually DO things?"
 
@@ -546,7 +546,7 @@ Each phase has:
 
 ---
 
-## Phase 28: Multimodal AI
+## Phase 28: Multimodal AI (COMPLETED)
 
 **The Question:** "My model only understands text. Can it see images too?"
 
@@ -566,7 +566,7 @@ Each phase has:
 
 ---
 
-## Phase 29: Generative Models — VAEs
+## Phase 29: Generative Models — VAEs (COMPLETED)
 
 **The Question:** "My model classifies and generates text. Can it create entirely new images?"
 
@@ -586,7 +586,7 @@ Each phase has:
 
 ---
 
-## Phase 30: Generative Models — GANs
+## Phase 30: Generative Models — GANs (COMPLETED)
 
 **The Question:** "My VAE produces blurry images. How do I generate sharp, realistic ones?"
 
@@ -605,7 +605,7 @@ Each phase has:
 
 ---
 
-## Phase 31: Generative Models — Diffusion
+## Phase 31: Generative Models — Diffusion (COMPLETED)
 
 **The Question:** "GANs are hard to train and sometimes collapse. Is there a more stable way to generate images?"
 
@@ -624,7 +624,7 @@ Each phase has:
 
 ---
 
-## Phase 32: Foundation Models & The Future
+## Phase 32: Foundation Models & The Future (COMPLETED)
 
 **The Question:** "Having seen the entire landscape, where is AI going next?"
 
@@ -639,6 +639,27 @@ Each phase has:
 **Why It Is Needed:** This is the culmination. We have seen the entire evolution from linear regression to multimodal foundation models.
 
 **What We Build:** A reflective project where the student uses their tiny GPT to explain what they have learned.
+
+**Connects To:** Phase 33 (foundation models are huge. How do we scale capacity without scaling compute?)
+
+---
+
+## Phase 33: Mixture of Experts (COMPLETED)
+
+**The Question:** "Bigger models are smarter, but training a dense trillion-parameter model is prohibitively expensive. How do you get massive capacity without massive compute?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Mixture of Experts (MoE) | Replacing dense FFNs with sparse expert subsets | Hospital with 100 specialists where each patient sees only 2 |
+| Router Gating | Learnable assignment of tokens to experts | Restaurant host routing parties to specific chefs |
+| Load Balancing | Preventing router collapse to a few easy experts | School principal redirecting overflow students to other classes |
+| Expert Capacity | Hard limit on tokens per expert per batch | Toll booth that can only process 50 cars per hour |
+
+**Why It Is Needed:** MoE decouples total parameter count from active compute. GPT-4, Mixtral, and DeepSeek-V3 all use MoE to achieve huge capacity without proportional cost.
+
+**What We Build:** A tiny MoE layer with 4 experts and top-2 routing. We visualize routing specialization, load balancing, and capacity dropping. We compare parameter counts (total vs. active) against a dense baseline.
+
+**Connects To:** Phase 34 (MoE scales model width. How do we scale sequence length efficiently?)
 
 ---
 
@@ -684,8 +705,9 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32: THE FUTURE
-  └─ Foundation Models, World Models
+PHASE 32-33: THE FUTURE & SCALING
+  ├─ Foundation Models, World Models
+  └─ Mixture of Experts (Sparse Activation)
 ```
 
 ---
@@ -694,18 +716,18 @@ PHASE 32: THE FUTURE
 
 | Metric | Count |
 |---|---|
-| Total Phases | 33 (0-32) |
-| Concepts Covered | 120+ |
-| Code Projects | 29 (Phases 5-32, plus 0-4 done) |
+| Total Phases | 34 (0-33) |
+| Concepts Covered | 124+ |
+| Code Projects | 30 (Phases 5-33, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 15,000+ |
-| Estimated Lines of Code | 5,000+ |
+| Estimated Lines of Documentation | 16,000+ |
+| Estimated Lines of Code | 5,500+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 32, the student will:
+By the end of Phase 33, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
