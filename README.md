@@ -2,7 +2,7 @@
 
 > **A complete AI course built from scratch in Python and NumPy.**
 >
-> 110 phases. 415 docs. 155 code files. Every concept explained with an analogy, a numeric example, and working code.
+> 130 phases. 495 docs. 175 code files. Every concept explained with an analogy, a numeric example, and working code.
 > No prior AI knowledge required. Basic algebra is enough.
 
 ---
@@ -24,6 +24,9 @@ Do not read all 110 phases in order unless you want to. Jump to what you need.
 | **Prepare for coding interviews** | [docs_dsa/START_HERE.md](docs_dsa/START_HERE.md) — 18 patterns, 540 problems, 220 flashcards |
 | **Build safe / aligned AI** | [Phase 67: Jailbreaking](docs/phase67/) → [Phase 69: Red-Teaming](docs/phase69/) → [Phase 101: Advanced Alignment](docs/phase101/) |
 | **Work with audio, images, or video** | [Phase 73: Speech](docs/phase73/) → [Phase 78: Object Detection](docs/phase78/) → [Phase 99: Video & 3D](docs/phase99/) |
+| **Train models from scratch** | [Phase 121: Pretraining](docs/phase121/) → [Phase 122: RLHF](docs/phase122/) → [Phase 125: Long Context](docs/phase125/) |
+| **Build production inference systems** | [Phase 129: Inference Engines](docs/phase129/) → [Phase 130: Monitoring](docs/phase130/) → [Phase 90: Serving](docs/phase90/) |
+| **Work at a frontier AI lab** | [Phase 111: FP8](docs/phase111/) → [Phase 114: R1 Pipeline](docs/phase114/) → [Phase 122: RLHF](docs/phase122/) → [Phase 128: Safety](docs/phase128/) |
 
 ---
 
@@ -48,6 +51,8 @@ Click any topic to jump to the relevant phases.
 | **Systems at Scale** | [83](docs/phase83/) [84](docs/phase84/) [85](docs/phase85/) [86](docs/phase86/) [87](docs/phase87/) [88](docs/phase88/) [90](docs/phase90/) | GPU kernels, memory engineering, multi-node training, JAX, Kubernetes, inference serving |
 | **Research Skills** | [92](docs/phase92/) [93](docs/phase93/) [94](docs/phase94/) [95](docs/phase95/) [100](docs/phase100/) [104](docs/phase104/) | Benchmark design, paper reading, statistics, open source, mech interp, architecture search |
 | **Applied Domains** | [73](docs/phase73/) [74](docs/phase74/) [75](docs/phase75/) [78](docs/phase78/) [79](docs/phase79/) | Speech, recommendations, explainability, detection, causal inference |
+| **Frontier Practice** | [111](docs/phase111/) [112](docs/phase112/) [113](docs/phase113/) [114](docs/phase114/) [115](docs/phase115/) [116](docs/phase116/) [117](docs/phase117/) [118](docs/phase118/) [119](docs/phase119/) [120](docs/phase120/) | FP8, MTP, KV compression, R1 pipeline, constrained decoding, red-teaming, data mixing, multimodal, speculative decoding, disaggregated serving |
+| **Production Engineering** | [121](docs/phase121/) [122](docs/phase122/) [123](docs/phase123/) [124](docs/phase124/) [125](docs/phase125/) [126](docs/phase126/) [127](docs/phase127/) [128](docs/phase128/) [129](docs/phase129/) [130](docs/phase130/) | Pretraining, RLHF, model merging, quantization, long context, tool use, vision-language, safety, inference engines, monitoring |
 
 ---
 
@@ -56,11 +61,11 @@ Click any topic to jump to the relevant phases.
 ```
 ai-miden/
 ├── docs/
-│   ├── phase0/ ... phase110/     # Each phase: what_is_*.md docs + SUMMARY.md
-│   ├── MASTER_CURRICULUM.md      # Full 110-phase roadmap
-│   └── AI_ROADMAP_FUTURE.md      # Plans for capstone tracks (111-120)
+│   ├── phase0/ ... phase130/     # Each phase: what_is_*.md docs + SUMMARY.md
+│   ├── MASTER_CURRICULUM.md      # Full 130-phase roadmap
+│   └── AI_ROADMAP_FUTURE.md      # Future expansion plans
 ├── src/
-│   ├── phase0/ ... phase110/     # Each phase: NumPy demo + optional Colab script + plots
+│   ├── phase0/ ... phase130/     # Each phase: NumPy demo + optional Colab script + plots
 │   └── ...
 ├── docs_dsa/                     # DSA Interview Prep (separate module)
 │   ├── START_HERE.md             # Navigate the DSA system
@@ -128,10 +133,10 @@ Every phase follows the same structure:
 
 | | Count |
 |---|---|
-| Phases | **110** |
-| Documentation files | **415** |
-| Code files | **155** |
-| Terms defined | **387** |
+| Phases | **130** |
+| Documentation files | **495** |
+| Code files | **175** |
+| Terms defined | **447** |
 | DSA Patterns | **18** |
 | DSA Problems | **540** |
 | DSA Flashcards | **220** |
@@ -161,6 +166,10 @@ Every phase follows the same structure:
 **Systems & Scale (83-95)** — GPU kernels, memory engineering, multi-node training, JAX, Kubernetes, data pipelines, inference serving, experiment tracking, benchmarks, statistics, open source.
 
 **Frontier Research (96-110)** — Sparse MoE, extreme context, system-2 reasoning, video/3D generation, automated circuit discovery, advanced alignment, synthetic data bootstrapping, multimodal data curation, architecture search, tiny ML, AI for science, on-device LLMs, world models, test-time compute scaling.
+
+**Frontier Practice (111-120)** — FP8 training, multi-token prediction, KV cache compression, DeepSeek-R1 pipeline, structured generation, automated red-teaming, data mixing laws, native multimodal architectures, advanced speculative decoding, disaggregated serving.
+
+**Production Engineering (121-130)** — Pretraining from scratch, full RLHF pipeline (RM + PPO), model merging at scale, advanced quantization (GPTQ/AWQ/GGUF), long context training (YaRN), tool use training, vision-language fine-tuning, safety RLHF, production inference engines (vLLM), production monitoring and MLOps.
 
 ---
 
