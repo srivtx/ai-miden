@@ -1,3 +1,7 @@
+← [Previous: Phase 55: Distributed Training](docs/phase55/SUMMARY.md) | [Next: Phase 57: Adversarial Robustness](docs/phase57/SUMMARY.md) →
+
+---
+
 ## Phase 56: Gradient Boosting
 
 ---
@@ -35,3 +39,7 @@ Now that we can combine many weak models, how do we make a single model robust a
 - `docs/phase56/SUMMARY.md`
 - `src/phase56/phase56_gradient_boosting.py`
 - `src/phase56/gradient_boosting.png`
+
+---
+
+← [Previous: Phase 55: Distributed Training](docs/phase55/SUMMARY.md) | [Next: Phase 57: Adversarial Robustness](docs/phase57/SUMMARY.md) →

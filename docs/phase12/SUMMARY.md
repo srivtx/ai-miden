@@ -1,3 +1,7 @@
+← [Previous: Phase 11: CNNs Part 1](docs/phase11/SUMMARY.md) | [Next: Phase 13: RNNs](docs/phase13/SUMMARY.md) →
+
+---
+
 # Phase 12 Summary: Residual Networks — When Deeper Gets Worse
 
 ## What This Phase Taught
@@ -30,3 +34,7 @@ Phase 11 built a CNN with convolution and pooling. Phase 12 asks: "What if I add
 ## Connection to Next Phase
 
 Phase 13 asks: "Images are 2D grids. What about text and time series where ORDER matters?" We move from spatial architectures (CNNs) to temporal architectures (RNNs).
+
+---
+
+← [Previous: Phase 11: CNNs Part 1](docs/phase11/SUMMARY.md) | [Next: Phase 13: RNNs](docs/phase13/SUMMARY.md) →

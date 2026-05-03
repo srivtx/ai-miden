@@ -1,3 +1,7 @@
+← Start | [Next: Phase 12: Residual Networks](docs/phase12/SUMMARY.md) →
+
+---
+
 # Phase 11 Summary: CNNs — Seeing with Sliding Windows
 
 ## What This Phase Taught
@@ -40,3 +44,7 @@ Phase 10 (Batch Normalization) stabilized training by normalizing activations. P
 ## Connection to Next Phase
 
 Phase 12 asks: "What if I make my CNN very deep?" Surprisingly, adding more layers can make accuracy WORSE. We will learn about ResNets and skip connections to fix this.
+
+---
+
+← Start | [Next: Phase 12: Residual Networks](docs/phase12/SUMMARY.md) →

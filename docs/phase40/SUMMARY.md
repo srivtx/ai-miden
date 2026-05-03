@@ -1,3 +1,7 @@
+← [Previous: Phase 39: Knowledge Distillation](docs/phase39/SUMMARY.md) | [Next: Phase 41: Vision-Language Instruction Tuning](docs/phase41/SUMMARY.md) →
+
+---
+
 ## Phase 40 Summary: Flow Matching & Diffusion Transformers
 
 **The Question:** "DDPM diffusion works but trains indirectly (predict noise) and needs 1000 sampling steps. Is there a more direct, faster way to generate data?"
@@ -65,3 +69,7 @@
 ### What You Should Remember
 
 > **Flow matching is like a sculptor with a motorized tool.** Instead of chipping randomly and checking (DDPM), they learn the optimal carving path — which direction to move each point at every moment. The motorized tool adapts its speed to the complexity of each region, finishing in 20 smooth passes instead of 1000 tentative chips.
+
+---
+
+← [Previous: Phase 39: Knowledge Distillation](docs/phase39/SUMMARY.md) | [Next: Phase 41: Vision-Language Instruction Tuning](docs/phase41/SUMMARY.md) →

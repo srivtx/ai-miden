@@ -1,3 +1,7 @@
+← [Previous: Phase 42: Reasoning with Verifiable Rewards](docs/phase42/SUMMARY.md) | [Next: Phase 44: Long Context & Position Interpolation](docs/phase44/SUMMARY.md) →
+
+---
+
 ## Phase 43: Model Merging & Ensembles
 
 ---
@@ -51,3 +55,7 @@ Now that we can combine models, how do we handle inputs longer than the model wa
 - `src/phase43/phase43_model_merging.py`
 - `src/phase43/phase43_model_merging_colab.py`
 - `src/phase43/model_merging.png`
+
+---
+
+← [Previous: Phase 42: Reasoning with Verifiable Rewards](docs/phase42/SUMMARY.md) | [Next: Phase 44: Long Context & Position Interpolation](docs/phase44/SUMMARY.md) →

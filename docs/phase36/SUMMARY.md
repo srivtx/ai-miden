@@ -1,3 +1,7 @@
+← [Previous: Phase 35: LoRA & Parameter-Efficient Fine-Tuning](docs/phase35/SUMMARY.md) | [Next: Phase 37: Retrieval-Augmented Generation](docs/phase37/SUMMARY.md) →
+
+---
+
 ## Phase 36 Summary: Speculative Decoding
 
 **The Question:** "Autoregressive generation produces one token per forward pass. For a 1000-token response, you need 1000 sequential passes. How do you generate multiple tokens without sacrificing quality?"
@@ -67,3 +71,7 @@
 ### What You Should Remember
 
 > **Speculative decoding is like a student taking a practice exam.** The student answers all questions quickly. The teacher grades everything in one pass, marking which are correct and which need correction. The combined process is much faster than the teacher grading one question at a time.
+
+---
+
+← [Previous: Phase 35: LoRA & Parameter-Efficient Fine-Tuning](docs/phase35/SUMMARY.md) | [Next: Phase 37: Retrieval-Augmented Generation](docs/phase37/SUMMARY.md) →

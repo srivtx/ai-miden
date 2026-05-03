@@ -1,3 +1,7 @@
+← [Previous: Phase 53: Classical Reinforcement Learning](docs/phase53/SUMMARY.md) | [Next: Phase 55: Distributed Training](docs/phase55/SUMMARY.md) →
+
+---
+
 ## Phase 54: Graph Neural Networks
 
 ---
@@ -35,3 +39,7 @@ Now that we can learn on graphs, how do we train models that don't fit on a sing
 - `docs/phase54/SUMMARY.md`
 - `src/phase54/phase54_graph_neural_networks.py`
 - `src/phase54/graph_neural_networks.png`
+
+---
+
+← [Previous: Phase 53: Classical Reinforcement Learning](docs/phase53/SUMMARY.md) | [Next: Phase 55: Distributed Training](docs/phase55/SUMMARY.md) →

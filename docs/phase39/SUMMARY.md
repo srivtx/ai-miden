@@ -1,3 +1,7 @@
+← [Previous: Phase 38: Scaling Laws & Compute-Optimal Training](docs/phase38/SUMMARY.md) | [Next: Phase 40: Flow Matching & Diffusion Transformers](docs/phase40/SUMMARY.md) →
+
+---
+
 ## Phase 39 Summary: Knowledge Distillation
 
 **The Question:** "You have a huge model that works great but is too slow for phones and too expensive for APIs. How do you transfer its intelligence into a tiny model without starting from scratch?"
@@ -63,3 +67,7 @@
 ### What You Should Remember
 
 > **Knowledge distillation is like an apprentice learning from a master chef.** The apprentice does not just read recipe books (hard labels). They taste the master's dishes and learn that "this sauce is 70% French, 25% Italian, 5% Asian." They internalize the relationships between cuisines, not just the names of dishes.
+
+---
+
+← [Previous: Phase 38: Scaling Laws & Compute-Optimal Training](docs/phase38/SUMMARY.md) | [Next: Phase 40: Flow Matching & Diffusion Transformers](docs/phase40/SUMMARY.md) →

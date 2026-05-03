@@ -1,3 +1,7 @@
+← [Previous: Phase 58: Time Series Forecasting](docs/phase58/SUMMARY.md) | [Next: Phase 60: Bayesian Neural Networks](docs/phase60/SUMMARY.md) →
+
+---
+
 ## Phase 59: Federated Learning
 
 ---
@@ -36,3 +40,7 @@ Now that we can train without centralizing data, how do we handle uncertainty in
 - `docs/phase59/SUMMARY.md`
 - `src/phase59/phase59_federated_learning.py`
 - `src/phase59/federated_learning.png`
+
+---
+
+← [Previous: Phase 58: Time Series Forecasting](docs/phase58/SUMMARY.md) | [Next: Phase 60: Bayesian Neural Networks](docs/phase60/SUMMARY.md) →

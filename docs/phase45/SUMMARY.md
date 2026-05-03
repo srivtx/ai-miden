@@ -1,3 +1,7 @@
+← [Previous: Phase 44: Long Context & Position Interpolation](docs/phase44/SUMMARY.md) | [Next: Phase 46: Mechanistic Interpretability](docs/phase46/SUMMARY.md) →
+
+---
+
 ## Phase 45: Quantization & GGUF
 
 ---
@@ -51,3 +55,7 @@ Now that we can make models tiny, can we understand what they are actually doing
 - `src/phase45/phase45_quantization.py`
 - `src/phase45/phase45_quantization_colab.py`
 - `src/phase45/quantization.png`
+
+---
+
+← [Previous: Phase 44: Long Context & Position Interpolation](docs/phase44/SUMMARY.md) | [Next: Phase 46: Mechanistic Interpretability](docs/phase46/SUMMARY.md) →

@@ -1,3 +1,7 @@
+← [Previous: Phase 43: Model Merging & Ensembles](docs/phase43/SUMMARY.md) | [Next: Phase 45: Quantization & GGUF](docs/phase45/SUMMARY.md) →
+
+---
+
 ## Phase 44: Long Context & Position Interpolation
 
 ---
@@ -62,3 +66,7 @@ This completes the extended phase series (33-44). The course now covers:
 - `src/phase44/phase44_long_context.py`
 - `src/phase44/phase44_long_context_colab.py`
 - `src/phase44/long_context.png`
+
+---
+
+← [Previous: Phase 43: Model Merging & Ensembles](docs/phase43/SUMMARY.md) | [Next: Phase 45: Quantization & GGUF](docs/phase45/SUMMARY.md) →

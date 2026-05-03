@@ -1,3 +1,7 @@
+← [Previous: Phase 47: Synthetic Data & Self-Improvement](docs/phase47/SUMMARY.md) | [Next: Phase 49: Advanced Optimizers](docs/phase49/SUMMARY.md) →
+
+---
+
 ## Phase 48: Test-Time Training
 
 ---
@@ -51,3 +55,7 @@ This completes the extended phase series (45-48). The course now covers:
 - `src/phase48/phase48_test_time_training.py`
 - `src/phase48/phase48_test_time_training_colab.py`
 - `src/phase48/test_time_training.png`
+
+---
+
+← [Previous: Phase 47: Synthetic Data & Self-Improvement](docs/phase47/SUMMARY.md) | [Next: Phase 49: Advanced Optimizers](docs/phase49/SUMMARY.md) →

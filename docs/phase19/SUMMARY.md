@@ -1,3 +1,7 @@
+← [Previous: Phase 18: Transformer](docs/phase18/SUMMARY.md) | [Next: Phase 20: GPT Architecture](docs/phase20/SUMMARY.md) →
+
+---
+
 # Phase 19 Summary: BERT — Bidirectional Encoder Representations
 
 ## What This Phase Taught
@@ -33,3 +37,7 @@ Phase 18 built the full Transformer (encoder + decoder). Phase 19 asks: "What if
 ## Connection to Next Phase
 
 Phase 20 asks: "BERT understands text but cannot generate it. What does a purely generative model look like?" The answer: GPT.
+
+---
+
+← [Previous: Phase 18: Transformer](docs/phase18/SUMMARY.md) | [Next: Phase 20: GPT Architecture](docs/phase20/SUMMARY.md) →

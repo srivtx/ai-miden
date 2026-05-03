@@ -1,3 +1,7 @@
+← [Previous: Phase 41: Vision-Language Instruction Tuning](docs/phase41/SUMMARY.md) | [Next: Phase 43: Model Merging & Ensembles](docs/phase43/SUMMARY.md) →
+
+---
+
 ## Phase 42: Reasoning with Verifiable Rewards
 
 ---
@@ -57,3 +61,7 @@ Now that we can train models to reason with verifiable rewards, how do we combin
 - `src/phase42/phase42_verifiable_rewards.py`
 - `src/phase42/phase42_verifiable_rewards_colab.py`
 - `src/phase42/verifiable_rewards.png`
+
+---
+
+← [Previous: Phase 41: Vision-Language Instruction Tuning](docs/phase41/SUMMARY.md) | [Next: Phase 43: Model Merging & Ensembles](docs/phase43/SUMMARY.md) →

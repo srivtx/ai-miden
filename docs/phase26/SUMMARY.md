@@ -1,3 +1,7 @@
+← [Previous: Phase 25: Inference Optimization](docs/phase25/SUMMARY.md) | [Next: Phase 27: Agentic AI](docs/phase27/SUMMARY.md) →
+
+---
+
 ## Phase 26 Summary: Test-Time Compute & Reasoning
 
 **The Question:** "My model blurts answers. Can I make it think longer on hard problems?"
@@ -65,3 +69,7 @@
 
 - **Phase 25:** Inference Optimization — We made the model fast. Now we trade some of that speed for accuracy on hard problems.
 - **Phase 27:** Agentic AI — Once the model can reason step by step, can we give it tools to act on the world?
+
+---
+
+← [Previous: Phase 25: Inference Optimization](docs/phase25/SUMMARY.md) | [Next: Phase 27: Agentic AI](docs/phase27/SUMMARY.md) →

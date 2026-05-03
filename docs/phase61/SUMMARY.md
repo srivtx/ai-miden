@@ -1,3 +1,7 @@
+← [Previous: Phase 60: Bayesian Neural Networks](docs/phase60/SUMMARY.md) | [Next: Phase 62: Active Learning](docs/phase62/SUMMARY.md) →
+
+---
+
 ## Phase 61: AutoML & Hyperparameter Search
 
 ---
@@ -35,3 +39,7 @@ Now that we can find optimal configurations automatically, how do we decide whic
 - `docs/phase61/SUMMARY.md`
 - `src/phase61/phase61_automl.py`
 - `src/phase61/automl.png`
+
+---
+
+← [Previous: Phase 60: Bayesian Neural Networks](docs/phase60/SUMMARY.md) | [Next: Phase 62: Active Learning](docs/phase62/SUMMARY.md) →

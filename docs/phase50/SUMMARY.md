@@ -1,3 +1,7 @@
+← [Previous: Phase 49: Advanced Optimizers](docs/phase49/SUMMARY.md) | [Next: Phase 51: Evaluation Metrics](docs/phase51/SUMMARY.md) →
+
+---
+
 ## Phase 50: Self-Supervised Learning
 
 ---
@@ -34,3 +38,7 @@ Now that models can learn without labels, how do we measure if they learned anyt
 - `docs/phase50/SUMMARY.md`
 - `src/phase50/phase50_self_supervised_learning.py`
 - `src/phase50/self_supervised_learning.png`
+
+---
+
+← [Previous: Phase 49: Advanced Optimizers](docs/phase49/SUMMARY.md) | [Next: Phase 51: Evaluation Metrics](docs/phase51/SUMMARY.md) →

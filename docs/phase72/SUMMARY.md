@@ -1,3 +1,7 @@
+← [Previous: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) | End →
+
+---
+
 # Phase 72: Real Agents with Tool Use — Summary
 
 Phase 72 bridges the gap between "chatbot" and "agent." Students learn that an LLM alone is a passive text generator; to become an agent it needs:
@@ -10,3 +14,7 @@ Phase 72 bridges the gap between "chatbot" and "agent." Students learn that an L
 The NumPy demo (`src/phase72/phase72_real_agents.py`) simulates these concepts without requiring GPU or API keys, making the mechanics transparent. The Colab script (`src/phase72/phase72_real_agents_colab.py`) shows how the same patterns map to a real open-source LLM, with heavy comments explaining the design choices.
 
 Key takeaway: An agent is not a smarter model; it is a model wrapped in a control loop with tools and memory.
+
+---
+
+← [Previous: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) | End →

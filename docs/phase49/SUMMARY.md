@@ -1,3 +1,7 @@
+← [Previous: Phase 48: Test-Time Training](docs/phase48/SUMMARY.md) | [Next: Phase 50: Self-Supervised Learning](docs/phase50/SUMMARY.md) →
+
+---
+
 ## Phase 49: Advanced Optimizers
 
 ---
@@ -37,3 +41,7 @@ Now that we understand how to optimize models, how do we know if they are actual
 - `docs/phase49/SUMMARY.md`
 - `src/phase49/phase49_advanced_optimizers.py`
 - `src/phase49/advanced_optimizers.png`
+
+---
+
+← [Previous: Phase 48: Test-Time Training](docs/phase48/SUMMARY.md) | [Next: Phase 50: Self-Supervised Learning](docs/phase50/SUMMARY.md) →

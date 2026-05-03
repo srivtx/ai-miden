@@ -1,3 +1,7 @@
+← [Previous: Phase 16: Seq2Seq](docs/phase16/SUMMARY.md) | [Next: Phase 18: Transformer](docs/phase18/SUMMARY.md) →
+
+---
+
 # Phase 17 Summary: Attention Mechanism — Focusing on What Matters
 
 ## What This Phase Taught
@@ -34,3 +38,7 @@ Phase 16 built Seq2Seq with a bottleneck thought vector. Phase 17 replaces that 
 ## Connection to Next Phase
 
 Phase 18 asks: "Attention is great, but RNNs are slow. Can we process ALL words at once instead of one at a time?" The answer: The Transformer.
+
+---
+
+← [Previous: Phase 16: Seq2Seq](docs/phase16/SUMMARY.md) | [Next: Phase 18: Transformer](docs/phase18/SUMMARY.md) →

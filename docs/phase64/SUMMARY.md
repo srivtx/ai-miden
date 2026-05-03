@@ -1,3 +1,7 @@
+← [Previous: Phase 63: Dataset Curation for Fine-Tuning](docs/phase63/SUMMARY.md) | [Next: Phase 65: QLoRA & Memory-Efficient Training](docs/phase65/SUMMARY.md) →
+
+---
+
 ## Phase 64: Practical SFT with LoRA
 
 ---
@@ -37,3 +41,7 @@ LoRA is efficient, but what if the model is so large it does not even fit in GPU
 - `src/phase64/phase64_sft_lora.py`
 - `src/phase64/phase64_sft_lora_colab.py`
 - `src/phase64/sft_lora.png`
+
+---
+
+← [Previous: Phase 63: Dataset Curation for Fine-Tuning](docs/phase63/SUMMARY.md) | [Next: Phase 65: QLoRA & Memory-Efficient Training](docs/phase65/SUMMARY.md) →

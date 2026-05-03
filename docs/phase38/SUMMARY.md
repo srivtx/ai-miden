@@ -1,3 +1,7 @@
+← [Previous: Phase 37: Retrieval-Augmented Generation](docs/phase37/SUMMARY.md) | [Next: Phase 39: Knowledge Distillation](docs/phase39/SUMMARY.md) →
+
+---
+
 ## Phase 38 Summary: Scaling Laws & Compute-Optimal Training
 
 **The Question:** "Training large models costs millions. For a fixed budget, should you build a bigger model or train longer? The field got this wrong for years — what is the right answer?"
@@ -69,3 +73,7 @@
 ### What You Should Remember
 
 > **The Chinchilla rule is like building a library.** Do not build a massive library with millions of empty shelves (Kaplan). Build a library sized exactly for your book collection, where every shelf is full (Chinchilla). The smaller, full library costs less AND is more useful.
+
+---
+
+← [Previous: Phase 37: Retrieval-Augmented Generation](docs/phase37/SUMMARY.md) | [Next: Phase 39: Knowledge Distillation](docs/phase39/SUMMARY.md) →

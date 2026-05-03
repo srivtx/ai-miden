@@ -1,3 +1,7 @@
+← [Previous: Phase 12: Residual Networks](docs/phase12/SUMMARY.md) | [Next: Phase 14: LSTMs](docs/phase14/SUMMARY.md) →
+
+---
+
 # Phase 13 Summary: RNNs — Remembering Sequences
 
 ## What This Phase Taught
@@ -30,3 +34,7 @@ Phase 12 added skip connections to deep networks. Phase 13 changes the problem d
 ## Connection to Next Phase
 
 Phase 14 asks: "My RNN works for short words but forgets long sentences. How do I give it longer memory?" The answer: LSTMs.
+
+---
+
+← [Previous: Phase 12: Residual Networks](docs/phase12/SUMMARY.md) | [Next: Phase 14: LSTMs](docs/phase14/SUMMARY.md) →

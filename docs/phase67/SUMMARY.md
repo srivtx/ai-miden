@@ -1,3 +1,7 @@
+← [Previous: Phase 66: Preference Alignment (DPO & ORPO)](docs/phase66/SUMMARY.md) | [Next: Phase 68: Jailbreaking — Advanced (GCG & AutoDAN)](docs/phase68/SUMMARY.md) →
+
+---
+
 ## Phase 67: Jailbreaking — Basic Attacks
 
 ---
@@ -38,3 +42,7 @@ Now that we understand how basic jailbreaks bypass shallow safety layers, how do
 - `src/phase67/phase67_jailbreak_basic.py`
 - `src/phase67/phase67_jailbreak_basic_colab.py`
 - `src/phase67/jailbreak_basic.png`
+
+---
+
+← [Previous: Phase 66: Preference Alignment (DPO & ORPO)](docs/phase66/SUMMARY.md) | [Next: Phase 68: Jailbreaking — Advanced (GCG & AutoDAN)](docs/phase68/SUMMARY.md) →

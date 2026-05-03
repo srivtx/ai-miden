@@ -1,3 +1,7 @@
+← [Previous: Phase 56: Gradient Boosting](docs/phase56/SUMMARY.md) | [Next: Phase 58: Time Series Forecasting](docs/phase58/SUMMARY.md) →
+
+---
+
 ## Phase 57: Adversarial Robustness
 
 ---
@@ -36,3 +40,7 @@ Now that we understand how to break and defend models, how do we predict sequenc
 - `docs/phase57/SUMMARY.md`
 - `src/phase57/phase57_adversarial_robustness.py`
 - `src/phase57/adversarial_robustness.png`
+
+---
+
+← [Previous: Phase 56: Gradient Boosting](docs/phase56/SUMMARY.md) | [Next: Phase 58: Time Series Forecasting](docs/phase58/SUMMARY.md) →

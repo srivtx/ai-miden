@@ -1,3 +1,7 @@
+← [Previous: Phase 30: Generative Models — GANs](docs/phase30/SUMMARY.md) | [Next: Phase 32: Foundation Models & The Future](docs/phase32/SUMMARY.md) →
+
+---
+
 ## Phase 31 Summary: Generative Models — Diffusion
 
 **The Question:** "GANs are hard to train and sometimes collapse. Is there a more stable way to generate images?"
@@ -59,3 +63,7 @@
 
 - **Phase 30:** GANs — Adversarial training is unstable. Diffusion replaces competition with gradual refinement.
 - **Phase 32:** Foundation Models — We can generate images. How does this fit into the future of AI?
+
+---
+
+← [Previous: Phase 30: Generative Models — GANs](docs/phase30/SUMMARY.md) | [Next: Phase 32: Foundation Models & The Future](docs/phase32/SUMMARY.md) →

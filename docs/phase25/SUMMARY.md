@@ -1,3 +1,7 @@
+← [Previous: Phase 21: Training a Tiny GPT](docs/phase21/SUMMARY.md) | [Next: Phase 26: Test-Time Compute & Reasoning](docs/phase26/SUMMARY.md) →
+
+---
+
 ## Phase 25 Summary: Inference Optimization
 
 **The Question:** "My model takes forever to generate text. How do I make it fast?"
@@ -56,3 +60,7 @@
 
 - **Phase 24:** DPO & GRPO — We aligned the model. Now we optimize it for deployment.
 - **Phase 26:** Test-Time Compute & Reasoning — Once the model is fast, can we make it think longer for hard problems?
+
+---
+
+← [Previous: Phase 21: Training a Tiny GPT](docs/phase21/SUMMARY.md) | [Next: Phase 26: Test-Time Compute & Reasoning](docs/phase26/SUMMARY.md) →

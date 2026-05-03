@@ -1,3 +1,7 @@
+← [Previous: Phase 61: AutoML & Hyperparameter Search](docs/phase61/SUMMARY.md) | [Next: Phase 63: Dataset Curation for Fine-Tuning](docs/phase63/SUMMARY.md) →
+
+---
+
 ## Phase 62: Active Learning
 
 ---
@@ -36,3 +40,7 @@ Now that we have completed the core and advanced conceptual phases, we move to t
 - `docs/phase62/SUMMARY.md`
 - `src/phase62/phase62_active_learning.py`
 - `src/phase62/active_learning.png`
+
+---
+
+← [Previous: Phase 61: AutoML & Hyperparameter Search](docs/phase61/SUMMARY.md) | [Next: Phase 63: Dataset Curation for Fine-Tuning](docs/phase63/SUMMARY.md) →

@@ -1,3 +1,7 @@
+← [Previous: Phase 28: Multimodal AI](docs/phase28/SUMMARY.md) | [Next: Phase 30: Generative Models — GANs](docs/phase30/SUMMARY.md) →
+
+---
+
 ## Phase 29 Summary: Generative Models — VAEs
 
 **The Question:** "My model classifies and generates text. Can it create entirely new images?"
@@ -65,3 +69,7 @@
 
 - **Phase 28:** Multimodal AI — We can see and understand images. Now we learn to CREATE them.
 - **Phase 30:** GANs — VAE images are blurry. How do we make them sharp?
+
+---
+
+← [Previous: Phase 28: Multimodal AI](docs/phase28/SUMMARY.md) | [Next: Phase 30: Generative Models — GANs](docs/phase30/SUMMARY.md) →

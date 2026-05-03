@@ -1,3 +1,7 @@
+← [Previous: Phase 51: Evaluation Metrics](docs/phase51/SUMMARY.md) | [Next: Phase 53: Classical Reinforcement Learning](docs/phase53/SUMMARY.md) →
+
+---
+
 ## Phase 52: Data Augmentation & Tokenization
 
 ---
@@ -34,3 +38,7 @@ Now that we understand data preparation, how do models learn to make decisions t
 - `docs/phase52/SUMMARY.md`
 - `src/phase52/phase52_data_augmentation.py`
 - `src/phase52/data_augmentation.png`
+
+---
+
+← [Previous: Phase 51: Evaluation Metrics](docs/phase51/SUMMARY.md) | [Next: Phase 53: Classical Reinforcement Learning](docs/phase53/SUMMARY.md) →

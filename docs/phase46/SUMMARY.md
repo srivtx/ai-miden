@@ -1,3 +1,7 @@
+← [Previous: Phase 45: Quantization & GGUF](docs/phase45/SUMMARY.md) | [Next: Phase 47: Synthetic Data & Self-Improvement](docs/phase47/SUMMARY.md) →
+
+---
+
 ## Phase 46: Mechanistic Interpretability
 
 ---
@@ -51,3 +55,7 @@ Now that we can understand models, how do we make them improve themselves? In Ph
 - `src/phase46/phase46_mechanistic_interpretability.py`
 - `src/phase46/phase46_mechanistic_interpretability_colab.py`
 - `src/phase46/mechanistic_interpretability.png`
+
+---
+
+← [Previous: Phase 45: Quantization & GGUF](docs/phase45/SUMMARY.md) | [Next: Phase 47: Synthetic Data & Self-Improvement](docs/phase47/SUMMARY.md) →

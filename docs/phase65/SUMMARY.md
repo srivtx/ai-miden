@@ -1,3 +1,7 @@
+← [Previous: Phase 64: Practical SFT with LoRA](docs/phase64/SUMMARY.md) | [Next: Phase 66: Preference Alignment (DPO & ORPO)](docs/phase66/SUMMARY.md) →
+
+---
+
 ## Phase 65: QLoRA & Memory-Efficient Training
 
 ---
@@ -38,3 +42,7 @@ QLoRA compresses the base model and trains tiny adapters. Phase 66 covers **infe
 - `src/phase65/phase65_qlora.py`
 - `src/phase65/phase65_qlora_colab.py`
 - `src/phase65/qlora.png`
+
+---
+
+← [Previous: Phase 64: Practical SFT with LoRA](docs/phase64/SUMMARY.md) | [Next: Phase 66: Preference Alignment (DPO & ORPO)](docs/phase66/SUMMARY.md) →

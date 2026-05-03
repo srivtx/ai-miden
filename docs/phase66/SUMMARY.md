@@ -1,3 +1,7 @@
+← [Previous: Phase 65: QLoRA & Memory-Efficient Training](docs/phase65/SUMMARY.md) | [Next: Phase 67: Jailbreaking — Basic Attacks](docs/phase67/SUMMARY.md) →
+
+---
+
 # Phase 66 Summary: Preference Alignment (DPO & ORPO)
 
 ## What You Learned
@@ -44,3 +48,7 @@ loss). One stage, no reference model.
 Pre-training teaches knowledge. SFT teaches format. **Alignment teaches values.**
 DPO and ORPO are the simplest, most popular ways to align models today — no
 reward model, no PPO, just preference pairs and gradient descent.
+
+---
+
+← [Previous: Phase 65: QLoRA & Memory-Efficient Training](docs/phase65/SUMMARY.md) | [Next: Phase 67: Jailbreaking — Basic Attacks](docs/phase67/SUMMARY.md) →

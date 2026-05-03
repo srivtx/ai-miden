@@ -1,3 +1,7 @@
+← [Previous: Phase 59: Federated Learning](docs/phase59/SUMMARY.md) | [Next: Phase 61: AutoML & Hyperparameter Search](docs/phase61/SUMMARY.md) →
+
+---
+
 ## Phase 60: Bayesian Neural Networks
 
 ---
@@ -36,3 +40,7 @@ Now that we can quantify uncertainty, how do we automate the process of finding 
 - `docs/phase60/SUMMARY.md`
 - `src/phase60/phase60_bayesian_neural_networks.py`
 - `src/phase60/bayesian_neural_networks.png`
+
+---
+
+← [Previous: Phase 59: Federated Learning](docs/phase59/SUMMARY.md) | [Next: Phase 61: AutoML & Hyperparameter Search](docs/phase61/SUMMARY.md) →

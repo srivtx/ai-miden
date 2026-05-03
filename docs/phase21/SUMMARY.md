@@ -1,3 +1,7 @@
+← [Previous: Phase 20: GPT Architecture](docs/phase20/SUMMARY.md) | [Next: Phase 22: Supervised Fine-Tuning](docs/phase22/SUMMARY.md) →
+
+---
+
 # Phase 21 Summary: Training a Tiny GPT
 
 ## What This Phase Taught
@@ -34,3 +38,7 @@ Phase 20 showed the GPT architecture. Phase 21 actually trains it and makes it g
 ## Connection to Next Phase
 
 Phase 22 asks: "The model generates text, but it doesn't answer questions helpfully. How do I make it an assistant?" The answer: Supervised Fine-Tuning (SFT).
+
+---
+
+← [Previous: Phase 20: GPT Architecture](docs/phase20/SUMMARY.md) | [Next: Phase 22: Supervised Fine-Tuning](docs/phase22/SUMMARY.md) →

@@ -1,3 +1,7 @@
+← [Previous: Phase 50: Self-Supervised Learning](docs/phase50/SUMMARY.md) | [Next: Phase 52: Data Augmentation & Tokenization](docs/phase52/SUMMARY.md) →
+
+---
+
 ## Phase 51: Evaluation Metrics
 
 ---
@@ -35,3 +39,7 @@ Now that we can measure models, how do we build better training data? Phase 52 c
 - `docs/phase51/SUMMARY.md`
 - `src/phase51/phase51_evaluation_metrics.py`
 - `src/phase51/evaluation_metrics.png`
+
+---
+
+← [Previous: Phase 50: Self-Supervised Learning](docs/phase50/SUMMARY.md) | [Next: Phase 52: Data Augmentation & Tokenization](docs/phase52/SUMMARY.md) →

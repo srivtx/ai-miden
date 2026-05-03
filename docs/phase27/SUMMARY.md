@@ -1,3 +1,7 @@
+← [Previous: Phase 26: Test-Time Compute & Reasoning](docs/phase26/SUMMARY.md) | [Next: Phase 28: Multimodal AI](docs/phase28/SUMMARY.md) →
+
+---
+
 ## Phase 27 Summary: Agentic AI
 
 **The Question:** "My model can talk. Can I give it tools to actually DO things?"
@@ -59,3 +63,7 @@
 
 - **Phase 26:** Test-Time Compute & Reasoning — The model can reason step by step. Now we give it tools to act on that reasoning.
 - **Phase 28:** Multimodal AI — Agents that can see images as well as read text open up entirely new domains of interaction.
+
+---
+
+← [Previous: Phase 26: Test-Time Compute & Reasoning](docs/phase26/SUMMARY.md) | [Next: Phase 28: Multimodal AI](docs/phase28/SUMMARY.md) →

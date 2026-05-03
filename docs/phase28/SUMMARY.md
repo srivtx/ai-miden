@@ -1,3 +1,7 @@
+← [Previous: Phase 27: Agentic AI](docs/phase27/SUMMARY.md) | [Next: Phase 29: Generative Models — VAEs](docs/phase29/SUMMARY.md) →
+
+---
+
 ## Phase 28 Summary: Multimodal AI
 
 **The Question:** "My model only understands text. Can it see images too?"
@@ -64,4 +68,8 @@
 ### Connects To
 
 - **Phase 27:** Agentic AI — Agents with vision can navigate GUIs, read documents, and understand the physical world.
-- **Phase 29:** Generative Models (VAEs) — We can see images. Now we learn to CREATE them from scratch.
+- **Phase 29:** Generative Models (VAEs) — We can see images. Now we learn to CREATE them.
+
+---
+
+← [Previous: Phase 27: Agentic AI](docs/phase27/SUMMARY.md) | [Next: Phase 29: Generative Models — VAEs](docs/phase29/SUMMARY.md) →

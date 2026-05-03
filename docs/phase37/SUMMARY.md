@@ -1,3 +1,7 @@
+← [Previous: Phase 36: Speculative Decoding](docs/phase36/SUMMARY.md) | [Next: Phase 38: Scaling Laws & Compute-Optimal Training](docs/phase38/SUMMARY.md) →
+
+---
+
 ## Phase 37 Summary: Retrieval-Augmented Generation (RAG)
 
 **The Question:** "LLMs only know their training data. They cannot access your private documents, today's news, or real-time information. How do you ground their answers in external knowledge without retraining?"
@@ -63,3 +67,7 @@
 ### What You Should Remember
 
 > **RAG is like a lawyer with a paralegal.** The lawyer (LLM) has general knowledge from law school. The paralegal (retriever) fetches relevant case law. The lawyer reads the cases and writes the argument. Without the paralegal, the lawyer might misremember or hallucinate a precedent. With the paralegal, the argument is grounded in real documents.
+
+---
+
+← [Previous: Phase 36: Speculative Decoding](docs/phase36/SUMMARY.md) | [Next: Phase 38: Scaling Laws & Compute-Optimal Training](docs/phase38/SUMMARY.md) →

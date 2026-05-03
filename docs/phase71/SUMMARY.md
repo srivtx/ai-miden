@@ -1,3 +1,7 @@
+← [Previous: Phase 70: Domain Adaptation — Custom Assistants](docs/phase70/SUMMARY.md) | [Next: Phase 72: Real Agents with Tool Use](docs/phase72/SUMMARY.md) →
+
+---
+
 ## Phase 71: Inference & Deployment
 
 ---
@@ -38,3 +42,7 @@ Serving is only half the battle. Once a model is deployed, how do you monitor it
 - `src/phase71/phase71_inference_deployment.py`
 - `src/phase71/phase71_inference_deployment_colab.py`
 - `src/phase71/inference_deployment.png`
+
+---
+
+← [Previous: Phase 70: Domain Adaptation — Custom Assistants](docs/phase70/SUMMARY.md) | [Next: Phase 72: Real Agents with Tool Use](docs/phase72/SUMMARY.md) →

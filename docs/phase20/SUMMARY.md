@@ -1,3 +1,7 @@
+← [Previous: Phase 19: BERT](docs/phase19/SUMMARY.md) | [Next: Phase 21: Training a Tiny GPT](docs/phase21/SUMMARY.md) →
+
+---
+
 # Phase 20 Summary: GPT Architecture — Generative Pre-trained Transformer
 
 ## What This Phase Taught
@@ -33,3 +37,7 @@ Phase 19 showed BERT (encoder, bidirectional, understanding). Phase 20 shows GPT
 ## Connection to Next Phase
 
 Phase 21 puts everything together and actually trains a tiny GPT that generates text.
+
+---
+
+← [Previous: Phase 19: BERT](docs/phase19/SUMMARY.md) | [Next: Phase 21: Training a Tiny GPT](docs/phase21/SUMMARY.md) →

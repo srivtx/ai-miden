@@ -1,3 +1,7 @@
+← [Previous: Phase 13: RNNs](docs/phase13/SUMMARY.md) | [Next: Phase 15: Word Embeddings](docs/phase15/SUMMARY.md) →
+
+---
+
 # Phase 14 Summary: LSTM — Long Short-Term Memory
 
 ## What This Phase Taught
@@ -35,3 +39,7 @@ Phase 13 built a vanilla RNN for short sequences. Phase 14 solves the RNN's fata
 ## Connection to Next Phase
 
 Phase 15 asks: "Words are just numbers to my network. How do I give words MEANING?" We will learn about word embeddings.
+
+---
+
+← [Previous: Phase 13: RNNs](docs/phase13/SUMMARY.md) | [Next: Phase 15: Word Embeddings](docs/phase15/SUMMARY.md) →

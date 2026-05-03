@@ -1,3 +1,7 @@
+← [Previous: Phase 17: Attention](docs/phase17/SUMMARY.md) | [Next: Phase 19: BERT](docs/phase19/SUMMARY.md) →
+
+---
+
 # Phase 18 Summary: The Transformer Architecture
 
 ## What This Phase Taught
@@ -35,3 +39,7 @@ Phase 17 added attention to RNNs. Phase 18 removes RNNs entirely and uses ONLY a
 ## Connection to Next Phase
 
 Phase 19 asks: "The Transformer encoder reads the whole sentence in both directions. Can I use ONLY this for understanding tasks?" The answer: BERT.
+
+---
+
+← [Previous: Phase 17: Attention](docs/phase17/SUMMARY.md) | [Next: Phase 19: BERT](docs/phase19/SUMMARY.md) →

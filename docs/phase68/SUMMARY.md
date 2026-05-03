@@ -1,3 +1,7 @@
+← [Previous: Phase 67: Jailbreaking — Basic Attacks](docs/phase67/SUMMARY.md) | [Next: Phase 69: Red-Teaming & Safety Evaluation](docs/phase69/SUMMARY.md) →
+
+---
+
 # Phase 68 Summary: Jailbreaking — Advanced (GCG & AutoDAN)
 
 ---
@@ -71,3 +75,7 @@ src/phase68/
 - [AutoDAN: Generating Stealthy Jailbreak Prompts on Aligned LLMs](https://arxiv.org/abs/2310.04451)
 - [Certified Defenses for Adversarial Prompts](https://arxiv.org/abs/2309.02705)
 - [HarmBench: Standardized Evaluation of Red Teaming Methods](https://arxiv.org/abs/2402.04249)
+
+---
+
+← [Previous: Phase 67: Jailbreaking — Basic Attacks](docs/phase67/SUMMARY.md) | [Next: Phase 69: Red-Teaming & Safety Evaluation](docs/phase69/SUMMARY.md) →

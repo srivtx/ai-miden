@@ -1,3 +1,7 @@
+← [Previous: Phase 57: Adversarial Robustness](docs/phase57/SUMMARY.md) | [Next: Phase 59: Federated Learning](docs/phase59/SUMMARY.md) →
+
+---
+
 ## Phase 58: Time Series Forecasting
 
 ---
@@ -37,3 +41,7 @@ Now that we can forecast sequences, how do we train models when data is scattere
 - `docs/phase58/SUMMARY.md`
 - `src/phase58/phase58_time_series_forecasting.py`
 - `src/phase58/time_series_forecasting.png`
+
+---
+
+← [Previous: Phase 57: Adversarial Robustness](docs/phase57/SUMMARY.md) | [Next: Phase 59: Federated Learning](docs/phase59/SUMMARY.md) →

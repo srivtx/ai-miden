@@ -1,3 +1,7 @@
+← [Previous: Phase 31: Generative Models — Diffusion](docs/phase31/SUMMARY.md) | [Next: Phase 33: Mixture of Experts](docs/phase33/SUMMARY.md) →
+
+---
+
 ## Phase 32 Summary: Foundation Models & The Future
 
 **The Question:** "Having seen the entire landscape, where is AI going next?"
@@ -78,3 +82,7 @@
 You started with "What is a function?" and journeyed through thirty-two phases to understand the full landscape of modern AI. Every concept was built from scratch, explained from first principles, and connected to the next. You now understand not just WHAT these systems do, but WHY they work and HOW they fit together.
 
 The future of AI is being written right now. And you have the foundation to be part of it.
+
+---
+
+← [Previous: Phase 31: Generative Models — Diffusion](docs/phase31/SUMMARY.md) | [Next: Phase 33: Mixture of Experts](docs/phase33/SUMMARY.md) →

@@ -1,3 +1,7 @@
+← [Previous: Phase 29: Generative Models — VAEs](docs/phase29/SUMMARY.md) | [Next: Phase 31: Generative Models — Diffusion](docs/phase31/SUMMARY.md) →
+
+---
+
 ## Phase 30 Summary: Generative Models — GANs
 
 **The Question:** "My VAE produces blurry images. How do I generate sharp, realistic ones?"
@@ -56,3 +60,7 @@
 
 - **Phase 29:** VAEs — We learned to generate blurry data. Now we make it sharp.
 - **Phase 31:** Diffusion Models — GANs are unstable. Is there a more reliable way?
+
+---
+
+← [Previous: Phase 29: Generative Models — VAEs](docs/phase29/SUMMARY.md) | [Next: Phase 31: Generative Models — Diffusion](docs/phase31/SUMMARY.md) →

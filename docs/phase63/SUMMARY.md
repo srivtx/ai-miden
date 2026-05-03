@@ -1,3 +1,7 @@
+← [Previous: Phase 62: Active Learning](docs/phase62/SUMMARY.md) | [Next: Phase 64: Practical SFT with LoRA](docs/phase64/SUMMARY.md) →
+
+---
+
 ## Phase 63: Dataset Curation for Fine-Tuning
 
 ---
@@ -36,3 +40,7 @@ Now that we can prepare clean training data, how do we actually fine-tune a mode
 - `src/phase63/phase63_dataset_curation.py`
 - `src/phase63/phase63_dataset_curation_colab.py`
 - `src/phase63/dataset_curation.png`
+
+---
+
+← [Previous: Phase 62: Active Learning](docs/phase62/SUMMARY.md) | [Next: Phase 64: Practical SFT with LoRA](docs/phase64/SUMMARY.md) →

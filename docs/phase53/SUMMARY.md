@@ -1,3 +1,7 @@
+← [Previous: Phase 52: Data Augmentation & Tokenization](docs/phase52/SUMMARY.md) | [Next: Phase 54: Graph Neural Networks](docs/phase54/SUMMARY.md) →
+
+---
+
 ## Phase 53: Classical Reinforcement Learning
 
 ---
@@ -34,3 +38,7 @@ Now that we understand trial-and-error learning on grids, how do we handle graph
 - `docs/phase53/SUMMARY.md`
 - `src/phase53/phase53_classical_rl.py`
 - `src/phase53/classical_rl.png`
+
+---
+
+← [Previous: Phase 52: Data Augmentation & Tokenization](docs/phase52/SUMMARY.md) | [Next: Phase 54: Graph Neural Networks](docs/phase54/SUMMARY.md) →

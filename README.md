@@ -40,79 +40,79 @@ Every technical term has its own documentation file. If you see a word you do no
 ```
 ai-miden/
 ├── docs/
-│   ├── phase0/          # The absolute basics
-│   ├── phase1/          # Our first model
-│   ├── phase2/          # How we measure wrongness
-│   ├── phase3/          # How the model learns
-│   ├── phase4/          # Neural networks
-│   ├── phase5/          # Binary classification
-│   ├── phase6/          # Multi-class classification
-│   ├── phase7/          # Deep networks
-│   ├── phase8/          # L2 regularization
-│   ├── phase9/          # Dropout
-│   ├── phase10/         # Batch normalization
-│   ├── phase11/         # CNNs Part 1
-│   ├── phase12/         # Residual Networks
-│   ├── phase13/         # RNNs
-│   ├── phase14/         # LSTMs
-│   ├── phase15/         # Word Embeddings
-│   ├── phase16/         # Seq2Seq
-│   ├── phase17/         # Attention
-│   ├── phase18/         # Transformer
-│   ├── phase19/         # BERT
-│   ├── phase20/         # GPT Architecture
-│   ├── phase21/         # Training a Tiny GPT
-│   ├── phase22/         # Supervised Fine-Tuning
-│   ├── phase23/         # RLHF
-│   ├── phase24/         # DPO & GRPO
-│   ├── phase25/         # Inference Optimization
-│   ├── phase26/         # Test-Time Compute & Reasoning
-│   ├── phase27/         # Agentic AI
-│   ├── phase28/         # Multimodal AI
-│   ├── phase29/         # Generative Models — VAEs
-│   ├── phase30/         # Generative Models — GANs
-│   ├── phase31/         # Generative Models — Diffusion
-│   ├── phase32/         # Foundation Models & The Future
-│   ├── phase33/         # Mixture of Experts
-│   ├── phase34/         # Mamba & State Space Models
-│   ├── phase35/         # LoRA & Parameter-Efficient Fine-Tuning
-│   ├── phase36/         # Speculative Decoding
-│   ├── phase37/         # Retrieval-Augmented Generation
-│   ├── phase38/         # Scaling Laws & Compute-Optimal Training
-│   ├── phase39/         # Knowledge Distillation
-│   ├── phase40/         # Flow Matching & Diffusion Transformers
-│   ├── phase41/         # Vision-Language Instruction Tuning
-│   ├── phase42/         # Reasoning with Verifiable Rewards
-│   ├── phase43/         # Model Merging & Ensembles
-│   ├── phase44/         # Long Context & Position Interpolation
-│   ├── phase45/         # Quantization & GGUF
-│   ├── phase46/         # Mechanistic Interpretability
-│   ├── phase47/         # Synthetic Data & Self-Improvement
-│   ├── phase48/         # Test-Time Training
-│   ├── phase49/         # Advanced Optimizers
-│   ├── phase50/         # Self-Supervised Learning
-│   ├── phase51/         # Evaluation Metrics
-│   ├── phase52/         # Data Augmentation & Tokenization
-│   ├── phase53/         # Classical Reinforcement Learning
-│   ├── phase54/         # Graph Neural Networks
-│   ├── phase55/         # Distributed Training
-│   ├── phase56/         # Gradient Boosting
-│   ├── phase57/         # Adversarial Robustness
-│   ├── phase58/         # Time Series Forecasting
-│   ├── phase59/         # Federated Learning
-│   ├── phase60/         # Bayesian Neural Networks
-│   ├── phase61/         # AutoML & Hyperparameter Search
-│   ├── phase62/         # Active Learning
-│   ├── phase63/         # Dataset Curation for Fine-Tuning
-│   ├── phase64/         # Practical SFT with LoRA
-│   ├── phase65/         # QLoRA & Memory-Efficient Training
-│   ├── phase66/         # Preference Alignment (DPO & ORPO)
-│   ├── phase67/         # Jailbreaking — Basic Attacks
-│   ├── phase68/         # Jailbreaking — Advanced (GCG & AutoDAN)
-│   ├── phase69/         # Red-Teaming & Safety Evaluation
-│   ├── phase70/         # Domain Adaptation — Custom Assistants
-│   ├── phase71/         # Inference & Deployment
-│   └── phase72/         # Real Agents with Tool Use
+│   ├── [phase0/](/docs/phase0/)          # The absolute basics
+│   ├── [phase1/](/docs/phase1/)          # Our first model
+│   ├── [phase2/](/docs/phase2/)          # How we measure wrongness
+│   ├── [phase3/](/docs/phase3/)          # How the model learns
+│   ├── [phase4/](/docs/phase4/)          # Neural networks
+│   ├── [phase5/](/docs/phase5/)          # Binary classification
+│   ├── [phase6/](/docs/phase6/)          # Multi-class classification
+│   ├── [phase7/](/docs/phase7/)          # Deep networks
+│   ├── [phase8/](/docs/phase8/)          # L2 regularization
+│   ├── [phase9/](/docs/phase9/)          # Dropout
+│   ├── [phase10/](/docs/phase10/)         # Batch normalization
+│   ├── [phase11/](/docs/phase11/)         # CNNs Part 1
+│   ├── [phase12/](/docs/phase12/)         # Residual Networks
+│   ├── [phase13/](/docs/phase13/)         # RNNs
+│   ├── [phase14/](/docs/phase14/)         # LSTMs
+│   ├── [phase15/](/docs/phase15/)         # Word Embeddings
+│   ├── [phase16/](/docs/phase16/)         # Seq2Seq
+│   ├── [phase17/](/docs/phase17/)         # Attention
+│   ├── [phase18/](/docs/phase18/)         # Transformer
+│   ├── [phase19/](/docs/phase19/)         # BERT
+│   ├── [phase20/](/docs/phase20/)         # GPT Architecture
+│   ├── [phase21/](/docs/phase21/)         # Training a Tiny GPT
+│   ├── [phase22/](/docs/phase22/)         # Supervised Fine-Tuning
+│   ├── [phase23/](/docs/phase23/)         # RLHF
+│   ├── [phase24/](/docs/phase24/)         # DPO & GRPO
+│   ├── [phase25/](/docs/phase25/)         # Inference Optimization
+│   ├── [phase26/](/docs/phase26/)         # Test-Time Compute & Reasoning
+│   ├── [phase27/](/docs/phase27/)         # Agentic AI
+│   ├── [phase28/](/docs/phase28/)         # Multimodal AI
+│   ├── [phase29/](/docs/phase29/)         # Generative Models — VAEs
+│   ├── [phase30/](/docs/phase30/)         # Generative Models — GANs
+│   ├── [phase31/](/docs/phase31/)         # Generative Models — Diffusion
+│   ├── [phase32/](/docs/phase32/)         # Foundation Models & The Future
+│   ├── [phase33/](/docs/phase33/)         # Mixture of Experts
+│   ├── [phase34/](/docs/phase34/)         # Mamba & State Space Models
+│   ├── [phase35/](/docs/phase35/)         # LoRA & Parameter-Efficient Fine-Tuning
+│   ├── [phase36/](/docs/phase36/)         # Speculative Decoding
+│   ├── [phase37/](/docs/phase37/)         # Retrieval-Augmented Generation
+│   ├── [phase38/](/docs/phase38/)         # Scaling Laws & Compute-Optimal Training
+│   ├── [phase39/](/docs/phase39/)         # Knowledge Distillation
+│   ├── [phase40/](/docs/phase40/)         # Flow Matching & Diffusion Transformers
+│   ├── [phase41/](/docs/phase41/)         # Vision-Language Instruction Tuning
+│   ├── [phase42/](/docs/phase42/)         # Reasoning with Verifiable Rewards
+│   ├── [phase43/](/docs/phase43/)         # Model Merging & Ensembles
+│   ├── [phase44/](/docs/phase44/)         # Long Context & Position Interpolation
+│   ├── [phase45/](/docs/phase45/)         # Quantization & GGUF
+│   ├── [phase46/](/docs/phase46/)         # Mechanistic Interpretability
+│   ├── [phase47/](/docs/phase47/)         # Synthetic Data & Self-Improvement
+│   ├── [phase48/](/docs/phase48/)         # Test-Time Training
+│   ├── [phase49/](/docs/phase49/)         # Advanced Optimizers
+│   ├── [phase50/](/docs/phase50/)         # Self-Supervised Learning
+│   ├── [phase51/](/docs/phase51/)         # Evaluation Metrics
+│   ├── [phase52/](/docs/phase52/)         # Data Augmentation & Tokenization
+│   ├── [phase53/](/docs/phase53/)         # Classical Reinforcement Learning
+│   ├── [phase54/](/docs/phase54/)         # Graph Neural Networks
+│   ├── [phase55/](/docs/phase55/)         # Distributed Training
+│   ├── [phase56/](/docs/phase56/)         # Gradient Boosting
+│   ├── [phase57/](/docs/phase57/)         # Adversarial Robustness
+│   ├── [phase58/](/docs/phase58/)         # Time Series Forecasting
+│   ├── [phase59/](/docs/phase59/)         # Federated Learning
+│   ├── [phase60/](/docs/phase60/)         # Bayesian Neural Networks
+│   ├── [phase61/](/docs/phase61/)         # AutoML & Hyperparameter Search
+│   ├── [phase62/](/docs/phase62/)         # Active Learning
+│   ├── [phase63/](/docs/phase63/)         # Dataset Curation for Fine-Tuning
+│   ├── [phase64/](/docs/phase64/)         # Practical SFT with LoRA
+│   ├── [phase65/](/docs/phase65/)         # QLoRA & Memory-Efficient Training
+│   ├── [phase66/](/docs/phase66/)         # Preference Alignment (DPO & ORPO)
+│   ├── [phase67/](/docs/phase67/)         # Jailbreaking — Basic Attacks
+│   ├── [phase68/](/docs/phase68/)         # Jailbreaking — Advanced (GCG & AutoDAN)
+│   ├── [phase69/](/docs/phase69/)         # Red-Teaming & Safety Evaluation
+│   ├── [phase70/](/docs/phase70/)         # Domain Adaptation — Custom Assistants
+│   ├── [phase71/](/docs/phase71/)         # Inference & Deployment
+│   └── [phase72/](/docs/phase72/)         # Real Agents with Tool Use
 └── README.md            # This file
 ```
 
@@ -806,232 +806,232 @@ pip install numpy
 Then run any phase:
 
 ```bash
-# Phase 0: Basics
+# [Phase 0: Basics](docs/phase0/)
 python src/phase0/phase0_basics.py
 
-# Phase 1: Linear Regression
+# [Phase 1: Linear Regression](docs/phase1/)
 python src/phase1/phase1_linear_regression.py
 
-# Phase 2: Error and Gradients
+# [Phase 2: Error and Gradients](docs/phase2/)
 python src/phase2/phase2_learning_process.py
 
-# Phase 3: Learning (Gradient Descent)
+# [Phase 3: Learning (Gradient Descent)](docs/phase3/)
 python src/phase3/phase3_gradient_descent.py
 
-# Phase 4: Neural Network
+# [Phase 4: Neural Network](docs/phase4/)
 python src/phase4/phase4_neural_network.py
 
-# Phase 5: Binary Classification
+# [Phase 5: Binary Classification](docs/phase5/)
 python src/phase5/phase5_binary_classifier.py
 
-# Phase 6: Multi-Class Classification
+# [Phase 6: Multi-Class Classification](docs/phase6/)
 python src/phase6/phase6_multiclass_classifier.py
 
-# Phase 7: Deep Networks
+# [Phase 7: Deep Networks](docs/phase7/)
 python src/phase7/phase7_deep_network.py
 
-# Phase 8: L2 Regularization
+# [Phase 8: L2 Regularization](docs/phase8/)
 python src/phase8/phase8_l2_regularization.py
 
-# Phase 9: Dropout
+# [Phase 9: Dropout](docs/phase9/)
 python src/phase9/phase9_dropout.py
 
-# Phase 10: Batch Normalization
+# [Phase 10: Batch Normalization](docs/phase10/)
 python src/phase10/phase10_batch_normalization.py
 
-# Phase 11: CNNs
+# [Phase 11: CNNs](docs/phase11/)
 python src/phase11/phase11_cnn.py
 
-# Phase 12: ResNets
+# [Phase 12: ResNets](docs/phase12/)
 python src/phase12/phase12_resnet.py
 
-# Phase 13: RNNs
+# [Phase 13: RNNs](docs/phase13/)
 python src/phase13/phase13_rnn.py
 
-# Phase 14: LSTMs
+# [Phase 14: LSTMs](docs/phase14/)
 python src/phase14/phase14_lstm.py
 
-# Phase 15: Word Embeddings
+# [Phase 15: Word Embeddings](docs/phase15/)
 python src/phase15/phase15_word2vec.py
 
-# Phase 16: Seq2Seq
+# [Phase 16: Seq2Seq](docs/phase16/)
 python src/phase16/phase16_seq2seq.py
 
-# Phase 17: Attention
+# [Phase 17: Attention](docs/phase17/)
 python src/phase17/phase17_attention.py
 
-# Phase 18: Transformer
+# [Phase 18: Transformer](docs/phase18/)
 python src/phase18/phase18_transformer.py
 
-# Phase 19: BERT
+# [Phase 19: BERT](docs/phase19/)
 python src/phase19/phase19_bert.py
 
-# Phase 20: GPT Architecture
+# [Phase 20: GPT Architecture](docs/phase20/)
 python src/phase20/phase20_gpt.py
 
-# Phase 21: Training a Tiny GPT
+# [Phase 21: Training a Tiny GPT](docs/phase21/)
 python src/phase21/phase21_tiny_gpt.py
 
-# Phase 22: Supervised Fine-Tuning
+# [Phase 22: Supervised Fine-Tuning](docs/phase22/)
 python src/phase22/phase22_sft.py
 
-# Phase 23: RLHF
+# [Phase 23: RLHF](docs/phase23/)
 python src/phase23/phase23_rlhf.py
 
-# Phase 24: DPO & GRPO
+# [Phase 24: DPO & GRPO](docs/phase24/)
 python src/phase24/phase24_dpo_grpo.py
 
-# Phase 25: Inference Optimization
+# [Phase 25: Inference Optimization](docs/phase25/)
 python src/phase25/phase25_inference_optimization.py
 
-# Phase 26: Test-Time Compute & Reasoning
+# [Phase 26: Test-Time Compute & Reasoning](docs/phase26/)
 python src/phase26/phase26_test_time_compute.py
 
-# Phase 27: Agentic AI
+# [Phase 27: Agentic AI](docs/phase27/)
 python src/phase27/phase27_agentic_ai.py
 
-# Phase 28: Multimodal AI
+# [Phase 28: Multimodal AI](docs/phase28/)
 python src/phase28/phase28_multimodal_ai.py
 
-# Phase 29: Generative Models — VAEs
+# [Phase 29: Generative Models — VAEs](docs/phase29/)
 python src/phase29/phase29_vae.py
 
-# Phase 30: Generative Models — GANs
+# [Phase 30: Generative Models — GANs](docs/phase30/)
 python src/phase30/phase30_gan.py
 
-# Phase 31: Generative Models — Diffusion
+# [Phase 31: Generative Models — Diffusion](docs/phase31/)
 python src/phase31/phase31_diffusion.py
 
-# Phase 32: Foundation Models & The Future
+# [Phase 32: Foundation Models & The Future](docs/phase32/)
 python src/phase32/phase32_foundation_models.py
 
-# Phase 33: Mixture of Experts
+# [Phase 33: Mixture of Experts](docs/phase33/)
 python src/phase33/phase33_moe.py
 
-# Phase 34: Mamba & State Space Models
+# [Phase 34: Mamba & State Space Models](docs/phase34/)
 python src/phase34/phase34_mamba.py
 
-# Phase 35: LoRA & Parameter-Efficient Fine-Tuning
+# [Phase 35: LoRA & Parameter-Efficient Fine-Tuning](docs/phase35/)
 python src/phase35/phase35_lora.py
 
-# Phase 36: Speculative Decoding
+# [Phase 36: Speculative Decoding](docs/phase36/)
 python src/phase36/phase36_speculative_decoding.py
 
-# Phase 37: Retrieval-Augmented Generation
+# [Phase 37: Retrieval-Augmented Generation](docs/phase37/)
 python src/phase37/phase37_rag.py
 
-# Phase 38: Scaling Laws & Compute-Optimal Training
+# [Phase 38: Scaling Laws & Compute-Optimal Training](docs/phase38/)
 python src/phase38/phase38_scaling_laws.py
 
-# Phase 39: Knowledge Distillation
+# [Phase 39: Knowledge Distillation](docs/phase39/)
 python src/phase39/phase39_knowledge_distillation.py
 
-# Phase 40: Flow Matching & Diffusion Transformers
+# [Phase 40: Flow Matching & Diffusion Transformers](docs/phase40/)
 python src/phase40/phase40_flow_matching.py
 
-# Phase 41: Vision-Language Instruction Tuning
+# [Phase 41: Vision-Language Instruction Tuning](docs/phase41/)
 python src/phase41/phase41_vlm.py
 
-# Phase 42: Reasoning with Verifiable Rewards
+# [Phase 42: Reasoning with Verifiable Rewards](docs/phase42/)
 python src/phase42/phase42_verifiable_rewards.py
 
-# Phase 43: Model Merging & Ensembles
+# [Phase 43: Model Merging & Ensembles](docs/phase43/)
 python src/phase43/phase43_model_merging.py
 
-# Phase 44: Long Context & Position Interpolation
+# [Phase 44: Long Context & Position Interpolation](docs/phase44/)
 python src/phase44/phase44_long_context.py
 
-# Phase 45: Quantization & GGUF
+# [Phase 45: Quantization & GGUF](docs/phase45/)
 python src/phase45/phase45_quantization.py
 
-# Phase 46: Mechanistic Interpretability
+# [Phase 46: Mechanistic Interpretability](docs/phase46/)
 python src/phase46/phase46_mechanistic_interpretability.py
 
-# Phase 47: Synthetic Data & Self-Improvement
+# [Phase 47: Synthetic Data & Self-Improvement](docs/phase47/)
 python src/phase47/phase47_synthetic_data.py
 
-# Phase 48: Test-Time Training
+# [Phase 48: Test-Time Training](docs/phase48/)
 python src/phase48/phase48_test_time_training.py
 
-# Phase 49: Advanced Optimizers
+# [Phase 49: Advanced Optimizers](docs/phase49/)
 python src/phase49/phase49_advanced_optimizers.py
 
-# Phase 50: Self-Supervised Learning
+# [Phase 50: Self-Supervised Learning](docs/phase50/)
 python src/phase50/phase50_self_supervised_learning.py
 
-# Phase 51: Evaluation Metrics
+# [Phase 51: Evaluation Metrics](docs/phase51/)
 python src/phase51/phase51_evaluation_metrics.py
 
-# Phase 52: Data Augmentation & Tokenization
+# [Phase 52: Data Augmentation & Tokenization](docs/phase52/)
 python src/phase52/phase52_data_augmentation.py
 
-# Phase 53: Classical Reinforcement Learning
+# [Phase 53: Classical Reinforcement Learning](docs/phase53/)
 python src/phase53/phase53_classical_rl.py
 
-# Phase 54: Graph Neural Networks
+# [Phase 54: Graph Neural Networks](docs/phase54/)
 python src/phase54/phase54_graph_neural_networks.py
 
-# Phase 55: Distributed Training
+# [Phase 55: Distributed Training](docs/phase55/)
 python src/phase55/phase55_distributed_training.py
 
-# Phase 56: Gradient Boosting
+# [Phase 56: Gradient Boosting](docs/phase56/)
 python src/phase56/phase56_gradient_boosting.py
 
-# Phase 57: Adversarial Robustness
+# [Phase 57: Adversarial Robustness](docs/phase57/)
 python src/phase57/phase57_adversarial_robustness.py
 
-# Phase 58: Time Series Forecasting
+# [Phase 58: Time Series Forecasting](docs/phase58/)
 python src/phase58/phase58_time_series_forecasting.py
 
-# Phase 59: Federated Learning
+# [Phase 59: Federated Learning](docs/phase59/)
 python src/phase59/phase59_federated_learning.py
 
-# Phase 60: Bayesian Neural Networks
+# [Phase 60: Bayesian Neural Networks](docs/phase60/)
 python src/phase60/phase60_bayesian_neural_networks.py
 
-# Phase 61: AutoML & Hyperparameter Search
+# [Phase 61: AutoML & Hyperparameter Search](docs/phase61/)
 python src/phase61/phase61_automl.py
 
-# Phase 62: Active Learning
+# [Phase 62: Active Learning](docs/phase62/)
 python src/phase62/phase62_active_learning.py
 
-# Phase 63: Dataset Curation for Fine-Tuning
+# [Phase 63: Dataset Curation for Fine-Tuning](docs/phase63/)
 python src/phase63/phase63_dataset_curation.py
 
-# Phase 64: Practical SFT with LoRA (Colab)
+# [Phase 64: Practical SFT with LoRA (Colab)](docs/phase64/)
 # Upload src/phase64/phase64_sft_lora_colab.py to Colab T4
 
-# Phase 65: QLoRA & Memory-Efficient Training (Colab)
+# [Phase 65: QLoRA & Memory-Efficient Training (Colab)](docs/phase65/)
 # Upload src/phase65/phase65_qlora_colab.py to Colab T4
 
-# Phase 66: Preference Alignment DPO & ORPO (Colab)
+# [Phase 66: Preference Alignment DPO & ORPO (Colab)](docs/phase66/)
 # Upload src/phase66/phase66_dpo_orpo_colab.py to Colab T4
 
-# Phase 67: Jailbreaking — Basic Attacks
+# [Phase 67: Jailbreaking — Basic Attacks](docs/phase67/)
 python src/phase67/phase67_jailbreak_basic.py
 
-# Phase 67: Jailbreaking — Basic Attacks (Colab)
+# [Phase 67: Jailbreaking — Basic Attacks (Colab)](docs/phase67/)
 # Upload src/phase67/phase67_jailbreak_basic_colab.py to Colab T4
 
-# Phase 68: Jailbreaking — Advanced GCG & AutoDAN
+# [Phase 68: Jailbreaking — Advanced GCG & AutoDAN](docs/phase68/)
 python src/phase68/phase68_jailbreak_advanced.py
 
-# Phase 68: Jailbreaking — Advanced GCG & AutoDAN (Colab)
+# [Phase 68: Jailbreaking — Advanced GCG & AutoDAN (Colab)](docs/phase68/)
 # Upload src/phase68/phase68_jailbreak_advanced_colab.py to Colab T4
 
-# Phase 69: Red-Teaming & Safety Evaluation (Colab)
+# [Phase 69: Red-Teaming & Safety Evaluation (Colab)](docs/phase69/)
 # Upload src/phase69/phase69_red_teaming_colab.py to Colab T4
 
-# Phase 70: Domain Adaptation — Custom Assistants
+# [Phase 70: Domain Adaptation — Custom Assistants](docs/phase70/)
 python src/phase70/phase70_domain_adaptation.py
 
-# Phase 70: Domain Adaptation — Custom Assistants (Colab)
+# [Phase 70: Domain Adaptation — Custom Assistants (Colab)](docs/phase70/)
 # Upload src/phase70/phase70_domain_adaptation_colab.py to Colab T4
 
-# Phase 71: Inference & Deployment (Colab)
+# [Phase 71: Inference & Deployment (Colab)](docs/phase71/)
 # Upload src/phase71/phase71_inference_deployment_colab.py to Colab T4
 
-# Phase 72: Real Agents with Tool Use (Colab)
+# [Phase 72: Real Agents with Tool Use (Colab)](docs/phase72/)
 # Upload src/phase72/phase72_real_agents_colab.py to Colab T4
 ```
 

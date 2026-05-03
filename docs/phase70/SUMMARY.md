@@ -1,3 +1,7 @@
+← [Previous: Phase 69: Red-Teaming & Safety Evaluation](docs/phase69/SUMMARY.md) | [Next: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) →
+
+---
+
 ## Phase 70: Domain Adaptation — Building Custom Assistants
 
 ---
@@ -40,3 +44,7 @@ Now that we can build domain-specific assistants, how do we serve them to real u
 - `src/phase70/phase70_domain_adaptation.py`
 - `src/phase70/phase70_domain_adaptation_colab.py`
 - `src/phase70/domain_adaptation.png`
+
+---
+
+← [Previous: Phase 69: Red-Teaming & Safety Evaluation](docs/phase69/SUMMARY.md) | [Next: Phase 71: Inference & Deployment](docs/phase71/SUMMARY.md) →

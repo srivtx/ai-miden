@@ -1,3 +1,7 @@
+← [Previous: Phase 14: LSTMs](docs/phase14/SUMMARY.md) | [Next: Phase 16: Seq2Seq](docs/phase16/SUMMARY.md) →
+
+---
+
 # Phase 15 Summary: Word Embeddings — Giving Words Meaning
 
 ## What This Phase Taught
@@ -34,3 +38,7 @@ Phase 14 built LSTMs that process sequences of one-hot vectors. Phase 15 replace
 ## Connection to Next Phase
 
 Phase 16 asks: "How do I translate a sentence when input and output have different lengths?" We will build an Encoder-Decoder architecture.
+
+---
+
+← [Previous: Phase 14: LSTMs](docs/phase14/SUMMARY.md) | [Next: Phase 16: Seq2Seq](docs/phase16/SUMMARY.md) →

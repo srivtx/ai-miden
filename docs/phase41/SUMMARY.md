@@ -1,3 +1,7 @@
+← [Previous: Phase 40: Flow Matching & Diffusion Transformers](docs/phase40/SUMMARY.md) | [Next: Phase 42: Reasoning with Verifiable Rewards](docs/phase42/SUMMARY.md) →
+
+---
+
 ## Phase 41 Summary: Vision-Language Instruction Tuning (LLaVA)
 
 **The Question:** "You have a model that sees images and a model that writes text. How do you connect them so a user can ask 'What color is the cat in this image?' and get a real answer?"
@@ -62,3 +66,7 @@
 ### What You Should Remember
 
 > **A VLM is like a translator at an art museum.** The security camera (vision encoder) sees the painting. The translator (projection layer) converts visual notes into words. The tour guide (language model) speaks to visitors about what they see. Without the translator, the guide is blind.
+
+---
+
+← [Previous: Phase 40: Flow Matching & Diffusion Transformers](docs/phase40/SUMMARY.md) | [Next: Phase 42: Reasoning with Verifiable Rewards](docs/phase42/SUMMARY.md) →

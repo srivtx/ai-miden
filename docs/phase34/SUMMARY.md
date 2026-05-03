@@ -1,3 +1,7 @@
+← [Previous: Phase 33: Mixture of Experts](docs/phase33/SUMMARY.md) | [Next: Phase 35: LoRA & Parameter-Efficient Fine-Tuning](docs/phase35/SUMMARY.md) →
+
+---
+
 ## Phase 34 Summary: Mamba & State Space Models
 
 **The Question:** "Transformers use O(N²) attention. For long sequences, this is impossibly expensive. Is there a way to process sequences in linear time while maintaining Transformer-quality results?"
@@ -69,3 +73,7 @@
 ### What You Should Remember
 
 > **Mamba is a selective state space model.** It maintains a running summary. When it reads each token, it decides: "This is important, add it to my summary" or "This is detail, ignore it." The summary is small and fixed-size, no matter how long the book.
+
+---
+
+← [Previous: Phase 33: Mixture of Experts](docs/phase33/SUMMARY.md) | [Next: Phase 35: LoRA & Parameter-Efficient Fine-Tuning](docs/phase35/SUMMARY.md) →

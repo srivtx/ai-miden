@@ -1,3 +1,7 @@
+← [Previous: Phase 34: Mamba & State Space Models](docs/phase34/SUMMARY.md) | [Next: Phase 36: Speculative Decoding](docs/phase36/SUMMARY.md) →
+
+---
+
 ## Phase 35 Summary: LoRA & Parameter-Efficient Fine-Tuning
 
 **The Question:** "Fine-tuning a 70B model requires a terabyte of GPU memory. How do you adapt giant models without updating billions of parameters?"
@@ -67,3 +71,7 @@
 ### What You Should Remember
 
 > **LoRA is like interchangeable drill bits.** The drill motor (base model) is powerful, expensive, and shared. The bit (adapter) is tiny, cheap, and task-specific. You do not buy a new drill for every material — you swap the bit.
+
+---
+
+← [Previous: Phase 34: Mamba & State Space Models](docs/phase34/SUMMARY.md) | [Next: Phase 36: Speculative Decoding](docs/phase36/SUMMARY.md) →

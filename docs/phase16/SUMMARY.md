@@ -1,3 +1,7 @@
+← [Previous: Phase 15: Word Embeddings](docs/phase15/SUMMARY.md) | [Next: Phase 17: Attention](docs/phase17/SUMMARY.md) →
+
+---
+
 # Phase 16 Summary: Seq2Seq — Encoder-Decoder Architecture
 
 ## What This Phase Taught
@@ -35,3 +39,7 @@ Phase 15 gave us word embeddings. Phase 16 uses those embeddings in an encoder-d
 ## Connection to Next Phase
 
 Phase 17 asks: "The thought vector is a bottleneck. For long sentences, information gets lost. How can the decoder focus on relevant input words?" The answer: Attention.
+
+---
+
+← [Previous: Phase 15: Word Embeddings](docs/phase15/SUMMARY.md) | [Next: Phase 17: Attention](docs/phase17/SUMMARY.md) →

@@ -1,3 +1,7 @@
+← [Previous: Phase 54: Graph Neural Networks](docs/phase54/SUMMARY.md) | [Next: Phase 56: Gradient Boosting](docs/phase56/SUMMARY.md) →
+
+---
+
 ## Phase 55: Distributed Training
 
 ---
@@ -35,3 +39,7 @@ Now that we can train across many machines, what if we want models that combine 
 - `docs/phase55/SUMMARY.md`
 - `src/phase55/phase55_distributed_training.py`
 - `src/phase55/distributed_training.png`
+
+---
+
+← [Previous: Phase 54: Graph Neural Networks](docs/phase54/SUMMARY.md) | [Next: Phase 56: Gradient Boosting](docs/phase56/SUMMARY.md) →

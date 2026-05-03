@@ -1,3 +1,7 @@
+← [Previous: Phase 46: Mechanistic Interpretability](docs/phase46/SUMMARY.md) | [Next: Phase 48: Test-Time Training](docs/phase48/SUMMARY.md) →
+
+---
+
 ## Phase 47: Synthetic Data & Self-Improvement
 
 ---
@@ -50,3 +54,7 @@ Now that models can improve themselves with synthetic data, can they also adapt 
 - `src/phase47/phase47_synthetic_data.py`
 - `src/phase47/phase47_synthetic_data_colab.py`
 - `src/phase47/synthetic_data.png`
+
+---
+
+← [Previous: Phase 46: Mechanistic Interpretability](docs/phase46/SUMMARY.md) | [Next: Phase 48: Test-Time Training](docs/phase48/SUMMARY.md) →

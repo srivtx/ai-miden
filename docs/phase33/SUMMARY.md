@@ -1,3 +1,7 @@
+← [Previous: Phase 32: Foundation Models & The Future](docs/phase32/SUMMARY.md) | [Next: Phase 34: Mamba & State Space Models](docs/phase34/SUMMARY.md) →
+
+---
+
 ## Phase 33 Summary: Mixture of Experts
 
 **The Question:** "Bigger models are better, but training a dense trillion-parameter model is impossibly expensive. How do you get huge model capacity without paying for every parameter on every forward pass?"
@@ -68,3 +72,7 @@
 ### What You Should Remember
 
 > **MoE is not an ensemble.** An ensemble runs all models. MoE runs only k experts per token. The hospital has 100 doctors, but each patient sees only 2.
+
+---
+
+← [Previous: Phase 32: Foundation Models & The Future](docs/phase32/SUMMARY.md) | [Next: Phase 34: Mamba & State Space Models](docs/phase34/SUMMARY.md) →
