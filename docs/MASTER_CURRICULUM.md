@@ -663,6 +663,25 @@ Each phase has:
 
 ---
 
+## Phase 34: Mamba & State Space Models (COMPLETED)
+
+**The Question:** "Transformers use O(N²) attention. For long sequences, this is impossibly expensive. Is there a way to process sequences in linear time while maintaining Transformer-quality results?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| State Space Model (SSM) | Compressed state summary updated linearly per step | Note-taker maintaining a running summary instead of transcribing every word |
+| Selectivity | Input-dependent gating for content-aware filtering | Security guard who sizes people up and writes detailed notes only for important visitors |
+| Parallel Scan | Parallelizing sequential recurrences via tree reduction | Team of accountants computing running totals in log(N) parallel steps |
+| Mamba | Selective SSM with hardware-aware parallel training | Elite executive assistant who maintains a concise, high-quality summary of every meeting |
+
+**Why It Is Needed:** Mamba is the first sub-quadratic architecture to genuinely compete with Transformers on language. It removes the KV cache entirely, enabling million-token contexts with constant memory.
+
+**What We Build:** A simplified selective SSM that learns to filter important impulses from noise. We compare training loss, memory usage, and scaling against a non-selective baseline and Transformer attention.
+
+**Connects To:** Phase 35 (Mamba scales sequence length. How do we fine-tune huge models without full retraining?)
+
+---
+
 ## The Visual Dependency Graph
 
 ```
@@ -705,9 +724,10 @@ PHASE 27-28: AGENTS & MULTIMODAL
 PHASE 29-31: CREATING DATA
   ├─ VAEs → GANs → Diffusion
   │
-PHASE 32-33: THE FUTURE & SCALING
+PHASE 32-34: THE FUTURE & SCALING
   ├─ Foundation Models, World Models
-  └─ Mixture of Experts (Sparse Activation)
+  ├─ Mixture of Experts (Sparse Activation)
+  └─ Mamba & State Space Models (Linear Time)
 ```
 
 ---
@@ -716,18 +736,18 @@ PHASE 32-33: THE FUTURE & SCALING
 
 | Metric | Count |
 |---|---|
-| Total Phases | 34 (0-33) |
-| Concepts Covered | 124+ |
-| Code Projects | 30 (Phases 5-33, plus 0-4 done) |
+| Total Phases | 35 (0-34) |
+| Concepts Covered | 128+ |
+| Code Projects | 31 (Phases 5-34, plus 0-4 done) |
 | Research Documents | 4 deep-dive research files |
-| Estimated Lines of Documentation | 16,000+ |
-| Estimated Lines of Code | 5,500+ |
+| Estimated Lines of Documentation | 17,000+ |
+| Estimated Lines of Code | 6,000+ |
 
 ---
 
 ## The Promise
 
-By the end of Phase 33, the student will:
+By the end of Phase 34, the student will:
 - Understand EVERY major AI architecture from first principles
 - Have built EVERY architecture from scratch in NumPy
 - Know WHY each invention was necessary
