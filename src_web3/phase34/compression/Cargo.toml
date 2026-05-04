@@ -1,0 +1,12 @@
+[package]
+name = "compression"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+solana-program = "1.17.0"
+spl-account-compression = "0.2"
+borsh = "0.10"
+
+[lib]
+crate-type = ["cdylib", "lib"]
