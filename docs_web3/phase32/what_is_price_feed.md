@@ -1,19 +1,28 @@
 # What Is a Price Feed
 
-## Why It Exists
+## The Problem
 
-Decentralized applications that lend, borrow, or swap assets must know the relative value of tokens.
-Without this knowledge, a lending protocol could allow a borrower to withdraw far more than their collateral is worth.
-A price feed aggregates market data and delivers it on-chain so smart contracts can make value-based decisions automatically.
-It provides the continuous updates necessary for liquidations, margin calls, and fair exchange rates.
-Without reliable price feeds, DeFi protocols would collapse under the weight of inaccurate valuations.
+Smart contracts cannot observe markets on their own. They need an external signal that tells them what one asset is worth relative to another. The naive solution is to let a contract query a single exchange API, but this reintroduces centralization and creates a fatal vulnerability. If that exchange suffers a flash crash, gets hacked, or simply goes offline for maintenance, the contract acts on corrupted data. In a lending protocol, a single bad price can trigger mass liquidations of healthy positions or allow underwater borrowers to escape unscathed. Both outcomes destroy lender capital and erode trust in the entire system.
+
+The problem intensifies at scale. A protocol handling billions of dollars in collateral cannot afford even a few seconds of stale pricing during volatile markets. Yet pushing data on-chain costs transaction fees, so updating every block is economically impractical. There is a constant tension between freshness and cost, between precision and gas efficiency. Without a standardized, robust mechanism for delivering market data, DeFi protocols are forced to build bespoke data pipelines that are expensive to maintain, difficult to audit, and prone to failure under load.
 
 ## Definition
 
-A price feed is a structured stream of asset prices published by an oracle network at regular intervals.
-Each update includes the price, a confidence interval, a timestamp, and a cryptographic proof of authenticity.
-The feed may trigger on significant market movements or on a fixed time schedule.
-Smart contracts consume this stream to maintain accurate internal accounting of asset values.
+A price feed is a structured, time-stamped stream of asset prices delivered to a blockchain by an oracle network. Each update contains the aggregated price of a trading pair, a confidence interval that quantifies the spread between sources, a timestamp or slot number indicating when the data was collected, and cryptographic proof that the value passed through a validated aggregation process. The feed triggers updates either on a fixed schedule or when the market price deviates beyond a predetermined threshold from the last published value.
+
+## How It Works (Step-by-Step)
+
+1. **Data Sources Report Raw Trade Prices.** Independent market venues such as centralized exchanges, decentralized AMM pools, and over-the-counter desks each publish their own last-traded price for a given asset pair. Because order books differ in depth, liquidity, and geographic location, these raw prices naturally diverge by small amounts.
+
+2. **Oracle Nodes Collect and Timestamp Reports.** Nodes in the oracle network fetch these raw values from multiple sources simultaneously. Each node records the exact time or blockchain slot when the sample was taken and performs basic sanity checks, such as verifying that the price is positive and that the source responded within an acceptable window.
+
+3. **Outlier Detection Removes Anomalous Values.** The network compares all collected prices and discards values that deviate significantly from the statistical cluster. A common method is to calculate the median and reject any source whose price differs by more than a fixed percentage, such as one or two percent. This step neutralizes flash crashes, exchange outages, and deliberate manipulation attempts on thin markets.
+
+4. **Aggregation Computes the Final Price.** The remaining valid prices are sorted, and the median is selected as the final value. The median is preferred over the mean because it is robust: a single extreme value cannot skew the result. Some feeds use a confidence-weighted average if sources have known reliability scores.
+
+5. **Cryptographic Signing Bundles the Result.** The aggregated price, the confidence interval, the timestamp, and the identity of the aggregating nodes are packaged into a signed payload. The signature proves that the data passed through the network's validation rules and was not altered in transit.
+
+6. **On-Chain Delivery with Deviation or Time Triggers.** The signed update is transmitted to the blockchain. Feeds typically do not push every block; instead, they publish when the price moves beyond a deviation threshold, such as 0.5 percent, or when a maximum time interval, such as one hour, has elapsed. This balances freshness with transaction cost.
 
 ## Real-Life Analogy
 
@@ -30,38 +39,48 @@ Multiple exchanges report prices, and the feed publishes the aggregated result w
 
 ## Tiny Numeric Example
 
-A lending protocol uses a price feed to monitor collateral value:
+Five exchanges report the price of BTC in USD at the same timestamp:
 
-| Time | BTC Price | User Collateral | Borrowed | Health Factor | Action |
-|------|-----------|-----------------|----------|---------------|--------|
-| 12:00 | $30,000 | 1 BTC ($30K) | $20K USDC | 1.50 | None |
-| 12:15 | $28,500 | 1 BTC ($28.5K) | $20K USDC | 1.425 | Warning |
-| 12:30 | $25,000 | 1 BTC ($25K) | $20K USDC | 1.25 | Liquidation eligible |
-| 12:45 | $22,000 | 1 BTC ($22K) | $20K USDC | 1.10 | Liquidation triggered |
+| Source | Reported Price | Distance from Median | Included |
+|--------|---------------|---------------------|----------|
+| Exchange A | $30,020 | $5 | Yes |
+| Exchange B | $30,050 | $25 | Yes |
+| Exchange C | $30,015 | $10 | Yes |
+| Exchange D | $31,200 | $1,175 | No (outlier, exceeds 1% threshold) |
+| Exchange E | $30,025 | $0 | Yes |
 
-When the health factor drops below 1.10, the protocol automatically allows liquidation.
-The price feed updates every fifteen minutes in this example.
-If the feed were delayed by an hour, the protocol might miss the liquidation window entirely.
-This would leave the protocol undercollateralized and expose lenders to losses.
+Step 1: Sort the included prices: $30,015, $30,020, $30,025, $30,050.
+Step 2: The median of four values is the average of the second and third: ($30,020 + $30,025) / 2 = **$30,022.50**.
+Step 3: The confidence interval is half the spread of included sources: ($30,050 - $30,015) / 2 = **$17.50**.
+
+The on-chain feed publishes BTC = $30,022.50 ± $17.50. A lending protocol reading this value knows that Exchange D was discarded and that the remaining four sources agreed within roughly 0.12 percent, which is narrow enough to trust for liquidation decisions.
 
 ## Common Confusion
 
-- A price feed is not the same as a single exchange ticker.
-  It aggregates many sources to reduce single-point bias.
-- Price feeds do not update every block.
-  They push updates only when deviation thresholds or time limits are crossed.
-- The published price is not guaranteed to match what users see on Coinbase.
-  It reflects a broader market average.
-- Confidence intervals are not errors.
-  They represent the spread between sources and help contracts judge reliability.
-- Stale price feeds are not harmless.
-  Using outdated data can cause incorrect liquidations or unfair swaps.
-- Price feeds cannot predict prices.
-  They only report historical and current market snapshots.
-- Not all tokens have price feeds.
-  Exotic or low-volume assets may lack sufficient source data for aggregation.
+- A price feed is the same as a single exchange ticker displayed on a website. No. It aggregates many independent sources and discards outliers before publishing, which removes the single-point bias of any one venue.
+
+- Price feeds update on every single block without exception. No. They push updates only when deviation thresholds or time limits are crossed to manage transaction costs and network load.
+
+- The published price is guaranteed to match exactly what users see on any specific exchange like Coinbase. No. It reflects a broader market median that may differ slightly from any individual venue due to timing and liquidity differences.
+
+- Confidence intervals are just errors or mistakes in the data. No. They represent the natural spread between legitimate sources and help smart contracts judge whether the market is orderly enough to act upon.
+
+- Using a stale price feed for a few minutes is harmless because prices do not move that fast. No. Outdated data can cause incorrect liquidations, unfair swap rates, and bad debt that harms protocol solvency.
+
+- Price feeds can predict future prices based on historical patterns. No. They only report historical and current market snapshots. Any predictive value would require an entirely different statistical model.
 
 ## Key Properties
+
+- **Multi-Source Aggregation:** The final price is derived from many independent market venues, not one, which dilutes the influence of any single compromised source.
+
+- **Median Robustness:** Using the median instead of the mean ensures that extreme values, whether from flash crashes or manipulation, cannot pull the reported price in their direction.
+
+- **Bounded Staleness:** Deviation and time triggers guarantee that the on-chain price never drifts too far from reality, even during periods of low volatility.
+
+- **Cryptographic Integrity:** Each update carries a signature that smart contracts verify to confirm the data was processed by the legitimate oracle network and not forged.
+
+- **Confidence Quantification:** The confidence interval gives consuming contracts a numeric measure of market disagreement, allowing them to pause operations when spreads are too wide.
+
 ## Where It Appears in Our Code
 
 Price feed parsing and validation are handled in `src_web3/phase32/oracle/src/lib.rs`.
