@@ -28,7 +28,7 @@ Do not read all 110 phases in order unless you want to. Jump to what you need.
 | **Build production inference systems** | [Phase 129: Inference Engines](docs/phase129/) → [Phase 130: Monitoring](docs/phase130/) → [Phase 90: Serving](docs/phase90/) |
 | **Work at a frontier AI lab** | [Phase 111: FP8](docs/phase111/) → [Phase 114: R1 Pipeline](docs/phase114/) → [Phase 122: RLHF](docs/phase122/) → [Phase 128: Safety](docs/phase128/) |
 | **Build real production systems** | [Phase 151: Fine-Tuning](docs/phase151/) → [Phase 152: RAG](docs/phase152/) → [Phase 154: Inference API](docs/phase154/) → [Phase 155: Data Curation](docs/phase155/) → [Phase 158: Quantization](docs/phase158/) |
-| **Build Web3 / Solana dApps** | [Phase 0: What is Web3?](docs_web3/phase0/) → [Phase 6: First Transaction](docs_web3/phase6/) → [Phase 16: AMM](docs_web3/phase16/) → [Phase 31: DAO](docs_web3/phase31/) → [Phase 51: Complete DEX](docs_web3/phase51/) → [Phase 52: Lending Protocol](docs_web3/phase52/) → [Phase 58: Token Launchpad](docs_web3/phase58/) |
+| **Build Web3 / Solana dApps** | [Phase 0: What is Web3?](docs_web3/phase0/) → [Phase 6: First Transaction](docs_web3/phase6/) → [Phase 16: AMM](docs_web3/phase16/) → [Phase 31: DAO](docs_web3/phase31/) → [Phase 51: Complete DEX](docs_web3/phase51/) → [Phase 59: Anchor Framework](docs_web3/phase59/) → [Phase 60: Jupiter Integration](docs_web3/phase60/) → [Phase 66: Security Auditing](docs_web3/phase66/) |
 
 ---
 
@@ -167,10 +167,10 @@ Every phase follows the same structure:
 | | Count |
 |---|---|
 | AI Phases | **158** |
-| Web3 Phases | **59** |
-| Documentation files | **935** |
-| Code files | **586** |
-| Terms defined | **707** |
+| Web3 Phases | **71** |
+| Documentation files | **1017** |
+| Code files | **653** |
+| Terms defined | **743** |
 | DSA Patterns | **19** |
 | DSA Problems | **540** |
 | DSA Flashcards | **220** |
@@ -263,7 +263,9 @@ These are not magic. They are systematic ways of doing the same five things:
 
 **Real Projects (51-58)** — Complete DEX with limit orders and routing, lending protocol with liquidation bots, NFT marketplace with auctions and royalties, DAO platform with treasury and delegation, yield farm with boost NFTs and auto-compounding, cross-chain bridge with guardian network, prediction market with oracle resolution, token launchpad with tiered sales and vesting.
 
-**Web3 Core Concepts:** blockchain, hash function, proof of history, accounts model, program derived address, cross-program invocation, SPL token, associated token account, token vault, escrow, multi-signature, automated market maker, liquidity pool, impermanent loss, staking, lending, collateral, liquidation, health factor, NFT, Metaplex, upgrade authority, re-entrancy, integer overflow, account validation, flash loan, arbitrage, MEV, DAO, proposal, quorum, oracle, price feed, merkle tree, account compression, subscription, vesting, DID, quadratic voting, bridge, perpetual, option, insurance, RWA, SBT, intent, account abstraction, restaking, ZK proof, DePIN
+**Production Engineering (54v2-66)** — Real DAO with Anchor and Squads multisig, real yield farm with Token-2022 and no stubs, real bridge with Ed25519 verification, real launchpad with Jupiter routing, Anchor framework deep dive, Jupiter API integration, Helius RPC and priority fees, Token-2022 extensions, Blinks and Actions, ZK Compression with Light Protocol, Drift Protocol keeper patterns, advanced security and auditing with vulnerable vs secure code.
+
+**Web3 Core Concepts:** blockchain, hash function, proof of history, accounts model, program derived address, cross-program invocation, SPL token, associated token account, token vault, escrow, multi-signature, automated market maker, liquidity pool, impermanent loss, staking, lending, collateral, liquidation, health factor, NFT, Metaplex, upgrade authority, re-entrancy, integer overflow, account validation, flash loan, arbitrage, MEV, DAO, proposal, quorum, oracle, price feed, merkle tree, account compression, subscription, vesting, DID, quadratic voting, bridge, perpetual, option, insurance, RWA, SBT, intent, account abstraction, restaking, ZK proof, DePIN, Anchor, Jupiter, Helius, Token-2022, Blinks, ZK Compression, Drift, arbitrary CPI, closed account reuse, PDA canonicalization
 
 ---
 
