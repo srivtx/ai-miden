@@ -641,4 +641,350 @@ Through **36 phases** (0-35), you will go from "What is a blockchain?" to deploy
 9. **DeFi Deep Dive (29-30)** — Composability, flash loans
 10. **Advanced Topics (31-35)** — Governance, oracles, MEV protection, compression, deployment
 
+---
+
+## Phase 36: Subscription Payments
+
+**The Question:** "How do I charge users automatically without holding their private keys?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Subscription | Recurring, permissioned token transfers enforced by smart contract | Vending machine that dispenses weekly instead of manually |
+| Recurring Payment | Time-based automated pulls from an approved allowance | Magazine subscription that renews until cancelled |
+| Payment Stream | Continuous micro-payments based on elapsed time | Water meter: you pay for every drop as it flows |
+
+**What We Build:** An Express API that creates subscriptions, processes recurring payments, and manages cancellations.
+
+---
+
+## Phase 37: Token Vesting with Cliffs
+
+**The Question:** "How do I prevent team members from dumping all their tokens on day one?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Vesting Schedule | A timeline for gradually unlocking tokens | A pension plan that pays out monthly after retirement |
+| Cliff | A waiting period before any tokens unlock | Gym trial period: you do not get benefits until after 30 days |
+| Linear Vesting | Unlocking an equal amount per time period | A water tank that releases a steady drip every hour |
+
+**What We Build:** A vesting API that creates schedules with cliffs and linear unlocks.
+
+---
+
+## Phase 38: Decentralized Identity (DID)
+
+**The Question:** "How do I prove who I am without a government ID or Facebook account?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| DID | A self-owned identifier that does not depend on any company | A PO box you control, not an address at your parents' house |
+| Verifiable Credential | A signed statement that can be cryptographically checked | A digital diploma with a QR code that universities can scan |
+| Self-Sovereign Identity | You control your own identity data | Carrying your own wallet instead of leaving it at the bank |
+
+**What We Build:** A DID API for creating identities, issuing credentials, and verifying them.
+
+---
+
+## Phase 39: Quadratic Voting
+
+**The Question:** "How do I let people vote according to how much they care, not how rich they are?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Quadratic Voting | Cost of votes grows quadratically so one person cannot dominate | Town hall where passionate residents get a microphone, but buying 100 microphones costs 10,000x |
+| Voice Credits | A budget of credits you can spend across proposals | Concert tickets: you have a fixed budget to distribute across bands |
+| Sybil Resistance | Preventing fake identities from gaming the system | Requiring a real ID at the polling station |
+
+**What We Build:** A quadratic voting API with voice credit allocation and anti-sybil checks.
+
+---
+
+## Phase 40: Cross-Chain Bridges
+
+**The Question:** "How do I move tokens from Solana to Ethereum without a centralized exchange?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Cross-Chain | Moving assets between different blockchains | Sending a package from one country to another |
+| Wormhole | A specific protocol for cross-chain messaging | A diplomatic courier with sealed envelopes |
+| Token Bridge | Locking tokens on one chain and minting equivalents on another | Coat check: they hold your coat and give you a ticket |
+
+**What We Build:** A bridge API that locks, mints, burns, and releases tokens across chains.
+
+---
+
+## Phase 41: Perpetual Futures
+
+**The Question:** "How do I bet on the price of SOL going up without ever holding SOL?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Perpetual | A futures contract with no expiration date | Renting a house indefinitely instead of buying |
+| Funding Rate | A periodic payment between longs and shorts to keep price aligned | A rent adjustment that keeps the lease fair |
+| Leverage | Borrowing to control a larger position with less capital | A mortgage: $50K down to control a $500K house |
+
+**What We Build:** A perpetual futures API with funding rate calculations and liquidation logic.
+
+---
+
+## Phase 42: Options Protocol
+
+**The Question:** "How do I buy the right (but not the obligation) to buy SOL at a fixed price later?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Option | A contract giving the right to buy or sell at a set price | A reservation at a restaurant: you can show up, but you do not have to |
+| Call / Put | Call = right to buy; Put = right to sell | Concert ticket (call) vs insurance policy (put) |
+| Implied Volatility | The market's expectation of future price swings | The weather forecast's uncertainty band |
+
+**What We Build:** An options API for creating, exercising, and settling call/put contracts.
+
+---
+
+## Phase 43: Insurance Protocol
+
+**The Question:** "How do I get paid automatically if a DeFi protocol gets hacked?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Insurance | Pooling premiums to cover rare but catastrophic losses | A neighborhood fund where everyone pitches in for fire damage |
+| Premium Pool | Collected premiums earning yield while waiting for claims | A savings account that pays out when disaster strikes |
+| Claim Verification | Verifying that a loss actually occurred before paying | An adjuster inspecting your car before the insurer pays |
+
+**What We Build:** An insurance API with premium pools and automated claim verification.
+
+---
+
+## Phase 44: RWA Tokenization
+
+**The Question:** "How do I own a fraction of a building or a bond on the blockchain?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| RWA | Real-world assets represented as blockchain tokens | A stock certificate, but digital and programmable |
+| Tokenized Asset | A divisible digital representation of physical property | A cruise ship where each cabin is a separate NFT |
+| Compliance | Ensuring token transfers follow legal rules | A club bouncer checking IDs at the door |
+
+**What We Build:** An RWA API for tokenizing assets with compliance checks.
+
+---
+
+## Phase 45: Soulbound Tokens
+
+**The Question:** "How do I issue credentials that cannot be sold or transferred?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Soulbound Token | A non-transferable token representing reputation or achievement | A university degree: it belongs to you and cannot be sold |
+| Non-Transferable | Tokens locked to the original recipient | A tattoo: permanently attached |
+| Reputation | A composable score built from on-chain history | A credit score built from payment history |
+
+**What We Build:** An SBT API for minting non-transferable reputation tokens.
+
+---
+
+## Phase 46: Intent-Based Architecture
+
+**The Question:** "How do users just say what they want instead of crafting every transaction manually?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Intent | A high-level declaration of desired outcome | Telling a travel agent "I want to go to Paris" instead of booking every flight segment yourself |
+| Solver | A program that finds the best path to fulfill an intent | The travel agent who searches all airlines |
+| Batch Auction | Grouping intents and settling them together for better prices | A group-buy where everyone gets the bulk discount |
+
+**What We Build:** An intent API where users submit goals and solvers compete to fulfill them.
+
+---
+
+## Phase 47: Account Abstraction
+
+**The Question:** "How do I use a smart contract as my wallet so I can recover it if I lose my key?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Account Abstraction | Every account is a smart contract with custom logic | A safe deposit box with custom rules instead of a simple key |
+| Smart Contract Wallet | A wallet program with recovery, multisig, and spending limits | A family bank account with parental controls |
+| Paymaster | A service that pays gas fees on behalf of users | A company credit card for employee expenses |
+
+**What We Build:** An account abstraction API with smart contract wallets and paymaster support.
+
+---
+
+## Phase 48: Restaking / EigenLayer
+
+**The Question:** "How do I use my staked ETH to secure other protocols and earn extra yield?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| Restaking | Reusing staked capital to secure additional protocols | A security guard working two shifts at different buildings |
+| EigenLayer | A middleware that enables restaking on Ethereum | A temp agency that places security guards at multiple sites |
+| Slashing | Penalty for misbehavior that causes economic loss | Docking a guard's pay for sleeping on the job |
+
+**What We Build:** A restaking API for delegating stake to multiple protocols with slashing rules.
+
+---
+
+## Phase 49: ZK Proofs for Privacy
+
+**The Question:** "How do I prove I am over 18 without revealing my birth date?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| ZK Proof | Proving a statement is true without revealing the underlying data | Proving you solved a Sudoku by showing only the corner numbers |
+| Zero Knowledge | The verifier learns nothing beyond the truth of the statement | A magician's trick: you know it worked, but you do not know how |
+| ZK-SNARK | A compact, fast-to-verify zero-knowledge proof | A stamped passport: small, quick to check, hard to forge |
+
+**What We Build:** A ZK privacy API for generating and verifying zero-knowledge proofs.
+
+---
+
+## Phase 50: DePIN
+
+**The Question:** "How do I build a cellular network or weather station network that is owned by its users?"
+
+| Concept | Why It Exists | Analogy |
+|---|---|---|
+| DePIN | Decentralized physical infrastructure networks | A ride-sharing network where drivers own the platform |
+| Proof of Location | Cryptographically proving where a device is | A GPS timestamp signed by satellites |
+| Decentralized Storage | Storing files across many nodes instead of one server | A library where every patron keeps a copy of one book |
+
+**What We Build:** A DePIN API for registering physical devices and verifying their contributions.
+
+---
+
+## Phase 51: Real Project — Complete DEX
+
+**The Question:** "How do I build a Uniswap-level decentralized exchange from scratch?"
+
+**What We Build:**
+- AMM pool program with constant product formula
+- Limit order book program for precise price execution
+- Swap router for multi-hop price optimization
+- Express API wrapping all operations
+- Deploy script for devnet
+
+**Architecture:** See `docs_web3/phase51/ARCHITECTURE.md`
+
+---
+
+## Phase 52: Real Project — Complete Lending Protocol
+
+**The Question:** "How do I build an Aave-style lending protocol with automatic liquidations?"
+
+**What We Build:**
+- Lending program with deposit, borrow, repay, and withdraw
+- Interest rate model based on utilization
+- Price oracle for collateral valuation
+- Liquidation bot that monitors health factors
+- Express API and deploy script
+
+**Architecture:** See `docs_web3/phase52/ARCHITECTURE.md`
+
+---
+
+## Phase 53: Real Project — Complete NFT Marketplace
+
+**The Question:** "How do I build an OpenSea-style marketplace with auctions and royalties?"
+
+**What We Build:**
+- Marketplace program with fixed-price listings and offers
+- English and Dutch auction engine
+- Escrow program for holding NFTs and payments
+- Automatic royalty distribution on every sale
+- Express API and deploy script
+
+**Architecture:** See `docs_web3/phase53/ARCHITECTURE.md`
+
+---
+
+## Phase 54: Real Project — Complete DAO Platform
+
+**The Question:** "How do I build a MakerDAO-style governance system with treasury control?"
+
+**What We Build:**
+- Governance program for proposals, voting, and delegation
+- Treasury program with multi-sig spending limits
+- Timelock execution for safety
+- Express API for all governance operations
+- Deploy script
+
+**Architecture:** See `docs_web3/phase54/ARCHITECTURE.md`
+
+---
+
+## Phase 55: Real Project — Complete Yield Farm
+
+**The Question:** "How do I build a Compound-style yield farming system with boost NFTs?"
+
+**What We Build:**
+- Farm program with multi-pool staking and reward accrual
+- Boost NFT program for reward multipliers
+- Auto-compounding service that harvests and restakes
+- Express API and deploy script
+
+**Architecture:** See `docs_web3/phase55/ARCHITECTURE.md`
+
+---
+
+## Phase 56: Real Project — Complete Cross-Chain Bridge
+
+**The Question:** "How do I build a Wormhole-style bridge with guardian validation?"
+
+**What We Build:**
+- Bridge program for lock, mint, burn, and release
+- Guardian registry program with stake and slashing
+- Relayer service that monitors and submits proofs
+- Fee mechanism and Express API
+- Deploy script
+
+**Architecture:** See `docs_web3/phase56/ARCHITECTURE.md`
+
+---
+
+## Phase 57: Real Project — Complete Prediction Market
+
+**The Question:** "How do I build a Polymarket-style prediction market with automated settlement?"
+
+**What We Build:**
+- Market program with YES/NO share minting and AMM pricing
+- Oracle resolution program with trusted signers
+- Liquidity provision and removal
+- Automated claim and settlement
+- Express API and deploy script
+
+**Architecture:** See `docs_web3/phase57/ARCHITECTURE.md`
+
+---
+
+## Phase 58: Real Project — Complete Token Launchpad
+
+**The Question:** "How do I build a Binance Launchpad-style platform for fair token sales?"
+
+**What We Build:**
+- Launchpad program with tiered whitelist and token sales
+- Vesting program with cliff and linear unlock
+- Refund mechanism if soft cap is not met
+- Express API for project registration and participation
+- Deploy script
+
+**Architecture:** See `docs_web3/phase58/ARCHITECTURE.md`
+
+---
+
+## Summary
+
+Through **59 phases** (0-58), you will go from "What is a blockchain?" to deploying production-grade DeFi protocols:
+
+1. **Web3 Foundations (0-5)** — Blockchain, cryptography, Solana architecture, accounts, dev environment
+2. **First Transactions (6-10)** — Sending SOL, reading blockchain data, writing programs, state storage, PDAs
+3. **Token Projects (11-15)** — Cross-program invocation, SPL tokens, vault, escrow, multi-sig
+4. **DeFi Primitives (16-20)** — AMM, liquidity pools, staking, lending, time-locked vaults
+5. **NFTs & Operations (21-25)** — Minting, marketplaces, upgrades, security, testing
+6. **Backend APIs (26-30)** — RPC services, indexing, payment gateways, composability, flash loans
+7. **Advanced Topics (31-35)** — Governance, oracles, MEV protection, compression, deployment
+8. **DeFi Advanced (36-45)** — Subscriptions, vesting, DIDs, quadratic voting, bridges, perps, options, insurance, RWA, SBTs
+9. **Infrastructure (46-50)** — Intents, account abstraction, restaking, ZK proofs, DePIN
+10. **Real Projects (51-58)** — DEX, lending, NFT marketplace, DAO, yield farm, bridge, prediction market, launchpad
+
 **This is not a tutorial. This is a complete education in Solana backend development.**

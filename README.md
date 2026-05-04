@@ -28,7 +28,7 @@ Do not read all 110 phases in order unless you want to. Jump to what you need.
 | **Build production inference systems** | [Phase 129: Inference Engines](docs/phase129/) → [Phase 130: Monitoring](docs/phase130/) → [Phase 90: Serving](docs/phase90/) |
 | **Work at a frontier AI lab** | [Phase 111: FP8](docs/phase111/) → [Phase 114: R1 Pipeline](docs/phase114/) → [Phase 122: RLHF](docs/phase122/) → [Phase 128: Safety](docs/phase128/) |
 | **Build real production systems** | [Phase 151: Fine-Tuning](docs/phase151/) → [Phase 152: RAG](docs/phase152/) → [Phase 154: Inference API](docs/phase154/) → [Phase 155: Data Curation](docs/phase155/) → [Phase 158: Quantization](docs/phase158/) |
-| **Build Web3 / Solana dApps** | [Phase 0: What is Web3?](docs_web3/phase0/) → [Phase 6: First Transaction](docs_web3/phase6/) → [Phase 13: Token Vault](docs_web3/phase13/) → [Phase 16: AMM](docs_web3/phase16/) → [Phase 26: RPC API](docs_web3/phase26/) |
+| **Build Web3 / Solana dApps** | [Phase 0: What is Web3?](docs_web3/phase0/) → [Phase 6: First Transaction](docs_web3/phase6/) → [Phase 16: AMM](docs_web3/phase16/) → [Phase 31: DAO](docs_web3/phase31/) → [Phase 51: Complete DEX](docs_web3/phase51/) → [Phase 52: Lending Protocol](docs_web3/phase52/) → [Phase 58: Token Launchpad](docs_web3/phase58/) |
 
 ---
 
@@ -69,11 +69,11 @@ ai-miden/
 ├── src/                            # AI Code (158 phases)
 │   ├── phase0/ ... phase158/       # Each phase: NumPy demo + optional Colab script
 │   └── ...
-├── docs_web3/                      # Web3 / Solana Course (36 phases)
-│   ├── phase0/ ... phase35/        # Each phase: what_is_*.md docs + SUMMARY.md
-│   └── MASTER_CURRICULUM.md        # Full 36-phase Web3 roadmap
-├── src_web3/                       # Web3 Code (36 phases)
-│   ├── phase0/ ... phase35/        # Rust programs + TypeScript APIs
+├── docs_web3/                      # Web3 / Solana Course (59 phases)
+│   ├── phase0/ ... phase58/        # Each phase: what_is_*.md docs + SUMMARY.md
+│   └── MASTER_CURRICULUM.md        # Full 59-phase Web3 roadmap
+├── src_web3/                       # Web3 Code (59 phases)
+│   ├── phase0/ ... phase58/        # Rust programs + TypeScript APIs
 │   └── package.json                # Node.js dependencies
 ├── docs_dsa/                       # DSA Interview Prep (separate module)
 │   ├── START_HERE.md               # Navigate the DSA system
@@ -167,9 +167,9 @@ Every phase follows the same structure:
 | | Count |
 |---|---|
 | AI Phases | **158** |
-| Web3 Phases | **36** |
-| Documentation files | **669** |
-| Code files | **276** |
+| Web3 Phases | **59** |
+| Documentation files | **~950** |
+| Code files | **~380** |
 | Terms defined | **603** |
 | DSA Patterns | **18** |
 | DSA Problems | **540** |
@@ -257,7 +257,13 @@ These are not magic. They are systematic ways of doing the same five things:
 
 **Advanced Topics (31-35)** — DAO governance, oracle integration, MEV protection, account compression, production deployment.
 
-**Web3 Core Concepts:** blockchain, hash function, proof of history, accounts model, program derived address, cross-program invocation, SPL token, associated token account, token vault, escrow, multi-signature, automated market maker, liquidity pool, impermanent loss, staking, lending, collateral, liquidation, health factor, NFT, Metaplex, upgrade authority, re-entrancy, integer overflow, account validation, flash loan, arbitrage, MEV, DAO, proposal, quorum, oracle, price feed, merkle tree, account compression
+**DeFi Advanced (36-45)** — Subscription payments, token vesting, decentralized identity, quadratic voting, cross-chain bridges, perpetual futures, options, insurance, RWA tokenization, soulbound tokens.
+
+**Web3 Infrastructure (46-50)** — Intent-based architecture, account abstraction, restaking, ZK proofs for privacy, DePIN.
+
+**Real Projects (51-58)** — Complete DEX with limit orders and routing, lending protocol with liquidation bots, NFT marketplace with auctions and royalties, DAO platform with treasury and delegation, yield farm with boost NFTs and auto-compounding, cross-chain bridge with guardian network, prediction market with oracle resolution, token launchpad with tiered sales and vesting.
+
+**Web3 Core Concepts:** blockchain, hash function, proof of history, accounts model, program derived address, cross-program invocation, SPL token, associated token account, token vault, escrow, multi-signature, automated market maker, liquidity pool, impermanent loss, staking, lending, collateral, liquidation, health factor, NFT, Metaplex, upgrade authority, re-entrancy, integer overflow, account validation, flash loan, arbitrage, MEV, DAO, proposal, quorum, oracle, price feed, merkle tree, account compression, subscription, vesting, DID, quadratic voting, bridge, perpetual, option, insurance, RWA, SBT, intent, account abstraction, restaking, ZK proof, DePIN
 
 ---
 
