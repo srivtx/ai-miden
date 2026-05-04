@@ -168,10 +168,10 @@ Every phase follows the same structure:
 |---|---|
 | AI Phases | **158** |
 | Web3 Phases | **59** |
-| Documentation files | **~950** |
-| Code files | **~380** |
-| Terms defined | **603** |
-| DSA Patterns | **18** |
+| Documentation files | **935** |
+| Code files | **586** |
+| Terms defined | **707** |
+| DSA Patterns | **19** |
 | DSA Problems | **540** |
 | DSA Flashcards | **220** |
 
