@@ -1,0 +1,22 @@
+[features]
+seeds = false
+skip-lint = false
+# WHY: Keep lint enabled to catch common security mistakes during compilation.
+
+[programs.localnet]
+hook = "Hook111111111111111111111111111111111111111"
+token = "TokenProg2222222222222222222222222222222222"
+# WHY: Register placeholder program IDs for localnet so Anchor knows where to deploy.
+
+[registry]
+url = "https://api.apr.dev"
+# WHY: Point to the Anchor registry for possible package resolution.
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+# WHY: Use the default localnet cluster and the standard Solana keypair for transactions.
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+# WHY: Configure the test runner with a long timeout because Solana transactions can be slow.

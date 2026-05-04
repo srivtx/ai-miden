@@ -1,0 +1,23 @@
+[workspace]
+members = ["programs/*"]
+# WHY: Include all program directories in the Anchor workspace for unified compilation.
+
+[profile.release]
+opt-level = 3
+# WHY: Enable maximum optimization so the compiled program stays within Solana's compute budget.
+lto = "fat"
+# WHY: Enable link-time optimization to reduce the final binary size for on-chain deployment.
+codegen-units = 1
+# WHY: Use a single codegen unit to maximize optimization at the cost of slower compilation.
+
+[workspace.dependencies]
+anchor-lang = "0.30.1"
+# WHY: Pin the Anchor framework version for consistent program behavior across builds.
+anchor-spl = "0.30.1"
+# WHY: Pin the Anchor SPL helper crate so Token-2022 CPI helpers remain compatible.
+solana-program = "1.18.0"
+# WHY: Pin the Solana program crate to match the Anchor version and avoid ABI mismatches.
+spl-token-2022 = "1.0.0"
+# WHY: Add the official Token-2022 crate to interact with the TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb program.
+spl-transfer-hook-interface = "0.6.0"
+# WHY: Include the transfer hook interface crate so the hook program implements the expected entrypoint.

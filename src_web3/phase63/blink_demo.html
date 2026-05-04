@@ -1,0 +1,33 @@
+<!DOCTYPE html> <!-- WHY: declare HTML5 document type so browsers render the page in standards mode -->
+<html lang="en"> <!-- WHY: set document language to English for accessibility and SEO -->
+<head> <!-- WHY: open head section containing metadata and styles not visible in the page body -->
+<meta charset="UTF-8"> <!-- WHY: specify UTF-8 character encoding to correctly display all text symbols -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- WHY: enable responsive scaling so the page works on mobile devices -->
+<title>Blink Demo</title> <!-- WHY: set page title shown in browser tabs and bookmarks -->
+<style> <!-- WHY: open embedded CSS block to style the demo without external dependencies -->
+body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; } <!-- WHY: style body with readable font, constrained width, centered layout, and side padding -->
+h1 { font-size: 24px; } <!-- WHY: enlarge the main heading to establish visual hierarchy -->
+.blink-card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-top: 20px; } <!-- WHY: render a bordered card with rounded corners and spacing to simulate an unfurled blink -->
+.blink-card img { width: 48px; height: 48px; border-radius: 50%; } <!-- WHY: size the icon to a square circle matching blink client avatar conventions -->
+.blink-card h2 { font-size: 18px; margin: 8px 0; } <!-- WHY: set card title size and compact vertical spacing -->
+.blink-card p { color: #555; margin: 4px 0 12px; } <!-- WHY: use gray description text with balanced margins to separate content from the button -->
+a.button { display: inline-block; padding: 10px 16px; background: #512da8; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; } <!-- WHY: style the link as a prominent purple button with high contrast and rounded edges -->
+.url-box { background: #f5f5f5; padding: 12px; border-radius: 4px; word-break: break-all; font-family: monospace; margin-top: 12px; } <!-- WHY: create a gray monospace code box that wraps long URLs cleanly -->
+</style> <!-- WHY: close embedded stylesheet -->
+</head> <!-- WHY: close head section -->
+<body> <!-- WHY: open body containing all visible page content -->
+<h1>Solana Blink Demo</h1> <!-- WHY: display the page heading so users immediately know this is a blink demonstration -->
+<p>This page shows how a blink looks before a wallet unfurls it.</p> <!-- WHY: explain the demo purpose so visitors understand what they are viewing -->
+<div class="blink-card"> <!-- WHY: create a container that simulates the visual card rendered by blink-aware clients -->
+<img src="https://alice.com/swap-icon.png" alt="Swap icon"> <!-- WHY: show the action icon so the card has visual identity matching the Action metadata -->
+<h2>Alice Swap</h2> <!-- WHY: display the action title from the GET metadata to simulate the unfurled blink header -->
+<p>Swap SOL for USDC at the best available rate.</p> <!-- WHY: show the action description so users understand the transaction purpose -->
+<a class="button" href="https://dial.to/?action=solana-action%3Ahttps%3A%2F%2Flocalhost%3A3071%2Factions%2Fswap" target="_blank">Swap</a> <!-- WHY: link to the Dialect interstitial site with the encoded blink URL so clicking opens the actual blink interface -->
+</div> <!-- WHY: close the simulated blink card container -->
+<p>Encoded blink URL:</p> <!-- WHY: label the raw URL section so users know what the monospace text represents -->
+<div class="url-box"> <!-- WHY: create a distinct container for the long URL to improve readability and scannability -->
+https://dial.to/?action=solana-action%3Ahttps%3A%2F%2Flocalhost%3A3071%2Factions%2Fswap <!-- WHY: display the exact encoded blink URL so students can see how the action endpoint is embedded -->
+</div> <!-- WHY: close the URL display box -->
+<p>Clicking the button opens an interstitial page that introspects the Action API, renders the parameters, and prompts your wallet to sign.</p> <!-- WHY: explain the end-to-end click flow so students understand what happens after the user interacts -->
+</body> <!-- WHY: close body element -->
+</html> <!-- WHY: close html document -->

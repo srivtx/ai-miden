@@ -1,0 +1,51 @@
+[features]
+# WHY: This enables the `seeds` feature in Anchor, which is required for PDA derivation with `seeds` and `bump` attributes.
+seeds = true
+# WHY: This skips the local validator when running tests, allowing tests to target devnet or testnet.
+skip-lint = false
+
+[programs.localnet]
+# WHY: These are placeholder program IDs for local testing. Anchor replaces them with actual keys during deployment.
+governance = "Gov111111111111111111111111111111111111111"
+treasury = "Tre222222222222222222222222222222222222222"
+
+[programs.devnet]
+# WHY: These are placeholder program IDs for devnet. After deploying with `anchor deploy`, update these with the actual deployed addresses.
+governance = "Gov111111111111111111111111111111111111111"
+treasury = "Tre222222222222222222222222222222222222222"
+
+[registry]
+# WHY: This specifies the Solana package registry URL where Anchor fetches program dependencies.
+url = "https://api.apr.dev"
+
+[provider]
+# WHY: This sets the default Solana cluster for CLI commands like `anchor deploy` and `anchor test`.
+cluster = "localnet"
+# WHY: This specifies the wallet keypair used for deployment and transaction signing. Anchor looks in the standard Solana config directory.
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+# WHY: This defines a shorthand command to run the TypeScript test suite using ts-node.
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+# WHY: This defines a shorthand command to start the Express API server.
+api = "ts-node ../dao_api.ts"
+
+[toolchain]
+# WHY: This pins the Solana toolchain version to ensure consistent builds across different developer machines.
+anchor_version = "0.30.0"
+
+[test]
+# WHY: This starts a local validator automatically when running `anchor test`, providing a fresh Solana environment.
+startup_wait = 10000
+# WHY: This sets the maximum test execution time to 60 seconds to prevent hung tests from running indefinitely.
+timeout = 60000
+
+[test.validator]
+# WHY: This binds the local validator to a fixed port so the test client knows where to connect.
+bind_address = "127.0.0.1"
+# WHY: This enables the full RPC API on the local validator, required for Anchor's account fetching and simulation.
+ledger_path = ".anchor/test-ledger"
+# WHY: This sets the URL for the local validator's RPC endpoint.
+url = "http://127.0.0.1:8899"
+# WHY: This sets the number of slots per epoch for faster stake warmup in local tests.
+slots_per_epoch = "32"

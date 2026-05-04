@@ -1,0 +1,33 @@
+[package]
+# WHY: The package name must match the directory name for Anchor to discover the program automatically.
+name = "governance"
+# WHY: Semantic versioning follows standard practice for tracking breaking changes and compatibility.
+version = "0.1.0"
+# WHY: The 2021 edition provides modern Rust features like disjoint capture in closures and panic macros.
+edition = "2021"
+
+[lib]
+# WHY: The crate type must be "cdylib" so the Rust compiler outputs a shared library compatible with Solana's BPF loader.
+crate-type = ["cdylib", "lib"]
+# WHY: The name must match the package name for Anchor's build system to link the program correctly.
+name = "governance"
+
+[features]
+# WHY: The no-entrypoint feature allows the program to be used as a dependency in other programs without exposing its entrypoint.
+no-entrypoint = []
+# WHY: The no-idl feature allows compiling without IDL generation for faster local development iterations.
+no-idl = []
+# WHY: The no-log-ix-name feature removes instruction name logging to save compute units in production.
+no-log-ix-name = []
+# WHY: The cpi feature enables Cross-Program Invocation support, allowing other programs to call this program's instructions.
+cpi = ["no-entrypoint"]
+# WHY: The default feature set ensures IDL generation and logging are enabled for standard builds and testing.
+default = []
+
+[dependencies]
+# WHY: anchor-lang v0.30.1 provides the core macros and runtime for Anchor programs, including account validation and CPI helpers.
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+# WHY: anchor-spl provides typed wrappers for the SPL token program, enabling safe token transfers and account validation.
+anchor-spl = { version = "0.30.1", features = ["token"] }
+# WHY: solana-program is the base Solana SDK. It is included transitively by anchor-lang but explicitly listed for clarity.
+solana-program = "1.18.0"

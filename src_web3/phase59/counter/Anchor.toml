@@ -1,0 +1,24 @@
+[features]                                              # WHY: Defines feature flags that control Anchor compiler behavior and runtime checks.
+seeds = true                                            # WHY: Enables the seeds constraint syntax which is required for PDA derivation in Anchor v1.0.
+skip-lint = false                                       # WHY: Runs the Anchor linter during build to catch common security mistakes and constraint errors.
+
+[programs.localnet]                                     # WHY: Maps program names to their deployed addresses on the local validator for testing.
+counter = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS" # WHY: Hardcodes the program ID so tests can resolve the deployed counter program on localnet.
+
+[programs.devnet]                                       # WHY: Maps program names to their deployed addresses on the Solana devnet cluster.
+counter = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS" # WHY: Uses the same program ID as localnet so the deployed binary is deterministic across environments.
+
+[registry]                                              # WHY: Configures the Anchor package registry for publishing programs or resolving dependencies.
+url = "https://api.apr.dev"                             # WHY: Points to the official Anchor registry where verified programs and dependencies are hosted.
+
+[provider]                                              # WHY: Configures the default connection and wallet used by Anchor CLI commands and tests.
+cluster = "localnet"                                    # WHY: Defaults to localnet so tests run against a fresh validator without spending real devnet SOL.
+wallet = "~/.config/solana/id.json"                     # WHY: Specifies the default Solana keypair file used to sign transactions during tests and deployments.
+
+[scripts]                                               # WHY: Defines custom shell commands that the Anchor CLI can invoke via anchor run or anchor test.
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts" # WHY: Configures the test runner with TypeScript support and a 10-second timeout for async blockchain operations.
+
+[test]                                                  # WHY: Configures the behavior of the local validator that Anchor starts during anchor test.
+startup_wait = 10000                                    # WHY: Waits 10 seconds after validator startup to ensure RPC endpoints are ready before tests execute.
+shutdown_wait = 2000                                    # WHY: Waits 2 seconds after tests finish to allow final logs to flush before the validator process exits.
+upgradeable = false                                     # WHY: Deploys the program as non-upgradeable on the local validator to match the simplest deployment scenario.

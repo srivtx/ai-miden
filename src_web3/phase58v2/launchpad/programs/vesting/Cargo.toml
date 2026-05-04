@@ -1,0 +1,20 @@
+[package]
+name = "vesting"
+version = "0.1.0"
+description = "Anchor vesting program with cliff, linear unlock, and emergency revoke"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "vesting"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = { workspace = true }
+anchor-spl = { workspace = true }

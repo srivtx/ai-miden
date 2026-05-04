@@ -1,0 +1,32 @@
+[package]
+name = "farm-workspace" # WHY: Workspace root package name for Anchor multi-program project
+description = "Anchor workspace for Phase 55v2 yield farm with Token-2022"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = [
+    "programs/farm", # WHY: Include farm program in workspace compilation
+    "programs/boost" # WHY: Include boost NFT program in workspace compilation
+]
+
+[profile.release]
+overflow-checks = true # WHY: Enable overflow checks in release builds to prevent arithmetic exploits
+lto = "fat" # WHY: Link-time optimization reduces binary size for cheaper deployment
+codegen-units = 1 # WHY: Single codegen unit enables maximum optimization at cost of slower compile
+
+[profile.release.build-override]
+opt-level = 3 # WHY: Maximum optimization for build dependencies to reduce overall compile time
+incremental = false # WHY: Disable incremental compilation in release for reproducible builds
+codegen-units = 1 # WHY: Consistent with release profile for deterministic output
+
+[workspace.dependencies]
+anchor-lang = "0.29.0" # WHY: Stable Anchor release with Token-2022 support
+anchor-spl = "0.29.0" # WHY: SPL token helpers for Anchor including Token-2022 CPI functions
+solana-program = "1.17.0" # WHY: Compatible Solana program version for devnet deployment
+spl-token-2022 = "0.9.0" # WHY: Token-2022 program bindings for transfer hook extensions
+spl-associated-token-account = "2.2.0" # WHY: ATA helpers for creating token accounts on-the-fly
+bytemuck = "1.14.0" # WHY: Safe zero-copy deserialization for account data optimization
+
+[package.metadata.docs]
+rustdoc-args = ["--document-private-items"] # WHY: Generate docs for all items including internal functions

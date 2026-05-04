@@ -1,0 +1,7 @@
+[workspace]                                             # WHY: Declares a Cargo workspace so all programs in the project share a single lockfile and build cache.
+members = ["programs/*"]                                # WHY: Includes every subdirectory under programs/ as a workspace member so anchor build compiles all programs.
+
+[profile.release]                                       # WHY: Configures compiler optimizations for the release build that is deployed to Solana mainnet or devnet.
+overflow-checks = true                                  # WHY: Enables runtime integer overflow checks to prevent silent wrapping bugs that could corrupt program state.
+lto = "fat"                                             # WHY: Enables full Link Time Optimization to aggressively reduce the compiled binary size for Solana's limits.
+codegen-units = 1                                       # WHY: Uses a single codegen unit so the optimizer can see the entire program at once for best size reduction.
