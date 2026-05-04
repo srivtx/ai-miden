@@ -27,6 +27,8 @@ Do not read all 110 phases in order unless you want to. Jump to what you need.
 | **Train models from scratch** | [Phase 121: Pretraining](docs/phase121/) → [Phase 122: RLHF](docs/phase122/) → [Phase 125: Long Context](docs/phase125/) |
 | **Build production inference systems** | [Phase 129: Inference Engines](docs/phase129/) → [Phase 130: Monitoring](docs/phase130/) → [Phase 90: Serving](docs/phase90/) |
 | **Work at a frontier AI lab** | [Phase 111: FP8](docs/phase111/) → [Phase 114: R1 Pipeline](docs/phase114/) → [Phase 122: RLHF](docs/phase122/) → [Phase 128: Safety](docs/phase128/) |
+| **Build real production systems** | [Phase 151: Fine-Tuning](docs/phase151/) → [Phase 152: RAG](docs/phase152/) → [Phase 154: Inference API](docs/phase154/) → [Phase 155: Data Curation](docs/phase155/) → [Phase 158: Quantization](docs/phase158/) |
+| **Build Web3 / Solana dApps** | [Phase 0: What is Web3?](docs_web3/phase0/) → [Phase 6: First Transaction](docs_web3/phase6/) → [Phase 13: Token Vault](docs_web3/phase13/) → [Phase 16: AMM](docs_web3/phase16/) → [Phase 26: RPC API](docs_web3/phase26/) |
 
 ---
 
@@ -60,20 +62,26 @@ Click any topic to jump to the relevant phases.
 
 ```
 ai-miden/
-├── docs/
-│   ├── phase0/ ... phase130/     # Each phase: what_is_*.md docs + SUMMARY.md
-│   ├── MASTER_CURRICULUM.md      # Full 130-phase roadmap
-│   └── AI_ROADMAP_FUTURE.md      # Future expansion plans
-├── src/
-│   ├── phase0/ ... phase130/     # Each phase: NumPy demo + optional Colab script + plots
+├── docs/                           # AI Course (158 phases)
+│   ├── phase0/ ... phase158/       # Each phase: what_is_*.md docs + SUMMARY.md
+│   ├── MASTER_CURRICULUM.md        # Full 158-phase AI roadmap
+│   └── AI_ROADMAP_FUTURE.md        # Future expansion plans
+├── src/                            # AI Code (158 phases)
+│   ├── phase0/ ... phase158/       # Each phase: NumPy demo + optional Colab script
 │   └── ...
-├── docs_dsa/                     # DSA Interview Prep (separate module)
-│   ├── START_HERE.md             # Navigate the DSA system
+├── docs_web3/                      # Web3 / Solana Course (36 phases)
+│   ├── phase0/ ... phase35/        # Each phase: what_is_*.md docs + SUMMARY.md
+│   └── MASTER_CURRICULUM.md        # Full 36-phase Web3 roadmap
+├── src_web3/                       # Web3 Code (36 phases)
+│   ├── phase0/ ... phase35/        # Rust programs + TypeScript APIs
+│   └── package.json                # Node.js dependencies
+├── docs_dsa/                       # DSA Interview Prep (separate module)
+│   ├── START_HERE.md               # Navigate the DSA system
 │   ├── 01_arrays_hashing/ ... 18_bit_manipulation/
 │   ├── COMPANY_GUIDES/
 │   ├── FLASHCARDS.md
 │   └── ...
-└── README.md                     # This file
+└── README.md                       # This file
 ```
 
 ---
@@ -96,13 +104,35 @@ python src/phase21/phase21_tiny_gpt.py
 
 For GPU-heavy phases (15-21, 29-31, 64-72), each phase has a `*_colab.py` script designed for Google Colab T4.
 
+### Web3 Quick Start
+
+```bash
+# Install Node.js dependencies
+cd src_web3 && npm install
+
+# Run the first Web3 demo
+npx ts-node src_web3/phase0/decentralization_demo.ts
+
+# Run the blockchain demo
+npx ts-node src_web3/phase1/toy_blockchain.ts
+
+# Send your first Solana transaction
+npx ts-node src_web3/phase6/first_transaction.ts
+
+# Start the Token Vault API
+npx ts-node src_web3/phase13/vault_api.ts
+
+# Start the AMM API
+npx ts-node src_web3/phase16/amm_api.ts
+```
+
 ---
 
 ## How This Course Works
 
 Every phase follows the same structure:
 
-1. **Docs** in `docs/phaseX/` — Every new term gets its own file: `what_is_term.md`
+1. **Docs** in `docs/phaseX/` or `docs_web3/phaseX/` — Every new term gets its own file: `what_is_term.md`
    - Why it exists (the problem first)
    - A simple definition
    - A real-life analogy
@@ -110,10 +140,11 @@ Every phase follows the same structure:
    - Common confusions (5+ bullet points)
    - Where it appears in our code
 
-2. **Code** in `src/phaseX/` — A runnable NumPy script that demonstrates the concept
+2. **Code** in `src/phaseX/` or `src_web3/phaseX/` — Runnable scripts that demonstrate the concept
+   - **AI track:** NumPy scripts + optional PyTorch Colab scripts
+   - **Web3 track:** Rust programs + TypeScript/Express APIs
    - Every line explains WHY, not just WHAT
-   - Plots are saved, not shown interactively
-   - Optional Colab script for GPU training
+   - Plots are saved, not shown interactively (AI track)
 
 3. **Summary** in `docs/phaseX/SUMMARY.md` — Recap, connections to other phases, and navigation links
 
@@ -125,6 +156,8 @@ Every phase follows the same structure:
 - **No jargon without explanation.** Every technical term has its own dedicated doc with an analogy and a numeric example.
 - **No math gatekeeping.** If you know algebra, you can follow every phase. Calculus is introduced gradually and visually.
 - **Two-script pattern.** Local NumPy scripts teach the concept from scratch. Colab PyTorch scripts run when training is impractical locally.
+- **Dual-track Web3.** Every concept has both a Rust on-chain program AND a TypeScript/Express API. You learn both the smart contract and the backend service.
+- **Real projects.** Not toy examples. Token vaults, AMMs, escrow, multi-sig, staking, lending, flash loans — all with real code.
 - **DSA included.** `docs_dsa/` contains a complete LeetCode/NeetCode prep system with 18 patterns, 540 problems, and 220 flashcards.
 
 ---
@@ -133,10 +166,11 @@ Every phase follows the same structure:
 
 | | Count |
 |---|---|
-| Phases | **130** |
-| Documentation files | **495** |
-| Code files | **175** |
-| Terms defined | **447** |
+| AI Phases | **158** |
+| Web3 Phases | **36** |
+| Documentation files | **669** |
+| Code files | **276** |
+| Terms defined | **603** |
 | DSA Patterns | **18** |
 | DSA Problems | **540** |
 | DSA Flashcards | **220** |
@@ -171,6 +205,8 @@ Every phase follows the same structure:
 
 **Production Engineering (121-130)** — Pretraining from scratch, full RLHF pipeline (RM + PPO), model merging at scale, advanced quantization (GPTQ/AWQ/GGUF), long context training (YaRN), tool use training, vision-language fine-tuning, safety RLHF, production inference engines (vLLM), production monitoring and MLOps.
 
+**Real Projects (151-158)** — End-to-end fine-tuning on IMDB, real RAG with MiniLM + GPT-2, knowledge distillation from BERT to tiny BERT, production FastAPI inference server, Wikipedia data curation with MinHash deduplication, multi-tool ReAct agent with calculator/Python/Wikipedia, evaluation harness with bootstrap significance testing, INT8 quantization and deployment benchmarking.
+
 ---
 
 ## The Fancy Words
@@ -202,6 +238,26 @@ These are not magic. They are systematic ways of doing the same five things:
 **Specialized domains:** graph neural network, GCN, GAT, message passing, federated learning, Bayesian neural network, Monte Carlo dropout, time series, autoregressive model, AutoML, active learning, ASR, TTS, spectrogram, object detection, bounding box, IoU, YOLO, segmentation, SAM
 
 **Unsupervised learning:** K-means, PCA, t-SNE, DBSCAN, clustering, eigenvector, eigenvalue, dimensionality reduction, density-based clustering
+
+---
+
+## Web3 on Solana: The Journey
+
+**Web3 Foundations (0-5)** — Blockchain, cryptography, Solana architecture, accounts, dev environment.
+
+**First Transactions (6-10)** — Sending SOL, reading blockchain data, writing programs, state storage, PDAs.
+
+**Token Projects (11-15)** — Cross-program invocation, SPL tokens, token vault, escrow, multi-sig wallets.
+
+**DeFi Primitives (16-20)** — AMM with x*y=k, liquidity pools, staking, lending, time-locked vaults.
+
+**NFTs & Operations (21-25)** — NFT minting, marketplaces, program upgrades, security, testing.
+
+**Backend APIs (26-30)** — Custom RPC services, indexing, payment gateways, composability, flash loans.
+
+**Advanced Topics (31-35)** — DAO governance, oracle integration, MEV protection, account compression, production deployment.
+
+**Web3 Core Concepts:** blockchain, hash function, proof of history, accounts model, program derived address, cross-program invocation, SPL token, associated token account, token vault, escrow, multi-signature, automated market maker, liquidity pool, impermanent loss, staking, lending, collateral, liquidation, health factor, NFT, Metaplex, upgrade authority, re-entrancy, integer overflow, account validation, flash loan, arbitrage, MEV, DAO, proposal, quorum, oracle, price feed, merkle tree, account compression
 
 ---
 

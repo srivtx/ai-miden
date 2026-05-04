@@ -1,0 +1,21 @@
+[package]
+name = "pda_demo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# WHY: solana-program provides the runtime, entrypoint macro, account types, and CPI functions.
+solana-program = "1.17.0"
+# WHY: borsh handles serialization of state structs and instruction enums.
+borsh = "0.10.3"
+
+[dev-dependencies]
+# WHY: Testing framework for simulating program execution without deploying.
+solana-program-test = "1.17.0"
+# WHY: SDK types for constructing test transactions and keypairs.
+solana-sdk = "1.17.0"
+
+[lib]
+# WHY: cdylib builds the BPF-compatible shared object for deployment.
+# lib builds the Rust library artifact for local unit tests.
+crate-type = ["cdylib", "lib"]

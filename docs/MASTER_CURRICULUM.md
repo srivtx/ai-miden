@@ -2245,6 +2245,14 @@ By the end of Phase 110, the student will:
 - CURATE multimodal datasets at scale with contrastive filtering, CLIP scoring, and temporal alignment
 - DESIGN the right architecture for a problem using inductive bias, scaling laws, and neural architecture search, then deploy tiny versions on edge devices with quantization and distillation
 - APPLY AI to scientific problems with geometric deep learning and equivariant networks, run on-device LLMs with speculative decoding, build world models for planning, and scale intelligence at test time through search and refinement
+- FINE-TUNE real pre-trained models end-to-end on real datasets with proper training loops, checkpointing, and evaluation
+- BUILD real retrieval-augmented generation systems with dense embeddings, vector search, and context injection
+- DISTILL knowledge from large teacher models to small student models on real data with temperature scaling and combined losses
+- DEPLOY production inference APIs with FastAPI, streaming generation, OpenAI-compatible endpoints, and health monitoring
+- CURATE real training data through cleaning, quality filtering, and MinHash-based near-duplicate detection
+- BUILD multi-tool agents that interleave reasoning and action through the ReAct pattern with memory
+- EVALUATE models rigorously with bootstrap significance testing and paired t-tests to separate real improvements from noise
+- QUANTIZE models to INT8 for deployment, benchmark speed and memory tradeoffs, and package models for production
 
 **This is not a race to GPT. This is a complete education in artificial intelligence.**
 

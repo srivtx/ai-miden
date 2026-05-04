@@ -1,0 +1,8 @@
+[package] // Define Rust package metadata for Cargo compilation
+name = "staking" // Name the crate "staking" to match the program's domain
+version = "0.1.0" // Start at version 0.1.0 because this is an educational prototype
+edition = "2021" // Use the 2021 Rust edition for modern syntax
+
+[dependencies] // List external crates required for on-chain development
+solana-program = "1.16" // Import the Solana SDK to interact with the blockchain runtime
+borsh = "0.10" // Use Borsh for compact binary serialization of account state

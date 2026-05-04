@@ -1,0 +1,21 @@
+[package]
+# Package name for the SPL token demo program
+name = "spl_token_demo"
+# Semantic version for change tracking
+version = "0.1.0"
+# Rust edition
+edition = "2021"
+
+[dependencies]
+# Solana program crate for entrypoint and runtime functions
+solana-program = "1.18.0"
+# SPL Token crate for token instruction builders and state types
+spl-token = "4.0.0"
+# SPL Associated Token Account crate for ATA helpers
+spl-associated-token-account = "3.0.0"
+# Thiserror for clean error definitions
+thiserror = "1.0"
+
+[lib]
+# Compile as a library for the Solana BPF runtime
+crate-type = ["cdylib", "lib"]

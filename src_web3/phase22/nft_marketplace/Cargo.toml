@@ -1,0 +1,15 @@
+[package]
+# Package name matches the program module for clear dependency references.
+name = "nft_marketplace"
+# Semantic versioning tracks breaking changes and feature additions.
+version = "0.1.0"
+# Rust 2021 edition includes improved closures and error handling.
+edition = "2021"
+
+[dependencies]
+# Anchor framework provides macros and CPI abstractions for Solana programs.
+anchor-lang = "0.29.0"
+# Anchor SPL bindings let us invoke the Token program for NFT transfers.
+anchor-spl = "0.29.0"
+# Solana program crate for low-level sysvar and instruction types.
+solana-program = "1.17.0"

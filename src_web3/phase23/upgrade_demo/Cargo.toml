@@ -1,0 +1,13 @@
+[package]
+# Package name identifies this crate in the workspace and dependency tree.
+name = "upgrade_demo"
+# Semantic versioning distinguishes iterations as the program is upgraded.
+version = "0.1.0"
+# Rust 2021 edition provides modern error handling and pattern syntax.
+edition = "2021"
+
+[dependencies]
+# Anchor framework provides the program macro and account validation system.
+anchor-lang = "0.29.0"
+# Solana program crate for underlying system types if needed directly.
+solana-program = "1.17.0"

@@ -1,0 +1,21 @@
+[package]
+name = "counter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# WHY: solana-program provides the runtime macros, account types, and CPI helpers.
+solana-program = "1.17.0"
+# WHY: borsh is the standard binary serialization format for Solana account data and instruction data.
+borsh = "0.10.3"
+
+[dev-dependencies]
+# WHY: Program test framework for writing Rust-based integration tests.
+solana-program-test = "1.17.0"
+# WHY: SDK utilities for keypairs, signatures, and test transactions.
+solana-sdk = "1.17.0"
+
+[lib]
+# WHY: cdylib produces a .so file that the Solana runtime can load as a BPF program.
+# lib produces an rlib for local testing and dependent crates.
+crate-type = ["cdylib", "lib"]

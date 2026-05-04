@@ -1,0 +1,8 @@
+[package] // Define Rust package metadata so Cargo can compile this crate
+name = "lending" // Name the crate to reflect its purpose as a lending protocol
+version = "0.1.0" // Use semantic versioning starting at 0.1.0 for the educational prototype
+edition = "2021" // Target the 2021 Rust edition for modern language features
+
+[dependencies] // List external libraries required for Solana program development
+solana-program = "1.16" // Link against the Solana program SDK for on-chain runtime interaction
+borsh = "0.10" // Use Borsh for compact binary serialization of lending state and instructions

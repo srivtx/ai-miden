@@ -1,0 +1,19 @@
+[package]
+# Package name for the CPI demo program
+name = "cpi_demo"
+# Semantic version for tracking changes
+version = "0.1.0"
+# Rust edition for compiler features
+edition = "2021"
+
+[dependencies]
+# Solana program crate provides entrypoint, account_info, and CPI functions
+solana-program = "1.18.0"
+# SPL Token crate for token instruction builders used in CPI
+spl-token = "4.0.0"
+# Thiserror provides ergonomic error definitions for Rust programs
+thiserror = "1.0"
+
+[lib]
+# Compile as a library so the Solana runtime can load the .so file
+crate-type = ["cdylib", "lib"]

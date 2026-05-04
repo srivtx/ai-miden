@@ -1,0 +1,28 @@
+{
+  "name": "web3-solana-course",
+  "version": "1.0.0",
+  "description": "Web3/Solana backend course - TypeScript/Express implementations",
+  "scripts": {
+    "phase0": "npx ts-node src_web3/phase0/decentralization_demo.ts",
+    "phase1": "npx ts-node src_web3/phase1/toy_blockchain.ts",
+    "phase2": "npx ts-node src_web3/phase2/keypair_demo.ts",
+    "phase6": "npx ts-node src_web3/phase6/first_transaction.ts",
+    "phase7": "npx ts-node src_web3/phase7/rpc_client.ts"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.87.0",
+    "@solana/spl-token": "^0.3.9",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "bs58": "^5.0.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0",
+    "@types/node": "^20.0.0",
+    "@types/express": "^4.17.0",
+    "@types/cors": "^2.8.0",
+    "ts-node": "^10.9.0"
+  }
+}

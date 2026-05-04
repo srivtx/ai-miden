@@ -1,0 +1,17 @@
+[package]
+# Package name matches the program module for clarity in dependency management.
+name = "nft_mint"
+# Semantic versioning to track breaking changes vs patches.
+version = "0.1.0"
+# Rust 2021 edition provides improved error handling and disjoint capture.
+edition = "2021"
+
+[dependencies]
+# Anchor framework provides the account macros and CPI helpers we use.
+anchor-lang = "0.29.0"
+# Anchor SPL bindings let us invoke the Token program safely.
+anchor-spl = "0.29.0"
+# Metaplex Token Metadata crate provides structs for metadata creation.
+mpl-token-metadata = "4.0.0"
+# Solana program crate for low-level sysvar and instruction types.
+solana-program = "1.17.0"

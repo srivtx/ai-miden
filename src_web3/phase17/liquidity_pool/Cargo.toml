@@ -1,0 +1,8 @@
+[package] // Define the Rust package metadata so Cargo can compile this crate
+name = "liquidity_pool" // Name the crate to reflect its purpose of managing pooled liquidity
+version = "0.1.0" // Use semantic versioning starting at 0.1.0 for the educational prototype
+edition = "2021" // Target the 2021 Rust edition for modern language features
+
+[dependencies] // Declare external libraries needed for Solana program development
+solana-program = "1.16" // Link against the Solana program SDK for on-chain runtime interaction
+borsh = "0.10" // Use Borsh for compact binary serialization of pool state and instructions

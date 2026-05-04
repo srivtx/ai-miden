@@ -1,0 +1,8 @@
+[package] // Define the Rust package metadata so Cargo knows how to build this program
+name = "amm" // Name the crate "amm" to match the program's purpose
+version = "0.1.0" // Start at version 0.1.0 because this is an educational prototype
+edition = "2021" // Use the 2021 edition for modern Rust syntax and improvements
+
+[dependencies] // List external crates required for Solana program development
+solana-program = "1.16" // Import the Solana SDK to interact with the on-chain runtime
+borsh = "0.10" // Import Borsh for efficient binary serialization of account state

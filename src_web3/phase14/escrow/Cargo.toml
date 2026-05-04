@@ -1,0 +1,23 @@
+[package]
+# Package name for the escrow program
+name = "escrow"
+# Semantic version
+version = "0.1.0"
+# Rust edition
+edition = "2021"
+
+[dependencies]
+# Solana program crate for entrypoint, account_info, and CPI
+solana-program = "1.18.0"
+# SPL Token crate for token instruction builders
+spl-token = "4.0.0"
+# SPL Associated Token Account crate for ATA helpers
+spl-associated-token-account = "3.0.0"
+# Borsh for serializing and deserializing escrow state
+borsh = { version = "1.5.0", features = ["derive"] }
+# Thiserror for clean error definitions
+thiserror = "1.0"
+
+[lib]
+# Compile as a library for the Solana BPF runtime
+crate-type = ["cdylib", "lib"]

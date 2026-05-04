@@ -1,0 +1,8 @@
+[package] // Define Rust package metadata for Cargo to compile this program
+name = "timelock" // Name the crate to reflect its time-locking purpose
+version = "0.1.0" // Start at version 0.1.0 because this is an educational prototype
+edition = "2021" // Use the 2021 Rust edition for modern syntax and features
+
+[dependencies] // Declare external crates required for Solana program development
+solana-program = "1.16" // Link against the Solana program SDK for on-chain runtime interaction
+borsh = "0.10" // Use Borsh for compact binary serialization of vault state and instructions
