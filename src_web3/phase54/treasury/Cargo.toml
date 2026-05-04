@@ -1,0 +1,33 @@
+[package]
+# Package name identifies the treasury program in build artifacts.
+name = "treasury"
+# Version tracks breaking changes in treasury instruction format.
+version = "0.1.0"
+# Rust 2021 edition provides improved closure capture and path disjointness.
+edition = "2021"
+
+[features]
+# no-entrypoint allows importing this crate in tests without a duplicate entrypoint.
+no-entrypoint = []
+
+[dependencies]
+# solana-program provides the on-chain runtime API for account validation and CPI.
+solana-program = "1.17.0"
+# borsh serializes and deserializes account state compactly.
+borsh = "1.4.0"
+# thiserror derives standard error types from enums.
+thiserror = "1.0"
+# serde supports JSON parsing for any off-chain configuration metadata.
+serde = { version = "1.0", features = ["derive"] }
+# serde_json is included for off-chain config and metadata handling.
+serde_json = "1.0"
+# spl-token enables SPL token vault management if the treasury holds tokens.
+spl-token = { version = "4.0", features = ["no-entrypoint"] }
+
+[dev-dependencies]
+# solana-program-test runs a local validator for integration tests.
+solana-program-test = "1.17.0"
+# solana-sdk provides test helpers like Keypair and signer utilities.
+solana-sdk = "1.17.0"
+# tokio is the async runtime required by the test framework.
+tokio = { version = "1.35", features = ["full"] }

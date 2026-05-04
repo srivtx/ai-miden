@@ -1,0 +1,21 @@
+[package]
+name = "ai_miden_guardian"
+# WHY: Identifies the guardian registry crate in the workspace.
+version = "0.1.0"
+# WHY: Semantic versioning tracks upgrades to registry logic.
+edition = "2021"
+# WHY: The 2021 edition offers improved borrow checking and panic handling.
+authors = ["AI Miden Student"]
+# WHY: Attribution is required for package metadata.
+
+[features]
+no-entrypoint = []
+# WHY: Allows the program to be imported as a library without exposing the BPF entrypoint.
+
+[dependencies]
+solana-program = "1.17"
+# WHY: Provides Solana-specific types, account handling, and sysvar access for the guardian program.
+borsh = "1.2"
+# WHY: Borsh enables compact, schema-driven serialization of the GuardianRegistry and Guardian structs.
+thiserror = "1.0"
+# WHY: Simplifies custom error definitions that map to Solana ProgramError variants.

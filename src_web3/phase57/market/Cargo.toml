@@ -1,0 +1,16 @@
+[package]
+name = "prediction_market" # WHY: This is the on-chain program name used by Anchor and Solana CLI.
+version = "0.1.0" # WHY: Semantic versioning helps track iterations during development and audits.
+edition = "2021" # WHY: Rust 2021 edition provides modern language features and dependency resolution.
+
+[lib]
+crate-type = ["cdylib", "lib"] # WHY: "cdylib" produces a BPF shared object for Solana deployment; "lib" enables local unit testing.
+
+[features]
+no-entrypoint = [] # WHY: This feature allows the program to be built as a library without an entrypoint, useful for CPI testing and client compilation.
+
+[dependencies]
+anchor-lang = "0.29.0" # WHY: Anchor is the standard framework for Solana smart contracts; it provides macros for accounts, instructions, and CPI.
+anchor-spl = "0.29.0" # WHY: Anchor SPL provides typed wrappers for Solana Program Library token instructions, reducing boilerplate and bugs.
+solana-program = "1.17.0" # WHY: We need the core Solana program crate for low-level sysvar access and program invocation utilities.
+bytemuck = "1.14" # WHY: bytemuck enables safe zero-copy deserialization of account data, which is useful for oracle and market state parsing.

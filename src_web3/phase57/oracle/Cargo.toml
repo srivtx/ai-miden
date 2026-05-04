@@ -1,0 +1,14 @@
+[package]
+name = "oracle_resolution" # WHY: This is the on-chain oracle program name used by Anchor and Solana CLI.
+version = "0.1.0" # WHY: Semantic versioning helps track iterations during development and security audits.
+edition = "2021" # WHY: Rust 2021 edition provides modern language features and improved dependency resolution.
+
+[lib]
+crate-type = ["cdylib", "lib"] # WHY: "cdylib" produces a BPF shared object for Solana deployment; "lib" enables local unit testing and CPI compilation.
+
+[features]
+no-entrypoint = [] # WHY: This feature allows the program to be built as a library without an entrypoint, useful when another program performs CPI into it.
+
+[dependencies]
+anchor-lang = "0.29.0" # WHY: Anchor is the standard framework for Solana smart contracts; it provides macros for accounts, instructions, errors, and CPI.
+solana-program = "1.17.0" # WHY: We need the core Solana program crate for sysvar access (Clock) and low-level system instruction construction.

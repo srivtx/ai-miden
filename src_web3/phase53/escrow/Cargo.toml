@@ -1,0 +1,27 @@
+[package]
+# Name identifies this crate as the escrow program so it can be referenced by the marketplace program via CPI.
+name = "nft_escrow"
+# Version tracks changes independently from the marketplace program.
+version = "0.1.0"
+# Edition ensures we use modern Rust syntax and compiler features.
+edition = "2021"
+
+[dependencies]
+# solana-program is the core dependency for all on-chain Solana logic.
+solana-program = "1.18.0"
+# borsh handles serialization of state structs stored in escrow accounts.
+borsh = "1.4.0"
+# borsh-derive provides the derive macros for Borsh traits.
+borsh-derive = "1.4.0"
+# thiserror simplifies the definition of custom program errors.
+thiserror = "1.0.58"
+# spl-token provides types for SPL token account manipulation.
+spl-token = "4.0.0"
+# spl-associated-token-account provides ATA derivation and validation helpers.
+spl-associated-token-account = "2.3.0"
+# solana-sdk adds extra types that are useful for account validation.
+solana-sdk = "1.18.0"
+
+[lib]
+# cdylib is required for the Solana BPF loader to execute the program on-chain.
+crate-type = ["cdylib", "lib"]

@@ -1,0 +1,33 @@
+[package]
+# Package name must match the program directory for clarity.
+name = "governance"
+# Semantic version tracks breaking changes in instruction format.
+version = "0.1.0"
+# Rust 2021 edition provides modern borrow checker and disjoint capture.
+edition = "2021"
+
+[features]
+# no-entrypoint is used when this crate is imported as a dependency in tests.
+no-entrypoint = []
+
+[dependencies]
+# solana-program provides the core runtime types and macros for on-chain logic.
+solana-program = "1.17.0"
+# borsh handles compact binary serialization for account state.
+borsh = "1.4.0"
+# thiserror generates readable error types from enums.
+thiserror = "1.0"
+# serde supports JSON metadata and off-chain serialization when needed.
+serde = { version = "1.0", features = ["derive"] }
+# serde_json is included for any off-chain config parsing.
+serde_json = "1.0"
+# spl-token is available if the governance program needs to interact with SPL tokens.
+spl-token = { version = "4.0", features = ["no-entrypoint"] }
+
+[dev-dependencies]
+# solana-program-test runs local validator tests without deploying to devnet.
+solana-program-test = "1.17.0"
+# solana-sdk provides helpers like Keypair and Pubkey for test code.
+solana-sdk = "1.17.0"
+# tokio is the async runtime required by the program test framework.
+tokio = { version = "1.35", features = ["full"] }

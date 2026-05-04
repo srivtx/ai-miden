@@ -1,0 +1,13 @@
+[package]
+name = "phase52-lending"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+solana-program = "1.17.0"
+spl-token = { version = "4.0.0", features = ["no-entrypoint"] }
+borsh = "0.10.3"
+thiserror = "1.0"
+
+[lib]
+crate-type = ["cdylib", "lib"]

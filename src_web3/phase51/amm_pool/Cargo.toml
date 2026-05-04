@@ -1,0 +1,23 @@
+[package]
+# WHY: The name identifies this crate within the workspace and to the Solana toolchain.
+name = "amm_pool"
+# WHY: We use a semantic version starting at 0.1.0 because this is the first educational release.
+version = "0.1.0"
+# WHY: The 2021 edition gives us modern Rust features and clearer module behavior.
+edition = "2021"
+
+[features]
+# WHY: The no-entrypoint feature allows this program to be used as a dependency in tests without conflicting entrypoints.
+no-entrypoint = []
+
+[dependencies]
+# WHY: solana-program is the core SDK for writing Solana smart contracts in Rust.
+solana-program = "1.17"
+# WHY: spl-token provides the standard for fungible tokens on Solana; we need it for vault transfers.
+spl-token = { version = "4.0", features = ["no-entrypoint"] }
+# WHY: borsh is the standard serialization format for Solana account data because it is compact and deterministic.
+borsh = "1.2"
+
+[lib]
+# WHY: crate-type cdylib tells the Rust compiler to produce a dynamic library that the Solana BPF loader can execute.
+crate-type = ["cdylib", "lib"]

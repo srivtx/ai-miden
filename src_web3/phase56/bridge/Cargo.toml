@@ -1,0 +1,23 @@
+[package]
+name = "ai_miden_bridge"
+# WHY: The package name identifies this crate in the workspace and target directory.
+version = "0.1.0"
+# WHY: Semantic versioning helps track compatibility and deployment order.
+edition = "2021"
+# WHY: The 2021 edition provides disjoint capture in closures and other safety improvements.
+authors = ["AI Miden Student"]
+# WHY: Author attribution is required for registry metadata and audit trails.
+
+[features]
+no-entrypoint = []
+# WHY: This feature allows the program to be used as a dependency without exposing the entrypoint, which is necessary for testing and CPI.
+
+[dependencies]
+solana-program = "1.17"
+# WHY: The core Solana runtime library provides account management, entrypoints, and CPI utilities required by all on-chain programs.
+spl-token = { version = "4.0", features = ["no-entrypoint"] }
+# WHY: SPL Token program types and instructions are needed to interact with token accounts, but we disable its entrypoint because we call it via CPI, not deploy it.
+borsh = "1.2"
+# WHY: Borsh serialization is used by Solana programs to efficiently pack and unpack account data with a deterministic schema.
+thiserror = "1.0"
+# WHY: Deriving custom ProgramError variants with thiserror reduces boilerplate and improves error readability in client logs.

@@ -1,0 +1,13 @@
+[package] # WHY: The package table declares metadata so Cargo knows how to build and name this crate.
+name = "launchpad" # WHY: We name the crate "launchpad" so it matches the directory and clearly identifies the program binary.
+version = "0.1.0" # WHY: A semantic version lets consumers track compatibility as the program evolves.
+edition = "2021" # WHY: The 2021 edition ensures we use modern Rust features and resolver behavior.
+
+[lib] # WHY: The lib table tells Cargo this crate compiles to a library (cdylib) for BPF deployment.
+crate-type = ["cdylib"] # WHY: cdylib is required because Solana on-chain programs are dynamic libraries loaded by the BPF loader.
+
+[dependencies] # WHY: The dependencies table lists external crates required to compile the Solana program.
+solana-program = "1.17.0" # WHY: solana-program provides the SDK for writing BPF on-chain programs.
+spl-token = "4.0.0" # WHY: spl-token exposes SPL Token program instructions and state for token distribution.
+borsh = "1.2.0" # WHY: borsh enables compact binary serialization for custom account structs stored on-chain.
+thiserror = "1.0" # WHY: thiserror lets us derive ProgramError variants with minimal boilerplate.
