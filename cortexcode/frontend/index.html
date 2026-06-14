@@ -168,6 +168,31 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .principle-body { font-size: 0.88rem; color: #45413a; line-height: 1.55; }
 .principle-meta { display: flex; justify-content: space-between; padding-top: 0.6rem; border-top: 1px solid rgba(20, 18, 12, 0.10); font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: #6b6557; text-transform: uppercase; letter-spacing: 0.16em; }
 [data-theme="dark"] .principle-body, [data-theme="dark"] .principle-meta, [data-theme="dark"] .principle-name { color: #d4cebd; }
+.loop-card { background: white; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(20, 18, 12, 0.06); }
+[data-theme="dark"] .loop-card { background: #1d1a12; border-color: rgba(245, 241, 230, 0.10); }
+.loop-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin: 0.8rem 0 1.2rem; padding: 0.8rem; background: #f1efe8; border-radius: 0.3rem; }
+@media (max-width: 600px) { .loop-stats { grid-template-columns: repeat(2, 1fr); } }
+[data-theme="dark"] .loop-stats { background: #0e0c08; }
+.loop-stat { text-align: center; }
+.loop-stat-num { font-family: 'Instrument Serif', serif; font-size: 1.4rem; color: #c84a2e; }
+.loop-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: #6b6557; }
+.loop-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+.feed-textarea { width: 100%; min-height: 70px; background: #f1efe8; color: #191712; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.3rem; padding: 0.6rem; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; resize: vertical; }
+[data-theme="dark"] .feed-textarea { background: #0e0c08; color: #f5f1e6; border-color: rgba(245, 241, 230, 0.10); }
+.watch-input { flex: 1; padding: 0.5rem 0.6rem; background: #f1efe8; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.3rem; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
+[data-theme="dark"] .watch-input { background: #0e0c08; color: #f5f1e6; border-color: rgba(245, 241, 230, 0.10); }
+.activity-log { margin-top: 1rem; max-height: 200px; overflow-y: auto; background: #f1efe8; border-radius: 0.3rem; padding: 0.6rem; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; line-height: 1.5; }
+[data-theme="dark"] .activity-log { background: #0e0c08; }
+.activity-log .log-line { padding: 2px 0; color: #45413a; }
+[data-theme="dark"] .activity-log .log-line { color: #d4cebd; }
+.activity-log .log-line.learn { color: #c84a2e; }
+.activity-log .log-line.sleep { color: #191712; font-weight: 500; }
+.activity-log .log-line.skip { color: #9a9382; }
+.activity-log .log-line.error { color: #a33825; }
+.activity-log .log-line.info { color: #6b6557; font-style: italic; }
+.watching-pill { display: inline-block; padding: 2px 8px; background: #c84a2e; color: white; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; margin-left: 0.5rem; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+[data-theme="dark"] .principle-body, [data-theme="dark"] .principle-meta, [data-theme="dark"] .principle-name { color: #d4cebd; }
 .status-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; padding: 1rem 1.2rem; background: white; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.5rem; }
 @media (max-width: 600px) { .status-strip { grid-template-columns: repeat(2, 1fr); } }
 [data-theme="dark"] .status-strip { background: #1d1a12; border-color: rgba(245, 241, 230, 0.10); }
@@ -194,7 +219,7 @@ footer {
   <div class="topbar">
     <div class="brand">
       <span class="brand-name">CortexCode</span>
-      <span class="brand-tag" id="brandTag">v0.1 · MSPCH</span>
+      <span class="brand-tag" id="brandTag">v0.2 · MSPCH Loop</span>
     </div>
     <nav class="nav">
       <a href="#complete">Complete</a>
@@ -211,9 +236,9 @@ footer {
   </div>
 
   <div class="hero">
-    <div class="label">Brain-Inspired Code Completion</div>
-    <h1 class="hero-title">A small, local, <em>personal</em> copilot.</h1>
-    <p class="hero-sub">CortexCode is a 5M-parameter transformer with 5 MSPCH features from the <code>nature/</code> curriculum. Trained on your code. Runs anywhere. Never sends your code to the cloud.</p>
+    <div class="label">Brain-Inspired Code Completion + Continual Learning</div>
+    <h1 class="hero-title">A small, local, <em>personal</em> copilot that learns.</h1>
+    <p class="hero-sub">CortexCode is a 3M-parameter transformer wrapped in a continual learning loop. It trains on a codebase, then keeps learning — from your edits, from the internet, from anything surprising. The model file on disk is always current.</p>
   </div>
 
   <div class="status-strip">
@@ -221,6 +246,48 @@ footer {
     <div class="stat"><div class="stat-num" id="sVocab">—</div><div class="stat-label">vocab</div></div>
     <div class="stat"><div class="stat-num" id="sLatency">—</div><div class="stat-label">ms / call</div></div>
     <div class="stat"><div class="stat-num" id="sStatus">…</div><div class="stat-label">status</div></div>
+  </div>
+
+  <div class="section-head" id="loop">
+    <span class="section-num">§ 00</span>
+    <span class="section-title">Live learning<span id="watchingPill"></span></span>
+    <span class="section-line"></span>
+  </div>
+
+  <div class="loop-card">
+    <span class="label">Loop state</span>
+    <div class="loop-stats">
+      <div class="loop-stat"><div class="loop-stat-num" id="lEdits">0</div><div class="loop-stat-label">edits learned</div></div>
+      <div class="loop-stat"><div class="loop-stat-num" id="lSleeps">0</div><div class="loop-stat-label">sleep cycles</div></div>
+      <div class="loop-stat"><div class="loop-stat-num" id="lBoring">0</div><div class="loop-stat-label">skipped boring</div></div>
+      <div class="loop-stat"><div class="loop-stat-num" id="lLastLoss">—</div><div class="loop-stat-label">last loss</div></div>
+    </div>
+
+    <span class="label">Pull from internet</span>
+    <div class="loop-actions" style="margin-top: 0.4rem;">
+      <button class="btn-primary" id="internetBtn" onclick="pullInternet()">Fetch trending Python from GitHub</button>
+      <input id="nReposInput" type="number" value="3" min="1" max="10" step="1" style="width: 60px; padding: 0.5rem; background: #f1efe8; border: 1px solid rgba(20,18,12,0.1); border-radius: 0.3rem;">
+      <span class="label" style="align-self: center;">repos</span>
+    </div>
+
+    <span class="label">Watch a directory</span>
+    <div class="loop-actions" style="margin-top: 0.4rem;">
+      <input id="watchDirInput" class="watch-input" type="text" placeholder="/content/your_codebase" value="/content/codebase">
+      <button class="btn-primary" id="watchStartBtn" onclick="watchStart()">Start</button>
+      <button class="btn-ghost" id="watchStopBtn" onclick="watchStop()">Stop</button>
+    </div>
+
+    <span class="label">Feed a snippet</span>
+    <textarea id="learnText" class="feed-textarea" style="margin-top: 0.4rem;" placeholder="Paste a Python function or snippet. The loop scores it by surprise and learns if it's novel."></textarea>
+    <div class="loop-actions" style="margin-top: 0.5rem;">
+      <button class="btn-primary" id="learnBtn" onclick="learnFromText()">Learn from this</button>
+      <button class="btn-ghost" id="learnCompletionBtn" onclick="learnFromLastCompletion()">Learn from last completion</button>
+      <button class="btn-ghost" onclick="clearLog()">Clear log</button>
+    </div>
+
+    <div class="activity-log" id="activityLog">
+      <div class="log-line info">Activity log will appear here. Click an action above to start learning.</div>
+    </div>
   </div>
 
   <div class="section-head">
@@ -391,6 +458,157 @@ function escape(s) {
 }
 
 refreshStatus();
+
+// =============================================================================
+// Loop controls
+// =============================================================================
+
+let lastCompletionFull = '';
+
+function addLog(text, kind='') {
+  const log = document.getElementById('activityLog');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + kind;
+  const ts = new Date().toLocaleTimeString();
+  line.textContent = `[${ts}] ${text}`;
+  log.appendChild(line);
+  // Auto-scroll
+  log.scrollTop = log.scrollHeight;
+  // Cap log at 200 lines
+  while (log.children.length > 200) log.removeChild(log.firstChild);
+}
+
+function clearLog() {
+  document.getElementById('activityLog').innerHTML = '<div class="log-line info">Log cleared.</div>';
+}
+
+async function refreshLoopStats() {
+  try {
+    const r = await fetch('/stats');
+    if (!r.ok) return;
+    const s = await r.json();
+    document.getElementById('lEdits').textContent = s.edit_count ?? 0;
+    document.getElementById('lSleeps').textContent = s.sleep_count ?? 0;
+    document.getElementById('lBoring').textContent = s.skipped_boring ?? 0;
+    const losses = (s.loss_history || []).map(e => e[2]);
+    document.getElementById('lLastLoss').textContent = losses.length ? losses[losses.length-1].toFixed(3) : '—';
+    const pill = document.getElementById('watchingPill');
+    if (s.watching) {
+      pill.innerHTML = `<span class="watching-pill">WATCHING ${s.watching}</span>`;
+    } else {
+      pill.innerHTML = '';
+    }
+  } catch (e) {}
+}
+
+async function pullInternet() {
+  const btn = document.getElementById('internetBtn');
+  const nRepos = parseInt(document.getElementById('nReposInput').value) || 3;
+  btn.disabled = true;
+  btn.textContent = 'Fetching repos...';
+  addLog(`Fetching ${nRepos} trending Python repos from GitHub...`, 'info');
+  try {
+    const r = await fetch('/learn-internet', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({n_repos: nRepos, max_files: 20}),
+    });
+    const j = await r.json();
+    if (j.status === 'no_repos') {
+      addLog(`Could not fetch from GitHub: ${j.message}`, 'error');
+    } else {
+      for (const repo of j.repos) {
+        addLog(`Repo: ${repo.name} (${repo.stars}*) ${repo.description}`, 'info');
+      }
+      addLog(`Learned from ${j.learned_count} files, skipped ${j.skipped_count} (boring)`, 'learn');
+      addLog(`Totals: ${j.summary.edit_count} edits, ${j.summary.sleep_count} sleeps, ${j.summary.replay_buffer_size} in replay buffer`, 'info');
+    }
+  } catch (e) {
+    addLog(`Error: ${e.message}`, 'error');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Fetch trending Python from GitHub';
+  refreshLoopStats();
+}
+
+async function watchStart() {
+  const dir = document.getElementById('watchDirInput').value;
+  if (!dir) { addLog('Enter a directory first', 'error'); return; }
+  try {
+    const r = await fetch('/watch/start', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({directory: dir, interval: 1.0}),
+    });
+    const j = await r.json();
+    if (j.status === 'watching' || j.status === 'already_watching') {
+      addLog(`Watching ${j.directory}. Every .py change will be learned from.`, 'sleep');
+    } else {
+      addLog(`Watch failed: ${JSON.stringify(j)}`, 'error');
+    }
+  } catch (e) {
+    addLog(`Error: ${e.message}`, 'error');
+  }
+  refreshLoopStats();
+}
+
+async function watchStop() {
+  try {
+    const r = await fetch('/watch/stop', {method: 'POST'});
+    const j = await r.json();
+    addLog('Watch stopped.', 'info');
+  } catch (e) {
+    addLog(`Error: ${e.message}`, 'error');
+  }
+  refreshLoopStats();
+}
+
+async function learnFromText() {
+  const text = document.getElementById('learnText').value;
+  if (!text.trim()) { addLog('Paste some text first', 'error'); return; }
+  try {
+    const r = await fetch('/learn', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text: text, source: 'browser'}),
+    });
+    const j = await r.json();
+    if (j.action === 'learn') {
+      addLog(`LEARN  surprise=${j.surprise.toFixed(3)} -> loss=${j.new_loss.toFixed(3)}`, 'learn');
+      if (j.sleep_loss !== undefined) {
+        addLog(`SLEEP #${j.sleep_count}  loss=${j.sleep_loss.toFixed(3)}`, 'sleep');
+      }
+    } else if (j.action === 'skip') {
+      addLog(`SKIP (${j.reason})  surprise=${j.surprise?.toFixed(3) || '—'}`, 'skip');
+    }
+    document.getElementById('learnText').value = '';
+  } catch (e) {
+    addLog(`Error: ${e.message}`, 'error');
+  }
+  refreshLoopStats();
+}
+
+async function learnFromLastCompletion() {
+  if (!lastCompletionFull) { addLog('No completion to learn from yet', 'error'); return; }
+  document.getElementById('learnText').value = lastCompletionFull;
+  await learnFromText();
+}
+
+// Capture the full completion for learnFromLastCompletion
+const _origCompleteInner = document.getElementById('completeBtn').onclick;
+document.getElementById('completeBtn').addEventListener('click', () => {
+  setTimeout(() => {
+    const out = document.getElementById('output');
+    const span = out.querySelector('.completion-text');
+    if (span) {
+      const promptText = out.querySelector('.prompt-text');
+      lastCompletionFull = (promptText ? promptText.textContent : '') + span.textContent;
+    }
+  }, 100);
+});
+
+// Auto-refresh loop stats every 2s
+setInterval(refreshLoopStats, 2000);
 </script>
 </body>
 </html>
