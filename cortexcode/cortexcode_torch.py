@@ -134,9 +134,9 @@ class CodeDataset(Dataset):
         return max(0, len(self.tokens) - self.block_size - 1)
 
     def __getitem__(self, idx):
-        x = self.tokens[idx:idx + self.block_size]
-        y = self.tokens[idx + 1:idx + 1 + self.block_size]
-        return torch.tensor(x, dtype=torch.long), torch.tensor(y, dtype=torch.long)
+        x = self.tokens[idx:idx + self.block_size].clone()
+        y = self.tokens[idx + 1:idx + 1 + self.block_size].clone()
+        return x, y
 
 
 # =============================================================================
@@ -172,7 +172,10 @@ class MSPCHBlock(nn.Module):
                 self.activity_avg = getattr(self, "activity_avg",
                                             torch.zeros(self.dim, device=x.device))
                 self.activity_avg = 0.95 * self.activity_avg + 0.05 * x_norm.mean(dim=(0, 1))
-        attn_out, _ = self.attn(x_norm, x_norm, x_norm, is_causal=True)
+        # Build causal mask (avoids the PyTorch 2.11 is_causal error)
+        T = x_norm.size(1)
+        causal_mask = torch.triu(torch.ones(T, T, device=x.device), diagonal=1).bool()
+        attn_out, _ = self.attn(x_norm, x_norm, x_norm, attn_mask=causal_mask)
         # DA modulation
         attn_out = attn_out * (1.0 + self.da_gain * da_signal)
         x = x + attn_out
