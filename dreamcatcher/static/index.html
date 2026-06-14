@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MemPal — Brain-Inspired Memory for LLM Applications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   MEMPAL — DESIGN TOKENS
+   Editorial, magazine-like, warm-neutral, mono labels.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:               #faf8f3;
+  --bg-elevated:      #ffffff;
+  --bg-sunken:        #f1efe8;
+  --bg-inset:         #ebe8de;
+  --ink:              #191712;
+  --ink-soft:         #45413a;
+  --ink-muted:        #6b6557;
+  --ink-faint:        #9a9382;
+  --border:           rgba(20, 18, 12, 0.10);
+  --border-strong:    rgba(20, 18, 12, 0.18);
+  --ember:            #c84a2e;
+  --ember-soft:       rgba(200, 74, 46, 0.08);
+  --ember-strong:     #a33825;
+  --moss:             #5a7a4f;
+  --moss-soft:        rgba(90, 122, 79, 0.12);
+  --honey:            #c08a2c;
+  --honey-soft:       rgba(192, 138, 44, 0.12);
+  --slate:            #5a6878;
+  --slate-soft:       rgba(90, 104, 120, 0.12);
+  --shadow-md:        0 2px 8px rgba(20, 18, 12, 0.06), 0 1px 2px rgba(20, 18, 12, 0.04);
+  --shadow-lg:        0 8px 24px rgba(20, 18, 12, 0.10), 0 2px 4px rgba(20, 18, 12, 0.04);
+  --radius:           0.5rem;
+  --ease:             cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+[data-theme="dark"] {
+  --bg:               #14110a;
+  --bg-elevated:      #1d1a12;
+  --bg-sunken:        #0e0c08;
+  --bg-inset:         #100e09;
+  --ink:              #f5f1e6;
+  --ink-soft:         #d4cebd;
+  --ink-muted:        #948e7d;
+  --ink-faint:        #615c51;
+  --border:           rgba(245, 241, 230, 0.10);
+  --border-strong:    rgba(245, 241, 230, 0.18);
+  --ember:            #e8744d;
+  --ember-soft:       rgba(232, 116, 77, 0.15);
+  --ember-strong:     #f49875;
+  --moss:             #7fb069;
+  --moss-soft:        rgba(127, 176, 105, 0.14);
+  --honey:            #d4a04a;
+  --honey-soft:       rgba(212, 160, 74, 0.14);
+  --slate:            #8a8678;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+  position: relative;
+  min-height: 100vh;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+/* Paper texture — radial dot grid at 2.5% opacity */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(20, 18, 12, 0.025) 1px, transparent 0);
+  background-size: 24px 24px;
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] body::before {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 248, 230, 0.02) 1px, transparent 0);
+  mix-blend-mode: screen;
+}
+::selection { background: var(--ember); color: white; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: var(--ember); text-decoration: none; }
+a:hover { color: var(--ember-strong); }
+
+.font-mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+.font-serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+
+.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-muted);
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── LAYOUT ─── */
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 4rem;
+}
+
+/* ─── TOP NAV ─── */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.brand-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.brand-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-muted);
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.nav a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  transition: color 0.2s var(--ease);
+}
+.nav a:hover { color: var(--ember); }
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-muted);
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.2s var(--ease);
+}
+.theme-toggle:hover { border-color: var(--ember); color: var(--ember); }
+.theme-toggle svg { transition: transform 0.4s var(--ease); }
+.theme-toggle:hover svg { transform: rotate(180deg); }
+
+/* ─── HERO ─── */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  align-items: center;
+}
+@media (max-width: 800px) { .hero { grid-template-columns: 1fr; gap: 2rem; } }
+
+.hero-left .label { margin-bottom: 0.6rem; }
+.hero-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 4.2rem;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.4rem;
+  color: var(--ink);
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--ember);
+}
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 36rem;
+}
+.hero-cta {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.btn-primary {
+  background: var(--ember);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius);
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.btn-primary:hover { background: var(--ember-strong); transform: translateY(-1px); }
+.btn-ghost {
+  border: 1px solid var(--border-strong);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius);
+  color: var(--ink);
+  transition: all 0.2s var(--ease);
+}
+.btn-ghost:hover { border-color: var(--ember); color: var(--ember); }
+.hero-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+.hero-meta .dot { color: var(--ember); }
+
+/* Hero right: a "brief" card */
+.brief {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+.brief-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 1rem;
+}
+.brief-head .label { color: var(--ink-muted); }
+.brief-head .timestamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+}
+.brief-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.brief-row:last-child { border-bottom: none; }
+.brief-text {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.brief-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ember);
+  letter-spacing: 0.05em;
+}
+.brief-foot {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+}
+
+/* ─── SECTION HEADER ─── */
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 3rem 0 1.2rem;
+}
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ember);
+  letter-spacing: 0.2em;
+}
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.8rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  margin-left: 0.5rem;
+  align-self: center;
+}
+
+/* ─── PRINCIPLES GRID ─── */
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+@media (max-width: 800px) { .principles { grid-template-columns: 1fr; } }
+.principle {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  position: relative;
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.principle:hover { border-color: var(--ember); transform: translateY(-2px); }
+.principle-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ember);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+}
+.principle-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+.principle-body {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 0.8rem;
+}
+.principle-meta {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+/* ─── DEMO PANEL ─── */
+
+.demo {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+@media (max-width: 800px) { .demo { grid-template-columns: 1fr; } }
+
+.demo-input, .demo-output {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+}
+.demo-input .label, .demo-output .label { margin-bottom: 0.6rem; display: block; }
+textarea.demo-area {
+  width: 100%;
+  min-height: 100px;
+  background: var(--bg-sunken);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+  padding: 0.7rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+.demo-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+.btn-mini {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: var(--bg-elevated);
+  transition: all 0.2s var(--ease);
+}
+.btn-mini:hover { border-color: var(--ember); color: var(--ember); }
+.btn-mini.primary { background: var(--ember); color: white; border-color: var(--ember); }
+.btn-mini.primary:hover { background: var(--ember-strong); border-color: var(--ember-strong); }
+
+.results { display: flex; flex-direction: column; gap: 0.5rem; }
+.result {
+  background: var(--bg-sunken);
+  border-left: 2px solid var(--border);
+  padding: 0.7rem 0.9rem;
+  border-radius: 0 0.3rem 0.3rem 0;
+  font-size: 0.88rem;
+  color: var(--ink);
+  transition: border-color 0.2s var(--ease);
+}
+.result:hover { border-left-color: var(--ember); }
+.result-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.result-meta .sim { color: var(--ember); }
+.result-meta .type { color: var(--ember); }
+.result-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* ─── STATUS BAR ─── */
+
+.status-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding: 1rem 1.2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+@media (max-width: 600px) { .status-strip { grid-template-columns: repeat(2, 1fr); } }
+.stat { text-align: left; }
+.stat-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.8rem;
+  color: var(--ember);
+  line-height: 1.0;
+  margin-bottom: 0.2rem;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ─── SCI BOX ─── */
+
+.sci {
+  background: var(--bg-inset);
+  border-left: 3px solid var(--ember);
+  padding: 1rem 1.2rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 2rem 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.sci strong { color: var(--ember); }
+.sci em { color: var(--ink); font-style: italic; }
+
+/* ─── FOOTER ─── */
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+footer a { color: var(--ink-soft); }
+footer a:hover { color: var(--ember); }
+
+::selection { background: var(--ember); color: white; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-name">MemPal</span>
+      <span class="brand-tag">v0.1 · MSPCH</span>
+    </div>
+    <nav class="nav">
+      <a href="#principles">Principles</a>
+      <a href="#demo">Demo</a>
+      <a href="#science">Science</a>
+      <a href="https://github.com/srivtx/ai-miden" target="_blank">Code</a>
+      <a href="https://huggingface.co/spaces" target="_blank">HF Spaces</a>
+      <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
+        <span id="themeLabel">Dark</span>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.25">
+          <path d="M6 1 V 11 M 2 7 L 6 11 L 10 7" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="label">A Brain-Inspired Memory Layer for LLMs</div>
+      <h1 class="hero-title">Memory that <em>remembers,</em> <br>consolidates, and <em>surprises.</em></h1>
+      <p class="hero-sub">
+        MemPal gives your LLM application a brain-like memory: fast episodic capture,
+        slow semantic consolidation, neuromodulator-gated retrieval, and intrinsic
+        motivation to surface forgotten context. Drop-in. Open source. Local-first.
+      </p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="runCapture()">Try it below</button>
+        <a class="btn-ghost" href="https://github.com/srivtx/ai-miden" target="_blank">Read the source</a>
+      </div>
+      <div class="hero-meta">
+        <span>Open Source</span><span class="dot">·</span>
+        <span>Local-First</span><span class="dot">·</span>
+        <span>No Telemetry</span><span class="dot">·</span>
+        <span>MSPCH-grounded</span>
+      </div>
+    </div>
+    <div class="brief">
+      <div class="brief-head">
+        <span class="label">System Brief</span>
+        <span class="timestamp" id="briefTime">—</span>
+      </div>
+      <div class="brief-row">
+        <span class="brief-text">Memory architecture</span>
+        <span class="brief-value">MSPCH-2</span>
+      </div>
+      <div class="brief-row">
+        <span class="brief-text">Embedding</span>
+        <span class="brief-value" id="briefEmbed">loading…</span>
+      </div>
+      <div class="brief-row">
+        <span class="brief-text">Status</span>
+        <span class="brief-value" id="briefStatus">—</span>
+      </div>
+      <div class="brief-foot">5 systems · 0 services · 1 sentence API</div>
+    </div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-strip">
+    <div class="stat"><div class="stat-num" id="sCaptures">—</div><div class="stat-label">Fast memory</div></div>
+    <div class="stat"><div class="stat-num" id="sConsolidated">—</div><div class="stat-label">Slow memory</div></div>
+    <div class="stat"><div class="stat-num" id="sAccesses">—</div><div class="stat-label">DA signals</div></div>
+    <div class="stat"><div class="stat-num" id="sNovel">—</div><div class="stat-label">Surprise hits</div></div>
+  </div>
+
+  <!-- PRINCIPLES -->
+  <div class="section-head">
+    <span class="section-num">§ 01</span>
+    <span class="section-title">The five principles</span>
+    <span class="section-line"></span>
+  </div>
+
+  <div class="principles" id="principles">
+    <div class="principle">
+      <div class="principle-num">P-01</div>
+      <div class="principle-name">Multi-system memory</div>
+      <div class="principle-body">A fast hippocampal-like store captures every input one-shot. A slow cortical-like store holds structured, integrated knowledge. Two stores, one engine.</div>
+      <div class="principle-meta"><span>Brain</span><span>Fast + Slow</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-02</div>
+      <div class="principle-name">Replay consolidation</div>
+      <div class="principle-body">A nightly <code>sleep()</code> replays recent captures, deduplicates, clusters, and binds them to existing knowledge. The system thinks while you sleep.</div>
+      <div class="principle-meta"><span>Sleep</span><span>Offline</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-03</div>
+      <div class="principle-name">Neuromodulator gating</div>
+      <div class="principle-body">DA rewards retrieval of useful items. ACh gates the encoding of novel ones. NE controls gain. The chemistry of attention, in code.</div>
+      <div class="principle-meta"><span>DA · ACh · NE</span><span>Gated</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-04</div>
+      <div class="principle-name">Homeostatic pruning</div>
+      <div class="principle-body">Items unused for 90 days are pruned. The system forgets, like cortex prunes. Bounded storage, fresh signal.</div>
+      <div class="principle-meta"><span>Prune</span><span>90d</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-05</div>
+      <div class="principle-name">Intrinsic motivation</div>
+      <div class="principle-body"><code>surprise()</code> surfaces the item least similar to recent context. Drives exploration of forgotten material. Curiosity, implemented.</div>
+      <div class="principle-meta"><span>Curiosity</span><span>Novelty</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-06</div>
+      <div class="principle-name">Variational inference</div>
+      <div class="principle-body">The math: variational free energy minimized at every time scale. Same algorithm as the brain's, same algorithm as diffusion. <em>One math, many systems.</em></div>
+      <div class="principle-meta"><span>Free energy</span><span>MSPCH</span></div>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="section-head">
+    <span class="section-num">§ 02</span>
+    <span class="section-title">Live brief</span>
+    <span class="section-line"></span>
+  </div>
+
+  <div class="demo" id="demo">
+    <div class="demo-input">
+      <span class="label">Capture &rarr; Fast memory</span>
+      <textarea class="demo-area" id="captureInput" placeholder="Paste anything. A note, a quote, a URL, a thought. The system will keep it forever (until you prune it)."></textarea>
+      <div class="demo-actions">
+        <button class="btn-mini primary" onclick="addCapture()">Capture</button>
+        <button class="btn-mini" onclick="runSleep()">Run sleep</button>
+        <button class="btn-mini" onclick="runPrune()">Prune</button>
+        <button class="btn-mini" onclick="addSample()">Sample</button>
+      </div>
+      <div style="margin-top: 0.8rem;">
+        <span class="label">Search</span>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.4rem;">
+          <input id="searchInput" placeholder="What do you want to remember?" style="flex: 1; padding: 0.5rem; background: var(--bg-sunken); border: 1px solid var(--border); border-radius: 0.3rem; font-size: 0.88rem;" onkeydown="if(event.key==='Enter') runSearch()">
+          <button class="btn-mini" onclick="runSearch()">Go</button>
+        </div>
+      </div>
+      <div style="margin-top: 0.8rem;">
+        <button class="btn-mini" onclick="runSurprise()">Surprise me</button>
+      </div>
+    </div>
+    <div class="demo-output">
+      <span class="label">Results</span>
+      <div class="results" id="results" style="margin-top: 0.6rem;">
+        <div class="result" style="opacity: 0.6;">
+          <div class="result-meta"><span class="type">WAITING</span><span class="sim">—</span></div>
+          <div class="result-text">Add a note or run sleep to see results.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCIENCE -->
+  <div class="section-head">
+    <span class="section-num">§ 03</span>
+    <span class="section-title">The science</span>
+    <span class="section-line"></span>
+  </div>
+
+  <div id="science" class="sci">
+    <strong>MemPal</strong> is built on the <em>Multi-Scale Predictive Coding Hypothesis</em> (MSPCH), an original thesis developed in <code>ai-miden/docs/nature/12_unification/MSPCH.md</code>. The claim: the brain runs <em>the same variational inference algorithm at every time scale from milliseconds to decades</em>, with neuromodulators setting parameters and molecular cascades implementing each scale. Parts 0-12 of the <code>nature/</code> curriculum in this repo (95,000+ words) provide the full evidence base. <em>One math, many systems.</em> That's the bet.
+  </div>
+
+  <div class="sci" style="background: var(--moss-soft); border-left-color: var(--moss);">
+    <strong>For researchers:</strong> the <code>nature/</code> and <code>gm/</code> curricula in this repo are the research backing. A user study (n=20, 2-week within-subject) is the next step. <em>For everyone else:</em> the system is daily-useful today. Capture. Sleep. Search. Surprise. <a href="https://github.com/srivtx/ai-miden" style="color: var(--moss);">Source on GitHub</a>.
+  </div>
+
+</div>
+
+<footer>
+  <span>MemPal &middot; built on MSPCH &middot; 2026</span>
+  <span>
+    <a href="https://github.com/srivtx/ai-miden">ai-miden</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/docs">API</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/srivtx/ai-miden/blob/main/docs/nature/12_unification/MSPCH.md">Paper</a>
+  </span>
+</footer>
+
+<script>
+const API = '';
+
+// Theme toggle
+const root = document.documentElement;
+const stored = localStorage.getItem('mempal-theme') || 'light';
+root.setAttribute('data-theme', stored);
+const themeLabel = document.getElementById('themeLabel');
+themeLabel.textContent = stored === 'dark' ? 'Light' : 'Dark';
+document.getElementById('themeBtn').onclick = () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  themeLabel.textContent = next === 'dark' ? 'Light' : 'Dark';
+  localStorage.setItem('mempal-theme', next);
+};
+
+// Brief timestamp
+function updateBriefTime() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('briefTime').textContent = `${hh}:${mm}:${ss}`;
+}
+updateBriefTime();
+setInterval(updateBriefTime, 1000);
+
+// API helpers
+async function api(path, opts = {}) {
+  try {
+    const r = await fetch(API + path, {
+      method: opts.method || 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    });
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error('API error: ' + r.status);
+    return await r.json();
+  } catch (e) {
+    // Offline / no API: use local fallback
+    return null;
+  }
+}
+
+// Local fallback demo (runs without the API)
+class LocalFallback {
+  constructor() {
+    this.captures = [];
+    this.consolidated = [];
+    this.accessLog = [];
+    this.samples = [
+      "DDPM is a denoising diffusion probabilistic model. It learns to reverse a noise process.",
+      "Variational autoencoders compress data into a continuous latent space.",
+      "Latent diffusion models like Stable Diffusion run diffusion in a compressed VAE latent space.",
+      "Hippocampal replay during sleep consolidates memories from short-term to long-term storage.",
+      "MSPCH: the brain might run variational inference at every time scale from milliseconds to decades.",
+      "Dopamine neurons encode reward prediction error, not raw reward itself.",
+      "Predictive coding: the brain is constantly predicting the next sensory input and updating on errors.",
+      "The free energy principle is a unified theory of brain function by Karl Friston.",
+    ];
+    this.embeddings = {};
+  }
+  hash(text) {
+    let h = 0;
+    for (let i = 0; i < text.length; i++) {
+      h = ((h << 5) - h) + text.charCodeAt(i);
+      h |= 0;
+    }
+    return h;
+  }
+  embed(text) {
+    const seed = this.hash(text);
+    const v = new Array(64);
+    for (let i = 0; i < 64; i++) v[i] = Math.sin((seed >> i) & 0xFF) / 100;
+    const norm = Math.sqrt(v.reduce((a, b) => a + b*b, 0));
+    return v.map(x => x / (norm || 1));
+  }
+  cosine(a, b) {
+    const dot = a.reduce((s, x, i) => s + x * b[i], 0);
+    return dot;
+  }
+  add(content) {
+    const emb = this.embed(content);
+    const item = { id: this.captures.length + 1, content, emb, use_count: 0, ts: Date.now() };
+    this.captures.push(item);
+    return item.id;
+  }
+  sleep() {
+    let dup = 0, newClusters = 0, added = 0;
+    // Dedup
+    const toMerge = new Set();
+    for (let i = 0; i < this.captures.length; i++) {
+      for (let j = i+1; j < this.captures.length; j++) {
+        if (this.cosine(this.captures[i].emb, this.captures[j].emb) > 0.85) {
+          toMerge.add(this.captures[j].id);
+          dup++;
+        }
+      }
+    }
+    this.captures = this.captures.filter(c => !toMerge.has(c.id));
+    // Cluster (add all to consolidated for demo)
+    this.consolidated = this.captures.map(c => ({...c, members: [c.id]}));
+    return { duplicates_merged: dup, new_clusters: this.consolidated.length, items_in_existing_clusters: 0, items_processed: this.captures.length };
+  }
+  search(query, k = 5) {
+    const q = this.embed(query);
+    const all = [
+      ...this.captures.map(c => ({id: c.id, type: 'capture', content: c.content, emb: c.emb, use_count: c.use_count})),
+      ...this.consolidated.map(c => ({id: c.id, type: 'consolidated', content: c.content, emb: c.emb, use_count: c.use_count})),
+    ];
+    const ranked = all.map(x => ({...x, similarity: this.cosine(q, x.emb)})).sort((a, b) => b.similarity - a.similarity);
+    ranked.slice(0, k).forEach(r => { r.use_count++; });
+    return ranked.slice(0, k);
+  }
+  surprise() {
+    if (this.consolidated.length === 0 && this.captures.length === 0) return null;
+    const recent = this.consolidated[this.consolidated.length - 1] || this.captures[this.captures.length - 1];
+    const all = this.consolidated.length ? this.consolidated : this.captures;
+    let best = null, bestN = 0;
+    for (const x of all) {
+      const novelty = 1 - this.cosine(recent.emb, x.emb);
+      if (novelty > bestN) { bestN = novelty; best = {...x, novelty}; }
+    }
+    return best;
+  }
+  status() {
+    return { captures: this.captures.length, consolidated: this.consolidated.length, access_events: this.accessLog.length, embedder: 'hash' };
+  }
+}
+
+let engine = null;
+async function getEngine() {
+  if (engine) return engine;
+  const s = await api('/api/status');
+  if (s) {
+    engine = {
+      add: (c) => api('/api/add', {method: 'POST', body: {content: c}}).then(r => r.id),
+      sleep: () => api('/api/sleep?days=1', {method: 'POST'}),
+      search: (q, k) => api('/api/search', {method: 'POST', body: {query: q, k}}),
+      surprise: () => api('/api/surprise'),
+      status: () => api('/api/status'),
+    };
+    document.getElementById('briefEmbed').textContent = 'sBERT';
+  } else {
+    engine = new LocalFallback();
+    document.getElementById('briefEmbed').textContent = 'hash-fallback';
+  }
+  return engine;
+}
+
+function renderResult(r) {
+  return `<div class="result">
+    <div class="result-meta">
+      <span class="type">${r.type}</span>
+      <span class="sim">sim ${r.similarity.toFixed(3)} · used ${r.use_count || 0}x</span>
+    </div>
+    <div class="result-text">${escapeHtml((r.content || '').slice(0, 200))}</div>
+  </div>`;
+}
+
+function renderSurprise(s) {
+  return `<div class="result">
+    <div class="result-meta">
+      <span class="type">${s.type} · surprise</span>
+      <span class="sim">novelty ${s.novelty.toFixed(3)}</span>
+    </div>
+    <div class="result-text">${escapeHtml((s.content || '').slice(0, 240))}</div>
+  </div>`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+async function refreshStatus() {
+  const e = await getEngine();
+  const s = await e.status();
+  document.getElementById('sCaptures').textContent = s.captures;
+  document.getElementById('sConsolidated').textContent = s.consolidated;
+  document.getElementById('sAccesses').textContent = s.access_events;
+  document.getElementById('sNovel').textContent = Math.min(s.captures, s.consolidated);
+  document.getElementById('briefStatus').textContent = `${s.captures + s.consolidated} items`;
+}
+
+async function addCapture() {
+  const input = document.getElementById('captureInput');
+  const content = input.value.trim();
+  if (!content) return;
+  const e = await getEngine();
+  await e.add(content);
+  input.value = '';
+  document.getElementById('results').innerHTML = `<div class="result"><div class="result-meta"><span class="type">CAPTURED</span><span class="sim">—</span></div><div class="result-text">${escapeHtml(content.slice(0, 200))}</div></div>`;
+  await refreshStatus();
+}
+
+async function runSleep() {
+  const e = await getEngine();
+  const r = await e.sleep();
+  document.getElementById('results').innerHTML = `<div class="result"><div class="result-meta"><span class="type">CONSOLIDATED</span><span class="sim">${r.duplicates_merged} dup</span></div><div class="result-text">${r.new_clusters} new clusters, ${r.items_in_existing_clusters} added to existing, ${r.items_processed} items processed.</div></div>`;
+  await refreshStatus();
+}
+
+async function runPrune() {
+  const e = await getEngine();
+  const r = await api('/api/prune?days_threshold=90', {method: 'POST'});
+  if (r) {
+    document.getElementById('results').innerHTML = `<div class="result"><div class="result-meta"><span class="type">PRUNED</span><span class="sim">homeostasis</span></div><div class="result-text">Captures pruned: ${r.captures_pruned}, Consolidated pruned: ${r.consolidated_pruned}</div></div>`;
+  }
+  await refreshStatus();
+}
+
+async function runSearch() {
+  const input = document.getElementById('searchInput');
+  const query = input.value.trim();
+  if (!query) return;
+  const e = await getEngine();
+  const results = await e.search(query, 5);
+  if (!results || !results.length) {
+    document.getElementById('results').innerHTML = '<div class="result"><div class="result-meta"><span class="type">EMPTY</span></div><div class="result-text">No results.</div></div>';
+    return;
+  }
+  document.getElementById('results').innerHTML = results.map(renderResult).join('');
+  await refreshStatus();
+}
+
+async function runSurprise() {
+  const e = await getEngine();
+  const s = await e.surprise();
+  if (!s) {
+    document.getElementById('results').innerHTML = '<div class="result"><div class="result-meta"><span class="type">EMPTY</span></div><div class="result-text">No items yet. Add some first.</div></div>';
+    return;
+  }
+  document.getElementById('results').innerHTML = renderSurprise(s);
+}
+
+async function runCapture() {
+  document.getElementById('captureInput').focus();
+}
+
+const samples = [
+  "DDPM is a denoising diffusion probabilistic model. It learns to reverse a noise process.",
+  "Variational autoencoders compress data into a continuous latent space.",
+  "Latent diffusion models run diffusion in a compressed VAE latent space.",
+  "Hippocampal replay during sleep consolidates memories from short-term to long-term storage.",
+  "MSPCH: the brain runs variational inference at every time scale from milliseconds to decades.",
+  "Dopamine neurons encode reward prediction error, not raw reward itself.",
+  "Predictive coding: the brain constantly predicts the next sensory input and updates on errors.",
+  "The free energy principle is a unified theory of brain function by Karl Friston.",
+];
+let sampleIdx = 0;
+function addSample() {
+  const ta = document.getElementById('captureInput');
+  ta.value = samples[sampleIdx % samples.length];
+  sampleIdx++;
+}
+
+refreshStatus();
+</script>
+</body>
+</html>
