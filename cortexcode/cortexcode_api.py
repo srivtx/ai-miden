@@ -192,9 +192,18 @@ def learn(req: LearnRequest):
     """Feed a text to the loop. It scores by surprise, learns if novel, sleeps if due."""
     if _LOOP is None:
         raise HTTPException(503, "Model not loaded")
-    result = _LOOP.on_new_text(req.text, source=req.source)
+    try:
+        result = _LOOP.on_new_text(req.text, source=req.source)
+    except Exception as e:
+        import traceback
+        tb = traceback.format_exc()
+        print(f"\n[learn error]\n{tb}\n", flush=True)
+        return {"status": "error", "message": str(e), "traceback": tb[-1500:]}
     if result['action'] == 'learn' and req.auto_save and _MODEL_PATH:
-        _LOOP.save(_MODEL_PATH)
+        try:
+            _LOOP.save(_MODEL_PATH)
+        except Exception as e:
+            print(f"  [learn] save failed: {e}", flush=True)
     return result
 
 
@@ -203,26 +212,54 @@ def learn_internet(req: LearnInternetRequest):
     """Fetch trending Python repos from GitHub and learn from them."""
     if _LOOP is None:
         raise HTTPException(503, "Model not loaded")
+    try:
+        return _learn_internet_impl(req)
+    except Exception as e:
+        import traceback
+        tb = traceback.format_exc()
+        print(f"\n[learn-internet error]\n{tb}\n", flush=True)
+        return {"status": "error", "message": str(e), "traceback": tb[-1500:]}
+
+
+def _learn_internet_impl(req: LearnInternetRequest):
     fetcher = InternetFetcher()
     repos = fetcher.fetch_github_trending(req.n_repos)
     if not repos:
-        return {"status": "no_repos", "message": "Could not fetch from GitHub"}
+        return {"status": "no_repos", "message": "Could not fetch from GitHub (rate limit or network)"}
 
     learned = []
     skipped = 0
+    errors = []
     for repo in repos:
         count = 0
-        for filename, text in fetcher.clone_and_extract(repo['clone_url']):
+        repo_error = None
+        try:
+            files_iter = list(fetcher.clone_and_extract(repo['clone_url']))
+        except Exception as e:
+            errors.append({"repo": repo['name'], "error": f"clone failed: {e}"})
+            continue
+        for filename, text in files_iter:
             if count >= req.max_files:
                 break
-            r = _LOOP.on_new_text(text, source=f"internet:{repo['name']}/{filename}")
-            count += 1
-            if r['action'] == 'learn':
-                learned.append({"repo": repo['name'], "file": filename, "loss": r['new_loss']})
-            else:
-                skipped += 1
-        if _MODEL_PATH:
-            _LOOP.save(_MODEL_PATH)
+            try:
+                r = _LOOP.on_new_text(text, source=f"internet:{repo['name']}/{filename}")
+                count += 1
+                if r['action'] == 'learn':
+                    loss_val = r.get('new_loss')
+                    learned.append({
+                        "repo": repo['name'],
+                        "file": filename,
+                        "loss": float(loss_val) if loss_val is not None else None,
+                    })
+                else:
+                    skipped += 1
+            except Exception as e:
+                errors.append({"repo": repo['name'], "file": filename, "error": str(e)})
+        try:
+            if _MODEL_PATH:
+                _LOOP.save(_MODEL_PATH)
+        except Exception as e:
+            errors.append({"repo": repo['name'], "error": f"save failed: {e}"})
 
     return {
         "status": "ok",
@@ -230,6 +267,8 @@ def learn_internet(req: LearnInternetRequest):
                   for r in repos],
         "learned_count": len(learned),
         "skipped_count": skipped,
+        "error_count": len(errors),
+        "errors": errors[:5],  # cap to first 5
         "summary": _LOOP._summary(),
     }
 
