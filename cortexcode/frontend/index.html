@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CortexCode — Brain-Inspired Code Completion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #faf8f3;
+  color: #191712;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(20, 18, 12, 0.025) 1px, transparent 0);
+  background-size: 24px 24px;
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] { background: #14110a; color: #f5f1e6; }
+[data-theme="dark"] body::before {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 248, 230, 0.02) 1px, transparent 0);
+  mix-blend-mode: screen;
+}
+::selection { background: #c84a2e; color: white; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: #c84a2e; text-decoration: none; }
+a:hover { color: #a33825; }
+.font-mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+.font-serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #6b6557;
+}
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid #c84a2e;
+  outline-offset: 2px;
+}
+.wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 1.25rem 1.5rem 4rem; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 1.5rem; border-bottom: 1px solid rgba(20, 18, 12, 0.10);
+  margin-bottom: 2rem;
+}
+[data-theme="dark"] .topbar { border-bottom-color: rgba(245, 241, 230, 0.10); }
+.brand { display: flex; align-items: baseline; gap: 0.5rem; }
+.brand-name { font-family: 'Instrument Serif', serif; font-size: 1.6rem; letter-spacing: -0.01em; }
+.brand-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  text-transform: uppercase; letter-spacing: 0.22em; color: #6b6557;
+  padding: 2px 6px; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 2px;
+}
+.nav { display: flex; align-items: center; gap: 1.5rem; }
+.nav a {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  text-transform: uppercase; letter-spacing: 0.18em; color: #45413a;
+  transition: color 0.2s;
+}
+.nav a:hover { color: #c84a2e; }
+.theme-toggle {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  text-transform: uppercase; letter-spacing: 0.18em; color: #6b6557;
+  padding: 0.35rem 0.6rem; border: 1px solid rgba(20, 18, 12, 0.10);
+  border-radius: 0.5rem; transition: all 0.2s;
+}
+.theme-toggle:hover { border-color: #c84a2e; color: #c84a2e; }
+.theme-toggle svg { transition: transform 0.4s; }
+.theme-toggle:hover svg { transform: rotate(180deg); }
+.hero { margin-bottom: 3rem; }
+.hero .label { margin-bottom: 0.6rem; }
+.hero-title {
+  font-family: 'Instrument Serif', serif; font-size: 3.6rem; line-height: 1.0;
+  letter-spacing: -0.02em; margin-bottom: 1.2rem;
+}
+.hero-title em { font-style: italic; color: #c84a2e; }
+.hero-sub { font-size: 1.05rem; color: #45413a; line-height: 1.6; max-width: 36rem; }
+.section-head { display: flex; align-items: baseline; gap: 1rem; margin: 2.5rem 0 1.2rem; }
+.section-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #c84a2e; letter-spacing: 0.2em; }
+.section-title { font-family: 'Instrument Serif', serif; font-size: 1.8rem; letter-spacing: -0.01em; }
+.section-line { flex: 1; height: 1px; background: rgba(20, 18, 12, 0.10); align-self: center; margin-left: 0.5rem; }
+[data-theme="dark"] .section-line { background: rgba(245, 241, 230, 0.10); }
+.complete-card {
+  background: white; border: 1px solid rgba(20, 18, 12, 0.10);
+  border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(20, 18, 12, 0.06);
+}
+[data-theme="dark"] .complete-card { background: #1d1a12; border-color: rgba(245, 241, 230, 0.10); }
+.prompt-area {
+  width: 100%; min-height: 100px; background: #f1efe8; color: #191712;
+  border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.3rem;
+  padding: 0.7rem; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem; resize: vertical;
+}
+[data-theme="dark"] .prompt-area { background: #0e0c08; color: #f5f1e6; }
+.settings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin: 0.8rem 0; }
+.setting { display: flex; flex-direction: column; gap: 0.3rem; }
+.setting label { font-size: 0.7rem; color: #6b6557; text-transform: uppercase; letter-spacing: 0.1em; }
+.setting input {
+  padding: 0.4rem 0.5rem; background: #f1efe8; border: 1px solid rgba(20, 18, 12, 0.10);
+  border-radius: 0.3rem; font-size: 0.85rem;
+}
+[data-theme="dark"] .setting input { background: #0e0c08; color: #f5f1e6; border-color: rgba(245, 241, 230, 0.10); }
+.actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.btn-primary {
+  background: #c84a2e; color: white; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em;
+  padding: 0.7rem 1.2rem; border-radius: 0.5rem;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: #a33825; transform: translateY(-1px); }
+.btn-primary:disabled { background: #9a9382; cursor: not-allowed; }
+.btn-ghost {
+  border: 1px solid rgba(20, 18, 12, 0.18);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  padding: 0.7rem 1.2rem; border-radius: 0.5rem; color: #191712;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: #c84a2e; color: #c84a2e; }
+[data-theme="dark"] .btn-ghost { color: #f5f1e6; border-color: rgba(245, 241, 230, 0.18); }
+[data-theme="dark"] .btn-ghost:hover { border-color: #c84a2e; color: #c84a2e; }
+.output {
+  margin-top: 1.2rem; background: #f1efe8; border: 1px solid rgba(20, 18, 12, 0.10);
+  border-radius: 0.3rem; padding: 1rem; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem; line-height: 1.5; white-space: pre-wrap; min-height: 80px;
+  color: #191712;
+}
+[data-theme="dark"] .output { background: #0e0c08; color: #f5f1e6; border-color: rgba(245, 241, 230, 0.10); }
+.output .prompt-text { color: #6b6557; }
+.output .completion-text { color: #c84a2e; }
+.output-meta {
+  display: flex; gap: 1rem; margin-bottom: 0.5rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: #6b6557; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.examples { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 0.5rem; }
+.example-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  padding: 0.5rem 0.7rem; background: white; border: 1px solid rgba(20, 18, 12, 0.10);
+  border-radius: 0.3rem; text-align: left; color: #45413a; transition: all 0.2s;
+}
+.example-btn:hover { border-color: #c84a2e; color: #c84a2e; }
+[data-theme="dark"] .example-btn { background: #1d1a12; color: #d4cebd; border-color: rgba(245, 241, 230, 0.10); }
+[data-theme="dark"] .example-btn:hover { border-color: #c84a2e; color: #c84a2e; }
+.principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 800px) { .principles { grid-template-columns: 1fr; } .examples { grid-template-columns: 1fr; } .settings { grid-template-columns: 1fr; } }
+.principle { background: white; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.5rem; padding: 1.2rem; transition: border-color 0.2s, transform 0.2s; }
+.principle:hover { border-color: #c84a2e; transform: translateY(-2px); }
+[data-theme="dark"] .principle { background: #1d1a12; border-color: rgba(245, 241, 230, 0.10); }
+.principle-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #c84a2e; letter-spacing: 0.2em; margin-bottom: 0.5rem; }
+.principle-name { font-family: 'Instrument Serif', serif; font-size: 1.3rem; margin-bottom: 0.5rem; }
+.principle-body { font-size: 0.88rem; color: #45413a; line-height: 1.55; }
+.principle-meta { display: flex; justify-content: space-between; padding-top: 0.6rem; border-top: 1px solid rgba(20, 18, 12, 0.10); font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: #6b6557; text-transform: uppercase; letter-spacing: 0.16em; }
+[data-theme="dark"] .principle-body, [data-theme="dark"] .principle-meta, [data-theme="dark"] .principle-name { color: #d4cebd; }
+.status-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; padding: 1rem 1.2rem; background: white; border: 1px solid rgba(20, 18, 12, 0.10); border-radius: 0.5rem; }
+@media (max-width: 600px) { .status-strip { grid-template-columns: repeat(2, 1fr); } }
+[data-theme="dark"] .status-strip { background: #1d1a12; border-color: rgba(245, 241, 230, 0.10); }
+.stat-num { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: #c84a2e; }
+.stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #6b6557; }
+.sci {
+  background: #ebe8de; border-left: 3px solid #c84a2e; padding: 1rem 1.2rem;
+  border-radius: 0 0.5rem 0.5rem 0; margin: 2rem 0; font-size: 0.88rem; color: #45413a; line-height: 1.55;
+}
+[data-theme="dark"] .sci { background: #100e09; color: #d4cebd; }
+.sci strong { color: #c84a2e; }
+footer {
+  margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid rgba(20, 18, 12, 0.10);
+  display: flex; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: #6b6557;
+}
+[data-theme="dark"] footer { border-top-color: rgba(245, 241, 230, 0.10); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-name">CortexCode</span>
+      <span class="brand-tag" id="brandTag">v0.1 · MSPCH</span>
+    </div>
+    <nav class="nav">
+      <a href="#complete">Complete</a>
+      <a href="#principles">Principles</a>
+      <a href="#science">Science</a>
+      <a href="https://github.com/srivtx/ai-miden" target="_blank">Code</a>
+      <button class="theme-toggle" id="themeBtn">
+        <span id="themeLabel">Dark</span>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.25">
+          <path d="M6 1 V 11 M 2 7 L 6 11 L 10 7" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <div class="label">Brain-Inspired Code Completion</div>
+    <h1 class="hero-title">A small, local, <em>personal</em> copilot.</h1>
+    <p class="hero-sub">CortexCode is a 5M-parameter transformer with 5 MSPCH features from the <code>nature/</code> curriculum. Trained on your code. Runs anywhere. Never sends your code to the cloud.</p>
+  </div>
+
+  <div class="status-strip">
+    <div class="stat"><div class="stat-num" id="sParams">—</div><div class="stat-label">params</div></div>
+    <div class="stat"><div class="stat-num" id="sVocab">—</div><div class="stat-label">vocab</div></div>
+    <div class="stat"><div class="stat-num" id="sLatency">—</div><div class="stat-label">ms / call</div></div>
+    <div class="stat"><div class="stat-num" id="sStatus">…</div><div class="stat-label">status</div></div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-num">§ 01</span>
+    <span class="section-title">Try it</span>
+    <span class="section-line"></span>
+  </div>
+
+  <div class="complete-card" id="complete">
+    <span class="label">Prompt</span>
+    <textarea class="prompt-area" id="promptInput" placeholder="def add(a, b):
+    return "></textarea>
+    <div class="settings">
+      <div class="setting">
+        <label for="nTokens">Tokens to generate</label>
+        <input id="nTokens" type="number" value="100" min="10" max="500" step="10">
+      </div>
+      <div class="setting">
+        <label for="temperature">Temperature</label>
+        <input id="temperature" type="number" value="0.7" min="0.1" max="2.0" step="0.1">
+      </div>
+      <div class="setting">
+        <label for="topK">Top-k</label>
+        <input id="topK" type="number" value="50" min="1" max="200" step="5">
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" id="completeBtn" onclick="complete()">Complete</button>
+      <button class="btn-ghost" onclick="useExample(0)">Example: def add</button>
+      <button class="btn-ghost" onclick="useExample(1)">Example: def fibonacci</button>
+      <button class="btn-ghost" onclick="useExample(2)">Example: class Stack</button>
+      <button class="btn-ghost" onclick="useExample(3)">Example: def quicksort</button>
+    </div>
+    <div class="output" id="output">
+      <div class="output-meta"><span>OUTPUT</span><span id="outputMeta">—</span></div>
+      <div class="prompt-text">Click "Complete" to generate code...</div>
+    </div>
+  </div>
+
+  <div class="section-head" id="principles">
+    <span class="section-num">§ 02</span>
+    <span class="section-title">The five principles</span>
+    <span class="section-line"></span>
+  </div>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="principle-num">P-01</div>
+      <div class="principle-name">Multi-system memory</div>
+      <div class="principle-body">Fast (hippocampus) for episodic context. Slow (cortex) for project style. Two stores, one engine.</div>
+      <div class="principle-meta"><span>Brain</span><span>Fast + Slow</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-02</div>
+      <div class="principle-name">Replay consolidation</div>
+      <div class="principle-body">A nightly "sleep" job replays recent captures, deduplicates, clusters, and binds them to existing knowledge.</div>
+      <div class="principle-meta"><span>Sleep</span><span>Offline</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-03</div>
+      <div class="principle-name">Neuromodulator gating</div>
+      <div class="principle-body">DA modulates attention during training. High DA = sharper attention to surprising tokens.</div>
+      <div class="principle-meta"><span>DA</span><span>Gated</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-04</div>
+      <div class="principle-name">Homeostatic plasticity</div>
+      <div class="principle-body">Per-neuron target activity (Turrigiano scaling). Keeps the network stable over long training.</div>
+      <div class="principle-meta"><span>Prune</span><span>Stable</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-05</div>
+      <div class="principle-name">Variational surprise</div>
+      <div class="principle-body">Cosine similarity for retrieval. Surprise surfaces forgotten material proactively.</div>
+      <div class="principle-meta"><span>ELBO</span><span>Novelty</span></div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">P-06</div>
+      <div class="principle-name">Personalization</div>
+      <div class="principle-body">Trained on YOUR code. Knows your style, your naming, your patterns. Copilot doesn't.</div>
+      <div class="principle-meta"><span>Local</span><span>Yours</span></div>
+    </div>
+  </div>
+
+  <div class="sci" id="science">
+    <strong>The science:</strong> CortexCode uses all 5 core principles of the Multi-Scale Predictive Coding Hypothesis (MSPCH) developed in <code>ai-miden/docs/nature/12_unification/</code>. The transformer is the substrate; MSPCH is the philosophy. The math is variational inference, the architecture is the brain, the data is you. <em>One math, many systems.</em>
+  </div>
+
+</div>
+
+<footer>
+  <span>CortexCode · built on MSPCH · 2026</span>
+  <span>
+    <a href="https://github.com/srivtx/ai-miden">ai-miden</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/health">API</a>
+  </span>
+</footer>
+
+<script>
+const root = document.documentElement;
+const stored = localStorage.getItem('cortexcode-theme') || 'light';
+root.setAttribute('data-theme', stored);
+document.getElementById('themeLabel').textContent = stored === 'dark' ? 'Light' : 'Dark';
+document.getElementById('themeBtn').onclick = () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  document.getElementById('themeLabel').textContent = next === 'dark' ? 'Light' : 'Dark';
+  localStorage.setItem('cortexcode-theme', next);
+};
+
+const EXAMPLES = [
+  "def add(a, b):\n    ",
+  "def fibonacci(n):\n    ",
+  "class Stack:\n    def __init__(self):\n        self.items = []\n    def push(self, item):\n        ",
+  "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    ",
+];
+
+function useExample(i) {
+  document.getElementById('promptInput').value = EXAMPLES[i];
+}
+
+async function refreshStatus() {
+  try {
+    const r = await fetch('/health');
+    const s = await r.json();
+    document.getElementById('sStatus').textContent = s.model_loaded ? 'ready' : 'no model';
+    document.getElementById('sParams').textContent = s.model_loaded ? (s.config.dim * s.config.n_layers * 384 / 1e6).toFixed(1) + 'M' : '—';
+    document.getElementById('sVocab').textContent = s.vocab_size;
+  } catch (e) {
+    document.getElementById('sStatus').textContent = 'offline';
+  }
+}
+
+async function complete() {
+  const prompt = document.getElementById('promptInput').value;
+  if (!prompt.trim()) return;
+  const nTokens = parseInt(document.getElementById('nTokens').value);
+  const temperature = parseFloat(document.getElementById('temperature').value);
+  const topK = parseInt(document.getElementById('topK').value);
+  const btn = document.getElementById('completeBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  const out = document.getElementById('output');
+  out.innerHTML = '<div class="output-meta"><span>OUTPUT</span><span>thinking...</span></div><div>...</div>';
+  try {
+    const r = await fetch('/complete', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt, n_tokens: nTokens, temperature, top_k: topK}),
+    });
+    const j = await r.json();
+    if (j.detail) {
+      out.innerHTML = `<div class="output-meta"><span>ERROR</span><span>—</span></div><div>${j.detail}</div>`;
+    } else {
+      out.innerHTML = `<div class="output-meta"><span>OUTPUT</span><span>${j.elapsed_ms.toFixed(0)}ms · ${j.n_tokens} tokens</span></div><div><span class="prompt-text">${escape(j.prompt)}</span><span class="completion-text">${escape(j.completion)}</span></div>`;
+      document.getElementById('sLatency').textContent = j.elapsed_ms.toFixed(0);
+    }
+  } catch (e) {
+    out.innerHTML = `<div class="output-meta"><span>ERROR</span><span>—</span></div><div>${e.message}</div>`;
+  }
+  btn.disabled = false;
+  btn.textContent = 'Complete';
+}
+
+function escape(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+refreshStatus();
+</script>
+</body>
+</html>
