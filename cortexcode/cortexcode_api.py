@@ -339,9 +339,10 @@ def main():
 
     init_loop(args.model, args.lr, args.threshold,
               args.sleep_every, args.sleep_steps)
+    sys.stdout.flush()
 
     import uvicorn
-    print(f"\nCortexCode Loop API on http://{args.host}:{args.port}")
+    print(f"\nCortexCode Loop API on http://{args.host}:{args.port}", flush=True)
     print(f"  GET  /                  browser UI")
     print(f"  POST /complete          generate code")
     print(f"  POST /learn             learn from text")
