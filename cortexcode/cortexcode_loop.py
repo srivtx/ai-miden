@@ -34,7 +34,15 @@ Run modes:
         --model /content/cortexcode_loop.pt \\
         --dir /content/codebase
 
+    # 4. Pull from the internet and learn from trending Python repos
+    !python cortexcode_loop.py learn-internet \\
+        --model /content/cortexcode.pt \\
+        --out /content/cortexcode_loop.pt \\
+        --n-repos 3
+
 The test mode is what you run in Colab to see the loss go DOWN over time.
+The learn-internet mode pulls real GitHub repos, clones them, and feeds
+the code to the loop. This is the "auto learn from online" wedge.
 """
 
 import os
@@ -43,6 +51,11 @@ import json
 import random
 import argparse
 import threading
+import tempfile
+import subprocess
+import urllib.request
+import urllib.error
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from collections import deque
 from typing import Optional, List, Tuple
@@ -254,6 +267,27 @@ class CortexCodeLoop:
                 time.sleep(delay)
         return self._summary()
 
+    def run_internet_stream(self, n_repos=3, max_files_per_repo=30,
+                            verbose=True, fetcher=None):
+        """Pull repos from the internet and feed to the loop."""
+        if fetcher is None:
+            fetcher = InternetFetcher()
+        repos = fetcher.fetch_github_trending(n_repos)
+        for repo_url in repos:
+            if verbose:
+                print(f"\n--- Fetching {repo_url} ---")
+            count = 0
+            for text in fetcher.clone_and_extract(repo_url):
+                if count >= max_files_per_repo:
+                    break
+                result = self.on_new_text(text, source=f"internet:{repo_url.split('/')[-1]}")
+                count += 1
+                if verbose and result['action'] == 'learn':
+                    self._log_result(result)
+            if verbose:
+                print(f"  processed {count} files from {repo_url}")
+        return self._summary()
+
     # ----- save / load / plot -----
 
     def save(self, path):
@@ -358,6 +392,111 @@ def load_loop_model(path, device='cuda'):
 
     loop_state = ckpt.get('loop_state', {})
     return model, tokenizer, loop_state
+
+
+# =============================================================================
+# Internet fetcher
+# =============================================================================
+
+class InternetFetcher:
+    """Pulls Python code from public sources on the internet.
+
+    No API keys needed. Uses:
+    - GitHub REST API (no auth, just User-Agent header) for trending repos
+    - PyPI RSS feed for new package releases
+    - Hacker News API for top stories (we don't use the text yet, just signal)
+    """
+
+    def __init__(self, timeout=15, user_agent='CortexCode-Loop/0.1'):
+        self.timeout = timeout
+        self.ua = user_agent
+
+    def _get(self, url):
+        req = urllib.request.Request(url, headers={'User-Agent': self.ua})
+        with urllib.request.urlopen(req, timeout=self.timeout) as r:
+            return r.read()
+
+    def fetch_github_trending(self, n=5):
+        """Top Python repos by recent activity, via GitHub Search API.
+
+        Uses sort=updated to get recently-pushed repos. Filters out trivial ones
+        (< 5 stars) so the loop doesn't learn from empty or spam repos.
+        """
+        url = ("https://api.github.com/search/repositories"
+               "?q=language:python"
+               "&sort=updated&order=desc&per_page=30")
+        try:
+            data = json.loads(self._get(url))
+        except (urllib.error.URLError, json.JSONDecodeError, TimeoutError) as e:
+            print(f"  GitHub fetch failed: {e}")
+            return []
+        repos = []
+        for item in data.get('items', []):
+            if item['stargazers_count'] < 5:
+                continue
+            repos.append({
+                'name': item['full_name'],
+                'clone_url': item['clone_url'],
+                'stars': item['stargazers_count'],
+                'description': (item.get('description') or '')[:80],
+            })
+            if len(repos) >= n:
+                break
+        return repos
+
+    def fetch_pypi_recent(self, n=10):
+        """Recent PyPI package names from the official RSS feed."""
+        url = 'https://pypi.org/rss/updates.xml'
+        try:
+            data = self._get(url)
+        except (urllib.error.URLError, TimeoutError) as e:
+            print(f"  PyPI fetch failed: {e}")
+            return []
+        try:
+            root = ET.fromstring(data)
+        except ET.ParseError as e:
+            print(f"  PyPI parse failed: {e}")
+            return []
+        packages = []
+        for item in root.findall('.//item'):
+            title = (item.findtext('title') or '').strip()
+            # "New version of <pkg> <version>"
+            if title.startswith('New version of'):
+                parts = title.split()
+                if len(parts) >= 4:
+                    packages.append(parts[3])
+            if len(packages) >= n:
+                break
+        return packages
+
+    def clone_and_extract(self, repo_url, max_file_size=20000):
+        """Clone a git repo to a temp dir, yield Python file contents.
+
+        Yields tuples of (filename, text) so the loop can label the source.
+        """
+        with tempfile.TemporaryDirectory(prefix='cortexcode_') as tmp:
+            try:
+                result = subprocess.run(
+                    ['git', 'clone', '--depth', '1', '--quiet', repo_url, tmp],
+                    capture_output=True, timeout=60,
+                )
+                if result.returncode != 0:
+                    print(f"  git clone failed for {repo_url}: {result.stderr.decode()[:200]}")
+                    return
+            except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+                print(f"  git clone error for {repo_url}: {e}")
+                return
+            for path in Path(tmp).rglob('*.py'):
+                spath = str(path)
+                if '__pycache__' in spath or '/.git/' in spath or '/test' in spath.lower():
+                    continue
+                try:
+                    text = path.read_text(errors='ignore')
+                    if 200 <= len(text) <= max_file_size:
+                        rel = spath[len(tmp) + 1:]
+                        yield rel, text
+                except OSError:
+                    continue
 
 
 # =============================================================================
@@ -555,6 +694,17 @@ def main():
     p_watch.add_argument('--sleep-steps', type=int, default=10)
     p_watch.add_argument('--interval', type=float, default=0.5)
 
+    p_inet = sub.add_parser('learn-internet',
+                            help='Pull repos from GitHub and learn from them')
+    p_inet.add_argument('--model', type=str, required=True)
+    p_inet.add_argument('--out', type=str, default=None)
+    p_inet.add_argument('--n-repos', type=int, default=3)
+    p_inet.add_argument('--max-files', type=int, default=30)
+    p_inet.add_argument('--lr', type=float, default=1e-5)
+    p_inet.add_argument('--threshold', type=float, default=2.0)
+    p_inet.add_argument('--sleep-every', type=int, default=10)
+    p_inet.add_argument('--sleep-steps', type=int, default=5)
+
     args = parser.parse_args()
     if args.cmd == 'pretrain':
         pretrain(args)
@@ -562,8 +712,60 @@ def main():
         test_mode(args)
     elif args.cmd == 'watch':
         watch_mode(args)
+    elif args.cmd == 'learn-internet':
+        learn_internet_mode(args)
     else:
         parser.print_help()
+
+
+def learn_internet_mode(args):
+    """Fetch trending Python repos from GitHub, clone, feed to loop."""
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"Loading model from {args.model}...")
+    model, tokenizer, _ = load_loop_model(args.model, device=device)
+    loop = CortexCodeLoop(
+        model, tokenizer, lr=args.lr, surprise_threshold=args.threshold,
+        sleep_every=args.sleep_every, sleep_steps=args.sleep_steps,
+        device=device,
+    )
+
+    fetcher = InternetFetcher()
+    print(f"Fetching top {args.n_repos} Python repos from GitHub...")
+    repos = fetcher.fetch_github_trending(args.n_repos)
+    if not repos:
+        print("No repos fetched. Check internet connection.")
+        return
+    for r in repos:
+        print(f"  {r['name']}  ({r['stars']}*)  {r['description']}")
+
+    print(f"\nCloning and feeding to loop (max {args.max_files} files per repo)...")
+    print(f"  surprise_threshold = {args.threshold}")
+    print(f"  sleep_every = {args.sleep_every} edits")
+    print(f"  lr = {args.lr}\n")
+
+    n_total = 0
+    for repo in repos:
+        print(f"\n--- {repo['name']} ---")
+        count = 0
+        for filename, text in fetcher.clone_and_extract(repo['clone_url']):
+            if count >= args.max_files:
+                break
+            result = loop.on_new_text(text, source=f"internet:{repo['name']}/{filename}")
+            count += 1
+            n_total += 1
+            if result['action'] == 'learn':
+                loop._log_result(result)
+        print(f"  processed {count} files from {repo['name']}")
+
+    summary = loop._summary()
+    print(f"\n--- Summary ---")
+    print(f"  files seen: {n_total}")
+    for k, v in summary.items():
+        print(f"  {k}: {v}")
+
+    out_path = args.out or args.model
+    loop.save(out_path)
+    loop.plot_loss_curve(out_path.replace('.pt', '_loss.png'))
 
 
 if __name__ == '__main__':
