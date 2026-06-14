@@ -40,9 +40,9 @@ from cortexcode_torch import CortexCodeModel, CodeTokenizer
 
 class CompleteRequest(BaseModel):
     prompt: str
-    n_tokens: int = 100
-    temperature: float = 0.7
-    top_k: int = 50
+    n_tokens: int = 80
+    temperature: float = 0.2
+    top_k: int = 40
 
 
 class CompleteResponse(BaseModel):
@@ -129,8 +129,13 @@ def complete(req: CompleteRequest):
     ids = torch.tensor([_TOKENIZER.encode(req.prompt)], device=_DEVICE)
     if ids.shape[1] == 0:
         ids = torch.tensor([[_TOKENIZER.token_to_id.get("<unk>", 1)]], device=_DEVICE)
-    out = _MODEL.generate(ids, max_new_tokens=req.n_tokens,
-                          temperature=req.temperature, top_k=req.top_k)
+    out = _MODEL.generate(
+        ids,
+        max_new_tokens=req.n_tokens,
+        temperature=max(req.temperature, 0.05),
+        top_k=req.top_k,
+        ban_tokens={_TOKENIZER.token_to_id.get("<unk>", 1)},
+    )
     out_list = out[0].cpu().tolist()
     full = _TOKENIZER.decode(out_list)
     new_part = full[len(req.prompt):]

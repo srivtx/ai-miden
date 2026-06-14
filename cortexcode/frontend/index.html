@@ -236,23 +236,23 @@ footer {
     <div class="settings">
       <div class="setting">
         <label for="nTokens">Tokens to generate</label>
-        <input id="nTokens" type="number" value="100" min="10" max="500" step="10">
+        <input id="nTokens" type="number" value="80" min="10" max="500" step="10">
       </div>
       <div class="setting">
         <label for="temperature">Temperature</label>
-        <input id="temperature" type="number" value="0.7" min="0.1" max="2.0" step="0.1">
+        <input id="temperature" type="number" value="0.2" min="0.05" max="2.0" step="0.05">
       </div>
       <div class="setting">
         <label for="topK">Top-k</label>
-        <input id="topK" type="number" value="50" min="1" max="200" step="5">
+        <input id="topK" type="number" value="40" min="1" max="200" step="5">
       </div>
     </div>
     <div class="actions">
       <button class="btn-primary" id="completeBtn" onclick="complete()">Complete</button>
-      <button class="btn-ghost" onclick="useExample(0)">Example: def add</button>
-      <button class="btn-ghost" onclick="useExample(1)">Example: def fibonacci</button>
-      <button class="btn-ghost" onclick="useExample(2)">Example: class Stack</button>
-      <button class="btn-ghost" onclick="useExample(3)">Example: def quicksort</button>
+      <button class="btn-ghost" onclick="useExample(0)">Example: argparse</button>
+      <button class="btn-ghost" onclick="useExample(1)">Example: json.loads</button>
+      <button class="btn-ghost" onclick="useExample(2)">Example: def process</button>
+      <button class="btn-ghost" onclick="useExample(3)">Example: parser.add</button>
     </div>
     <div class="output" id="output">
       <div class="output-meta"><span>OUTPUT</span><span id="outputMeta">—</span></div>
@@ -333,10 +333,10 @@ document.getElementById('themeBtn').onclick = () => {
 };
 
 const EXAMPLES = [
-  "def add(a, b):\n    ",
-  "def fibonacci(n):\n    ",
-  "class Stack:\n    def __init__(self):\n        self.items = []\n    def push(self, item):\n        ",
-  "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    ",
+  "import argparse\nparser = argparse.ArgumentParser()\n",
+  "import json\ndata = json.loads(",
+  "def process(data):\n    if isinstance(data, dict):\n        ",
+  "parser.add_argument(",
 ];
 
 function useExample(i) {

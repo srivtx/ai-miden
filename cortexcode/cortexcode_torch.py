@@ -237,12 +237,16 @@ class CortexCodeModel(nn.Module):
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens=100, temperature=1.0, top_k=50):
+    def generate(self, idx, max_new_tokens=100, temperature=1.0, top_k=50, ban_tokens=None):
         self.eval()
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.max_seq_len:]
             logits, _ = self(idx_cond)
             logits = logits[:, -1, :] / max(temperature, 1e-8)
+            if ban_tokens:
+                for t in ban_tokens:
+                    if 0 <= t < logits.size(-1):
+                        logits[:, t] = -1e9
             if top_k is not None:
                 v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
                 logits[logits < v[:, [-1]]] = -1e9
