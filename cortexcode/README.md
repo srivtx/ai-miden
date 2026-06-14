@@ -2,6 +2,12 @@
 
 > A very small, local, brain-inspired code completion model. Trained on a T4 Colab GPU in 1-2 hours. Runs anywhere — phone, laptop, edge device.
 
+## Open in Colab
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/srivtx/ai-miden/blob/main/cortexcode/cortexcode_colab.ipynb)
+
+The badge above opens `cortexcode_colab.ipynb` in Google Colab. Enable T4 GPU, run the cells, and train your own model in 1-2 hours.
+
 ---
 
 ## What it does
