@@ -4,9 +4,9 @@
 
 ---
 
-## Path 1: The complete beginner (10-12 hours)
+## Path 1: The complete beginner (14-18 hours)
 
-You have never built a generative model. You know basic ML and PyTorch. You want to understand image and video gen from the ground up.
+You have never built a generative model. You know basic ML and PyTorch. You want to understand image and video gen from the ground up, including frontier techniques used by Stable Diffusion 3, Flux, Sora, and o1.
 
 1. `00_foundations/what_is_probability.md` — the language
 2. `00_foundations/what_is_sampling.md` — how to draw from a distribution
@@ -23,6 +23,23 @@ You have never built a generative model. You know basic ML and PyTorch. You want
 13. `03_latent_diffusion/what_is_latent_diffusion.md` — the Stable Diffusion architecture
 14. `03_latent_diffusion/latent_diffusion.py` — run the architecture skeleton
 15. `04_video_diffusion/what_is_video_diffusion.md` — extending to time
+16. **`06_flow_matching/what_is_flow_matching.md`** — the straight-line path (50× faster)
+17. **`07_lora/what_is_lora.md`** — train 0.1% of weights
+18. **`08_moe/what_is_moe.md`** — 8× capacity, 2× cost
+19. **`09_rope/what_is_rope.md`** — position encoding without limits
+20. **`10_test_time_compute/what_is_test_time_compute.md`** — intelligence as a process
+
+## Path 5: I want to know what frontier companies use (3-4 hours)
+
+You've seen the demos from Midjourney, Sora, Flux, o1. You want to know the techniques behind them.
+
+1. `02_diffusion/what_is_ddpm.md` (quick refresher)
+2. **`06_flow_matching/what_is_flow_matching.md`** — replaces DDPM, used by SD3 and Flux
+3. `03_latent_diffusion/what_is_latent_diffusion.md` — why Stable Diffusion works in compressed space
+4. **`09_rope/what_is_rope.md`** — used by Llama, Mistral, Gemma for infinite context
+5. **`08_moe/what_is_moe.md`** — used by Mixtral, GPT-4 (rumored) for sparse scaling
+6. **`07_lora/what_is_lora.md`** — used by every Stable Diffusion fine-tune
+7. **`10_test_time_compute/what_is_test_time_compute.md`** — used by o1, DeepSeek-R1 for reasoning
 
 ---
 
