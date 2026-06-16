@@ -1,43 +1,46 @@
 # LogoGen
 
-A small logo generator using diffusion (DDPM).
+Small logo generator using diffusion (DDPM). Curates logos from the web,
+trains on them, generates new ones. All in Colab, all on T4.
 
-## Workflow
+## One-click workflow
 
-### 1. You curate logos (on your laptop)
+```bash
+!git clone https://github.com/srivtx/ai-miden.git
+%cd ai-miden/logogen
 
-- Browse Pinterest / Behance / LogoPond
-- Right-click → Save As on logos you like
-- Collect 200-500 logos in a folder
-- Zip the folder → upload to Colab
+# 1. Download 300 logos from public image search (no auth, 30 sec)
+!python download.py --out-dir /content/logos --n 300
 
-### 2. Train (on Colab T4, 30-60 min)
-
-```
-!unzip logos.zip -d /content/logos
+# 2. Train (30-60 min on T4)
 !python logogen.py train --image-dir /content/logos --out-dir /content/logogen
+
+# 3. Generate 40 new logos
+!python logogen.py sample --model /content/logogen/final.pt --out-dir /content/generated --n 8
 ```
 
-Watch the loss drop. Samples are saved each epoch to `/content/logogen/samples_epoch_N.png`.
+## Files
 
-### 3. Generate
+| File | Purpose |
+|---|---|
+| `download.py` | Fetches logos from DuckDuckGo image search (no API key) |
+| `logogen.py` | Trains a DDPM U-Net and generates new logos |
 
-```
-!python logogen.py sample --model /content/logogen/final.pt --out-dir /content/output --n 8
-```
+## Manual curation (optional, better quality)
 
-Generates 40 logos (8 per batch × 5 batches) in `/content/output/`.
+If you want higher-quality logos:
 
-## Tips
+1. Browse Pinterest / Behance on your laptop
+2. Right-click → Save As on logos you like. Collect 200-500.
+3. Zip → upload to Colab → unzip to `/content/logos/`
+4. Run `logogen.py train` as above
 
-- Minimum 100 logos. 300+ is better.
-- Square logos work better (CenterCrop handles rectangles).
-- PNG with transparency → converted to RGB with white background by PIL.
-- For 256×256 logos: `--image-size 256 --batch-size 4`.
-- For faster training: `--image-size 64 --batch-size 32`.
-- Adjust `--epochs` (default 50) and `--max-steps` (default 50000) for your dataset size.
+## Options
 
-## Memory
-
-- 128×128, batch 16 → ~8GB VRAM (fits T4)
-- 256×256, batch 4 → ~10GB VRAM (fits T4)
+| Flag | Default | Notes |
+|---|---|---|
+| `--image-size` | 128 (train), 256 (download) | 64 for fast test, 256 for quality |
+| `--n` (download) | 300 | More = better, up to ~500 |
+| `--epochs` (train) | 50 | Fewer for quick test |
+| `--batch-size` (train) | 16 | 4 for 256×256, 32 for 64×64 |
+| `--base-ch` (train) | 64 | 32 for smaller/faster model |
