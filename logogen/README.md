@@ -1,5 +1,7 @@
 # LogoGen
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/srivtx/ai-miden/blob/main/logogen/logogen_colab.ipynb)
+
 Small logo generator using diffusion (DDPM). Curates logos from the web,
 trains on them, generates new ones. All in Colab, all on T4.
 
