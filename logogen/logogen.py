@@ -21,7 +21,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-from PIL import Image
+from PIL import Image, ImageDraw
 
 import matplotlib
 matplotlib.use('Agg')
@@ -414,9 +414,86 @@ def sample_mode(args):
 # CLI
 # =============================================================================
 
+def smoke_test(args):
+    """Quick test with synthetic data to verify the pipeline works."""
+    import tempfile, random, numpy as np
+
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"Device: {device}")
+    print("Generating 20 synthetic test images...")
+
+    tmpdir = tempfile.mkdtemp()
+    for i in range(20):
+        img = Image.new('RGB', (128, 128),
+                        color=random.choice(['#FF6B6B', '#4ECDC4', '#45B7D1',
+                                              '#96CEB4', '#FFEAA7', '#DDA0DD']))
+        draw = ImageDraw.Draw(img)
+        for _ in range(random.randint(1, 3)):
+            x, y = random.randint(10, 118), random.randint(10, 118)
+            r = random.randint(15, 40)
+            color = random.choice(['#FFF', '#000', '#2C3E50', '#E74C3C'])
+            shape = random.choice(['circle', 'rect'])
+            if shape == 'circle':
+                draw.ellipse([x-r, y-r, x+r, y+r], fill=color)
+            else:
+                draw.rectangle([x, y, x+r, y+r], fill=color)
+        img.save(os.path.join(tmpdir, f"test_{i:03d}.png"))
+
+    # Quick train
+    os.makedirs(args.out_dir, exist_ok=True)
+    ds = LogoDataset(tmpdir, image_size=args.image_size)
+    dl = DataLoader(ds, batch_size=args.batch_size, shuffle=True)
+    print(f"  Synthetic images: {len(ds)}")
+
+    model = LogoUNet(img_ch=3, base_ch=args.base_ch).to(device)
+    n_params = sum(p.numel() for p in model.parameters())
+    print(f"  Model: {n_params:,} params")
+
+    beta, alpha_bar = make_beta_schedule(T=args.timesteps)
+    beta, alpha_bar = beta.to(device), alpha_bar.to(device)
+    opt = torch.optim.AdamW(model.parameters(), lr=args.lr)
+
+    print(f"  Running {args.max_steps} steps...")
+    model.train()
+    for step in range(args.max_steps):
+        for x in dl:
+            if step >= args.max_steps:
+                break
+            x = x.to(device)
+            B = x.shape[0]
+            t = torch.randint(0, args.timesteps, (B,), device=device)
+            noise = torch.randn_like(x)
+            a_bar = alpha_bar[t].view(B, 1, 1, 1)
+            x_t = torch.sqrt(a_bar) * x + torch.sqrt(1 - a_bar) * noise
+            pred = model(x_t, t)
+            loss = F.mse_loss(pred, noise)
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+            step += 1
+            if step % max(1, args.max_steps // 4) == 0:
+                print(f"  Step {step:4d} | loss {loss.item():.6f}")
+
+    print(f"  Final loss: {loss.item():.6f}")
+    # Generate 4 test samples
+    sample_path = os.path.join(args.out_dir, 'smoke_test.png')
+    generate_samples(model, device, beta, alpha_bar, args, save_path=sample_path, n=4)
+    print(f"\nPipeline OK. Smoke test samples -> {sample_path}")
+    print("Ready for real training.")
+
+
 def main():
     parser = argparse.ArgumentParser(description="LogoGen: small logo diffusion model")
     sub = parser.add_subparsers(dest='cmd')
+
+    p_smoke = sub.add_parser('smoke', help='Quick smoke test with synthetic data')
+    p_smoke.add_argument('--out-dir', type=str, default='/content/logogen_test')
+    p_smoke.add_argument('--image-size', type=int, default=128)
+    p_smoke.add_argument('--batch-size', type=int, default=16)
+    p_smoke.add_argument('--max-steps', type=int, default=200)
+    p_smoke.add_argument('--lr', type=float, default=2e-4)
+    p_smoke.add_argument('--timesteps', type=int, default=1000)
+    p_smoke.add_argument('--base-ch', type=int, default=64)
 
     p_train = sub.add_parser('train', help='Train on a directory of logos')
     p_train.add_argument('--image-dir', type=str, required=True)
@@ -443,6 +520,8 @@ def main():
         train(args)
     elif args.cmd == 'sample':
         sample_mode(args)
+    elif args.cmd == 'smoke':
+        smoke_test(args)
     else:
         parser.print_help()
 
