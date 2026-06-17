@@ -1,79 +1,69 @@
-# Level 1 — Backend Learning Projects (one concept per project)
+# Level 1 — Backend Learning Projects
 
-Each project is small (100-300 lines), focused on one concept, and runnable with `node server.js`. Uses SQLite where applicable (per user preference: easy to start).
+**Start here: [LEARNING_PATH.md](LEARNING_PATH.md)** — the 20-project beginner sequence, in order, with day-by-day plan.
 
-## Core concepts
-
-### Request/response
-- **routing-demo** — static, dynamic, regex, optional params, nested routers
-- **middleware-demo** — custom middleware: timing, counter, blocklist, transform
-- **validation-demo** — schema-based validation (no external libs)
-- **streams-demo** — file streams, NDJSON, CSV, SSE, upload streams
-
-### Data
-- **database-design-demo** — 3NF schema, FKs, indexes, JOIN, GROUP BY
-- **connection-pooling-demo** — naive vs pooled, async acquire/release
-- **indexing-demo** — composite indexes, query plans, EXPLAIN
-- **migrations-demo** — versioned up/down, rollback, tracking
-- **soft-delete-demo** — `deleted_at` pattern, restore, 410 Gone
-- **search-demo** — inverted index, TF ranking, snippets
-
-### API patterns
-- **api-versioning-demo** — URI/query/header strategies
-- **rate-limiting-demo** — token bucket, per-endpoint limits
-- **pagination-demo** — offset vs cursor, benchmark
-- **idempotency-demo** — safe retries with `Idempotency-Key`
-- **error-handling-demo** — typed errors, request IDs, global handler
-- **api-client-demo** — retry, timeout, circuit breaker
-- **rpc-demo** — gRPC-style service definitions over HTTP
-- **graphql-demo** — schema, resolvers, queries, mutations
-- **openapi-demo** — spec-first design with auto-docs
-- **api-gateway-demo** — single entry point, routing, aggregation
-
-### Auth/security
-- **jwt-demo** — issue, sign, verify, decode, refresh (no `jsonwebtoken`)
-- **security-patterns-demo** — SQL injection, XSS, path traversal, hashing
-- **security-basics** — auth, secrets, OWASP
-- **csrf-app** — CSRF tokens, SameSite cookies
-
-### Async/realtime
-- **websocket-demo** — chat with rooms (uses `ws`)
-- **pubsub-demo** — event bus, topics, retry, DLQ, wildcards
-- **background-jobs-demo** — in-process queue with progress tracking
-- **email-demo** — templates, queue, send tracking
-- **cron-demo** — 5-field cron parser, scheduler
-- **file-upload-demo** — multipart parsing (no multer)
-
-### State
-- **caching-demo** — cache-aside, TTL, in-memory
-- **multi-tenant-demo** — row-level isolation with `X-Tenant-Id`
-- **feature-flags-demo** — rollout %, A/B variants, kill switch
-- **audit-log-demo** — append-only with before/after state
-- **health-check-demo** — liveness, readiness, dependencies
-
-### Operations
-- **observability-demo** — logs, metrics, traces in SQLite
-- **logging** — structured JSON, request-scoped
-- **docker-demo** — multi-stage Dockerfile + compose
-- **ci-cd-demo** — GitHub Actions workflow
-- **graceful-shutdown-demo** — SIGTERM, drain in-flight
-- **service-discovery-demo** — registry, heartbeats, TTL
-
-### Money
-- **payment-service** (level2) — Stripe-like API
-- **subscription-billing** (level2) — recurring payments
-
-### Misc
-- **config-demo** — env vars, .env files, feature flags
-- **i18n-demo** — multi-language, locale detection
-- **testing-demo** — testable endpoints + mini runner
+This INDEX is the full catalog of all level1 projects. Use it after you've completed the 20-project sequence.
 
 ## How to use
-1. Pick a concept you want to learn
-2. Read the README
-3. Run `node server.js`
-4. Try the `curl` examples
-5. Read the code (it's < 300 lines)
-6. Modify it to test your understanding
+1. **First time?** Follow [LEARNING_PATH.md](LEARNING_PATH.md) — 20 classic projects in order.
+2. **Looking for a specific concept?** Browse the categories below.
+3. **Want a full app?** Go to `projects/apps/level2/`.
+4. **Want a complex app?** Go to `projects/apps/level3/`.
 
-## Total: 63 level1 projects
+## The 20 classic apps (in recommended order)
+
+| # | Project | What it teaches |
+|---|---|---|
+| 1 | todo-api | CRUD, filter, sort |
+| 2 | notes-api | Tags, full-text search, categories |
+| 3 | blog-api | Users, posts, comments, slugs |
+| 4 | products-api | Categories, prices, inventory |
+| 5 | weather-api | External API, caching, time-series |
+| 6 | chat-api | WebSockets, rooms, real-time |
+| 7 | forum-api | Threads, replies, voting |
+| 8 | calendar-api | Events, recurring, conflict detection |
+| 9 | reminders-api | Scheduled tasks |
+| 10 | books-api | ISBN, authors, reviews |
+| 11 | movies-api | Genres, cast, similar |
+| 12 | music-api | Artists, albums, tracks, playlists |
+| 13 | photos-api | Upload, albums, EXIF |
+| 14 | library-api | Unified catalog |
+| 15 | twitter-api | Follow graph, timeline |
+| 16 | helpdesk-api | Tickets, agents, SLA |
+| 17 | ticket-booking-api | Seats, payment |
+| 18 | crm-api | Pipeline, deals, activities |
+| 19 | restaurant-api | Menu, tables, reservations |
+| 20 | food-delivery-api | Multi-party state machine |
+
+## Concepts (one project per concept)
+
+### Request/response
+- routing-demo, middleware-demo, validation-demo, streams-demo
+
+### Data
+- database-design-demo, connection-pooling-demo, indexing-demo, migrations-demo, soft-delete-demo, search-demo
+
+### API patterns
+- api-versioning-demo, rate-limiting-demo, rate-limit-algos-demo, pagination-demo, idempotency-demo, error-handling-demo, api-client-demo, rpc-demo, graphql-demo, openapi-demo, api-gateway-demo, bulk-ops-demo
+
+### Auth/security
+- jwt-demo, security-patterns-demo, security-basics, csrf-app, password-reset-demo, two-factor-auth-demo
+
+### Async/realtime
+- websocket-demo, pubsub-demo, background-jobs-demo, email-demo, cron-demo, file-upload-demo
+
+### State
+- caching-demo, multi-tenant-demo, feature-flags-demo, audit-log-demo, health-check-demo, event-sourcing-demo
+
+### Operations
+- observability-demo, docker-demo, ci-cd-demo, graceful-shutdown-demo, service-discovery-demo
+
+### Misc
+- config-demo, i18n-demo, testing-demo
+
+## Total: 88 level1 projects
+- 20 classic beginner apps (follow the LEARNING_PATH)
+- 60+ concept demos (one per backend topic)
+- All use SQLite (no setup)
+- All 100-300 lines
+- All have a README with curl examples
