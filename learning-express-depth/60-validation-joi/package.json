@@ -1,0 +1,7 @@
+{
+  "name": "60-validation-joi",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.19.2", "joi": "^17.13.0" }
+}
