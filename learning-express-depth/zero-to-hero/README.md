@@ -133,6 +133,90 @@ This is achievable scope. Every project feeds into it. Nothing is dead weight.
 
 These omissions are intentional. The path is opinionated.
 
+## The Cove Editor — See Every Layer
+
+The path includes a working editor (`../cove/editor.html`) that connects to the backend so you can SEE every layer you built. Open it alongside the server and watch each project come alive.
+
+### How to Run
+
+```bash
+# Terminal 1: start Redis
+brew services start redis
+
+# Terminal 2: start the backend (project 32 includes all features up to WebRTC)
+cd zero-to-hero/32-webrtc
+npm install
+node server.js
+
+# Open in browser
+open http://localhost:3000/cove/editor.html
+```
+
+The editor is also served from the server itself at `/cove/editor.html` so no CORS issues. Login with any username/password (auto-signs up on first try).
+
+### Which UI Element Connects to Which Backend Project
+
+| UI Element | Backend Project | What It Demonstrates |
+|---|---|---|
+| Top bar login/signup | 09 JWT | JWT creation, localStorage persistence, Bearer token auth |
+| Top bar Express badge | 07 Express | The Express server handling all REST routes |
+| Left sidebar: Posts list | 17 REST | Paginated GET /posts with meta (project 18 Paginator) |
+| Left sidebar: Search input | 19 FTS5 | Full-text search via query param `?q=term` |
+| Left sidebar: File upload | 20 Multer | Multipart form upload via `POST /posts` with `FormData` |
+| Left sidebar: Workspaces | 33 RBAC | `POST /workspaces` creates, membership roles via `requireRole()` |
+| Center: Canvas drawing | 28 WebSocket | Real-time draw commands broadcast via `ws://` chat channel |
+| Center: Collaborative Doc tab | 31 Yjs CRDT | First Yjs sync (full Yjs integration via `y-websocket` relay) |
+| Right tab: Chat messages | 28 WebSocket | Chat messages broadcast to all connected clients |
+| Right tab: Online users | 30 Presence | Redis TTL heartbeat + pub/sub presence list |
+| Right tab: Voice call | 32 WebRTC | STUN via Google, SDP/ICE relayed through WebSocket |
+
+### Seeing Real-Time Collaboration
+
+Open a second browser tab at the same URL. Login as a different user. You will see:
+
+- **Chat**: messages appear in both tabs instantly (WebSocket broadcast)
+- **Canvas**: draw in one tab, the lines appear in the other (WebSocket draw relay)
+- **Online users**: both users appear in the Online tab (Redis presence)
+
+### The Missing Layers (Visible in Code, Not in UI)
+
+Some backend projects don't have a direct UI element but are active under the hood:
+
+| Backend Project | What It Does Silently |
+|---|---|
+| 08 bcrypt | Passwords hashed on signup, compared on login |
+| 10 SQLite | All data persisted to `app.db` via knex |
+| 11 Foreign Key | Posts.user_id -> users.id, cascading deletes |
+| 12 Migration | `migrate()` creates tables on startup |
+| 13 Knex | Query builder abstracts raw SQL |
+| 14 Zod | Input validation on every route (short username, bad email rejected) |
+| 15 HttpError | Structured error responses (401/403/404/409/500) |
+| 16 pino | Structured JSON logging to stdout |
+| 21 Nodemailer | Welcome email queued on signup (Ethereal test account) |
+| 22 Cache | Redis cache for user/profile lookups |
+| 23 Redis | Connection pooling, pub/sub for presence |
+| 24 Rate Limiter | rate-limiter-flexible, 100 req/min per IP |
+| 25 Cron | Scheduled jobs via node-cron (run on startup) |
+| 26 BullMQ | Email welcome queue + webhook delivery queue |
+| 27 Transactions | Transfer endpoint uses `db.transaction()` for atomic balance |
+| 29 SSE | Server-Sent Events endpoint at `GET /events` |
+| 34 Webhooks | Outbound HTMX-SHA256 webhook delivery via BullMQ |
+| 35 Stripe | `POST /subscriptions/checkout`, webhook signature verification |
+| 36 Vitest | `__tests__/api.test.js` — supertest + in-memory SQLite |
+| 37 Docker | Multi-stage Dockerfile + docker-compose.yml |
+| 38 CI/CD | GitHub Actions: CI on push/PR, CD on merge to main |
+| 39 Prometheus | `/metrics` endpoint on port 9090, RED method Histogram |
+| 40 Microservices | 8-service architecture with API gateway at port 8000 |
+
+### Debugging: Watch the Layers in Action
+
+Open Chrome DevTools (F12) and observe:
+
+- **Network tab**: every REST call hits a different project's endpoint (09 JWT for `/sessions`, 17 REST for `/posts`, 19 FTS5 for `?q=`)
+- **Application tab > Local Storage**: `cove_token` stores the JWT from project 09
+- **Console**: each project logs what backend layer it touches
+- **WS tab**: WebSocket frames for project 28 (chat), project 30 (presence), project 32 (WebRTC signaling)
+
 ## Status: COMPLETE
 
 All 40 projects are built. The path is finished. You have built a real-time, role-based, tested, deployed, observed, distributed system — the complete backend for a Slack × Notion × Figma-lite hybrid. See project 40 (`40-microservice/CONNECT.md`) for the final summary.
