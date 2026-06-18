@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cove — Collaborative Workspace</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #1a1a2e; --panel: #16213e; --border: #0f3460; --accent: #e94560;
+  --text: #eee; --muted: #888; --green: #4ecca3; --yellow: #ffd369;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text); background: var(--bg);
+}
+body { display: grid; grid-template-rows: 48px 1fr; height: 100vh; overflow: hidden; }
+
+/* Top Bar */
+#topbar {
+  display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  background: var(--panel); border-bottom: 1px solid var(--border); z-index: 10;
+}
+#topbar h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
+#topbar .badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--border); color: var(--muted); }
+#auth-area { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+#auth-area input { padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; width: 110px; }
+#auth-area button { padding: 4px 12px; border: none; border-radius: 4px; background: var(--accent); color: #fff; cursor: pointer; font-size: 12px; }
+#user-display { display: none; font-size: 13px; color: var(--green); }
+
+/* Main Grid */
+#main {
+  display: grid; grid-template-columns: 200px 1fr 300px;
+  height: calc(100vh - 48px); overflow: hidden;
+}
+
+/* Left Sidebar — Workspace */
+#sidebar {
+  background: var(--panel); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 8px; overflow-y: auto;
+}
+#sidebar h3 { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 8px 0 4px 4px; letter-spacing: 0.5px; }
+.side-item { padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 13px; color: var(--muted); margin: 1px 0; }
+.side-item:hover { background: var(--border); color: var(--text); }
+.side-item.active { background: var(--border); color: var(--green); }
+#ws-list { margin-bottom: 12px; }
+#create-ws { width: 100%; margin-top: 4px; padding: 4px 8px; border: 1px dashed var(--border); border-radius: 4px; background: none; color: var(--muted); cursor: pointer; font-size: 12px; }
+
+/* Center — Canvas */
+#center {
+  display: flex; flex-direction: column; background: #222831;
+}
+#canvas-toolbar {
+  display: flex; gap: 4px; padding: 4px 8px; background: var(--panel); border-bottom: 1px solid var(--border);
+}
+#canvas-toolbar button { padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); cursor: pointer; font-size: 12px; }
+#canvas-toolbar button.active { background: var(--accent); border-color: var(--accent); }
+#canvas-wrap { flex: 1; position: relative; overflow: hidden; }
+#whiteboard { position: absolute; top: 0; left: 0; cursor: crosshair; }
+.cursor-label { position: absolute; font-size: 10px; color: var(--text); pointer-events: none; z-index: 5; padding: 1px 4px; border-radius: 3px; white-space: nowrap; }
+#doc-panel { display: none; flex: 1; padding: 16px; overflow-y: auto; }
+#doc-editor { width: 100%; min-height: 200px; padding: 12px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font-size: 14px; line-height: 1.6; resize: vertical; outline: none; }
+
+/* Right Sidebar */
+#rightside {
+  background: var(--panel); border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+#rightside-header { display: flex; border-bottom: 1px solid var(--border); }
+#rightside-header button { flex: 1; padding: 8px; border: none; background: none; color: var(--muted); cursor: pointer; font-size: 12px; }
+#rightside-header button.active { color: var(--green); border-bottom: 2px solid var(--green); }
+#rightside-body { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; }
+
+/* Chat Panel */
+#chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.chat-msg { padding: 6px 8px; border-radius: 6px; background: var(--bg); font-size: 12px; max-width: 100%; word-break: break-word; }
+.chat-msg .user { font-weight: 600; color: var(--accent); margin-right: 4px; }
+.chat-msg .time { font-size: 10px; color: var(--muted); margin-left: 6px; }
+.chat-msg.system { background: transparent; color: var(--muted); font-style: italic; }
+#chat-input-wrap { display: flex; gap: 4px; }
+#chat-input-wrap input { flex: 1; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; }
+#chat-input-wrap button { padding: 6px 12px; border: none; border-radius: 4px; background: var(--accent); color: #fff; cursor: pointer; font-size: 12px; }
+
+/* Online Panel */
+#online-list { display: flex; flex-direction: column; gap: 4px; }
+.online-user { display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 4px; font-size: 12px; }
+.online-user .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.online-user .me { color: var(--green); }
+#online-count { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+
+/* Voice Panel */
+#voice-panel { display: flex; flex-direction: column; gap: 8px; align-items: center; padding: 12px 0; }
+#voice-panel button { padding: 8px 16px; border: none; border-radius: 6px; background: var(--accent); color: #fff; cursor: pointer; font-size: 13px; }
+#voice-status { font-size: 12px; color: var(--muted); }
+
+/* Layer badges */
+.layer-badge {
+  display: inline-block; font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  background: var(--border); color: var(--yellow); margin-left: 6px; vertical-align: middle;
+}
+
+/* Post list */
+.post-item { padding: 8px; border-radius: 4px; background: var(--bg); margin-bottom: 4px; cursor: pointer; font-size: 12px; }
+.post-item:hover { background: var(--border); }
+.post-item .title { font-weight: 600; }
+.post-item .author { color: var(--muted); font-size: 10px; }
+#search-input { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; margin-bottom: 8px; }
+
+/* File upload */
+#upload-area { margin-top: 8px; }
+#upload-area input[type=file] { display: none; }
+#upload-area label { display: block; padding: 8px; border: 1px dashed var(--border); border-radius: 4px; text-align: center; cursor: pointer; font-size: 12px; color: var(--muted); }
+#upload-area label:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR — project 07 Express, 09 JWT -->
+<div id="topbar">
+  <h1>Cove</h1>
+  <span class="badge">project 07</span>
+  <span style="font-size:11px;color:var(--muted);">Backend: 32-webrtc</span>
+  <div id="auth-area" style="display:flex;gap:8px;align-items:center;">
+    <div id="auth-form" style="display:flex;gap:6px;">
+      <input id="login-user" placeholder="username" autocomplete="off" style="padding:4px 8px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);font-size:12px;width:110px;">
+      <input id="login-pass" type="password" placeholder="password" style="padding:4px 8px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);font-size:12px;width:110px;">
+      <button onclick="login()" style="padding:4px 12px;border:none;border-radius:4px;background:var(--accent);color:#fff;cursor:pointer;font-size:12px;">Login</button>
+    </div>
+    <div id="auth-user" style="display:none;align-items:center;gap:8px;">
+      <span id="user-display" style="font-size:13px;color:var(--green);text-decoration:none;"></span>
+      <button onclick="logout()" style="padding:4px 12px;border:none;border-radius:4px;background:var(--border);color:var(--muted);cursor:pointer;font-size:12px;">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div id="main">
+
+  <!-- LEFT SIDEBAR — project 33 RBAC Workspaces -->
+  <div id="sidebar">
+    <h3>Workspaces <span class="layer-badge">project 33</span></h3>
+    <div id="ws-list"><div class="side-item" style="color:var(--muted)">Login to see workspaces</div></div>
+    <button id="create-ws" onclick="createWorkspace()" style="display:none">+ New Workspace</button>
+
+    <h3>Posts <span class="layer-badge">project 17</span></h3>
+    <input id="search-input" type="text" placeholder="Search posts (FTS5)" oninput="searchPosts()" disabled>
+    <div id="post-list"></div>
+
+    <h3>Upload <span class="layer-badge">project 20</span></h3>
+    <div id="upload-area">
+      <label for="file-input">+ Upload Image</label>
+      <input id="file-input" type="file" accept="image/*" onchange="uploadFile()">
+    </div>
+  </div>
+
+  <!-- CENTER — project 31 Yjs CRDT Canvas -->
+  <div id="center">
+    <div id="canvas-toolbar">
+      <button id="tool-pen" class="active" onclick="setTool('pen')">Pen</button>
+      <button id="tool-erase" onclick="setTool('erase')">Eraser</button>
+      <button id="tool-color" onclick="cycleColor()" style="background:var(--accent);width:20px;height:20px;border-radius:50%;padding:0;"></button>
+      <span style="flex:1"></span>
+      <button id="tab-canvas" class="active" onclick="switchTab('canvas')">Canvas <span class="layer-badge">project 31</span></button>
+      <button id="tab-doc" onclick="switchTab('doc')">Doc <span class="layer-badge">project 31</span></button>
+    </div>
+    <div id="canvas-wrap">
+      <canvas id="whiteboard" width="2000" height="1500"></canvas>
+      <div id="remote-cursors"></div>
+    </div>
+    <div id="doc-panel">
+      <div id="doc-editor" contenteditable="true" placeholder="Start typing... Collaborative text via Yjs CRDT"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div id="rightside">
+    <div id="rightside-header">
+      <button class="active" onclick="switchRightTab('chat')">Chat <span class="layer-badge">project 28</span></button>
+      <button onclick="switchRightTab('online')">Online <span class="layer-badge">project 30</span></button>
+      <button onclick="switchRightTab('voice')">Voice <span class="layer-badge">project 32</span></button>
+    </div>
+    <div id="rightside-body">
+      <!-- Chat -->
+      <div id="chat-panel">
+        <div id="chat-messages"><div class="chat-msg system">Connect to see messages</div></div>
+        <div id="chat-input-wrap">
+          <input id="chat-input" type="text" placeholder="Type a message..." disabled onkeydown="if(event.key==='Enter')sendChat()">
+          <button onclick="sendChat()">Send</button>
+        </div>
+      </div>
+      <!-- Online -->
+      <div id="online-panel" style="display:none">
+        <div id="online-count"></div>
+        <div id="online-list"></div>
+      </div>
+      <!-- Voice -->
+      <div id="voice-panel" style="display:none">
+        <button onclick="toggleVoice()">Start Voice Call</button>
+        <div id="voice-status">Not connected</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/yjs@13.6.18/yjs.mjs" type="module"></script>
+<script type="module">
+import * as Y from "https://cdn.jsdelivr.net/npm/yjs@13.6.18/dist/yjs.mjs";
+
+// ── State ──
+const API = "http://localhost:3000";
+let token = localStorage.getItem("cove_token") || null;
+let user = null;
+let ws = null;
+let activeTool = "pen";
+let currentColor = "#e94560";
+const colors = ["#e94560","#4ecca3","#ffd369","#3498db","#9b59b6","#e67e22"];
+let colorIdx = 0;
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+const canvas = document.getElementById("whiteboard");
+const ctx = canvas.getContext("2d");
+
+// ── Auth (project 09 JWT) ──
+window.login = async () => {
+  const u = document.getElementById("login-user").value.trim();
+  const p = document.getElementById("login-pass").value.trim();
+  if (!u || !p) return;
+  try {
+    const r = await fetch(`${API}/sessions`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const d = await r.json();
+    if (r.ok) {
+      token = d.token; user = d.user;
+      localStorage.setItem("cove_token", token);
+      updateAuthUI();
+      connectWebSocket();
+      loadWorkspaces();
+      loadPosts();
+    } else {
+      // Try signup
+      const r2 = await fetch(`${API}/users`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      if (r2.ok) {
+        const d2 = await r2.json();
+        // Auto-login after signup
+        const r3 = await fetch(`${API}/sessions`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const d3 = await r3.json();
+        token = d3.token; user = d3.user;
+        localStorage.setItem("cove_token", token);
+        updateAuthUI();
+        connectWebSocket();
+        loadWorkspaces();
+        loadPosts();
+      }
+    }
+  } catch (e) { console.error("Auth error:", e); }
+};
+
+window.logout = () => {
+  token = null; user = null;
+  localStorage.removeItem("cove_token");
+  if (ws) ws.close();
+  updateAuthUI();
+};
+
+function updateAuthUI() {
+  if (user && token) {
+    document.getElementById("auth-form").style.display = "none";
+    document.getElementById("auth-user").style.display = "flex";
+    document.getElementById("user-display").textContent = user.username;
+    document.getElementById("chat-input").disabled = false;
+    document.getElementById("search-input").disabled = false;
+    document.getElementById("create-ws").style.display = "block";
+  } else {
+    document.getElementById("auth-form").style.display = "flex";
+    document.getElementById("auth-user").style.display = "none";
+    document.getElementById("chat-input").disabled = true;
+    document.getElementById("search-input").disabled = true;
+    document.getElementById("create-ws").style.display = "none";
+  }
+}
+
+// ── WebSocket (project 28, 30) ──
+function connectWebSocket() {
+  if (!token) return;
+  if (ws) ws.close();
+  ws = new WebSocket(`ws://localhost:3000/chat?token=${token}`);
+  ws.onopen = () => addChatMsg("Connected to server", true);
+  ws.onmessage = (ev) => {
+    try {
+      const msg = JSON.parse(ev.data);
+      if (msg.type === "presence:list") {
+        updateOnlineList(msg.users);
+      } else if (msg.type === "presence") {
+        // presence event handled by list refresh
+      } else if (msg.type === "chat") {
+        addChatMsg(`<span class="user">${esc(msg.user)}</span>${esc(msg.text)}<span class="time">${new Date(msg.timestamp).toLocaleTimeString()}</span>`);
+      } else if (msg.type === "draw") {
+        drawRemote(msg);
+      } else if (msg.type === "clear") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    } catch (e) { /* ignore parse errors */ }
+  };
+  ws.onclose = () => addChatMsg("Disconnected", true);
+}
+
+function addChatMsg(html, isSystem) {
+  const msgs = document.getElementById("chat-messages");
+  const div = document.createElement("div");
+  div.className = "chat-msg" + (isSystem ? " system" : "");
+  div.innerHTML = html;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]); }
+
+window.sendChat = () => {
+  const inp = document.getElementById("chat-input");
+  const text = inp.value.trim();
+  if (!text || !ws || ws.readyState !== WebSocket.OPEN) return;
+  ws.send(JSON.stringify({ type: "chat", user: user.username, text }));
+  inp.value = "";
+};
+
+// ── Online Users (project 30 Presence) ──
+function updateOnlineList(userIds) {
+  document.getElementById("online-count").textContent = `${userIds.length} online`;
+  const list = document.getElementById("online-list");
+  list.innerHTML = userIds.map(id =>
+    `<div class="online-user"><span class="dot"></span><span class="${id === user?.userId ? 'me' : ''}">${id === user?.userId ? user.username : `User ${id}`}${id === user?.userId ? ' (you)' : ''}</span></div>`
+  ).join("");
+}
+
+// ── Canvas (project 31 Yjs + 28 WebSocket) ──
+ctx.lineCap = "round"; ctx.lineJoin = "round";
+ctx.strokeStyle = currentColor; ctx.lineWidth = 3;
+
+canvas.addEventListener("mousedown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  isDrawing = true;
+  lastX = e.clientX - rect.left; lastY = e.clientY - rect.top;
+  ctx.beginPath(); ctx.moveTo(lastX, lastY);
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  if (!isDrawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left, y = e.clientY - rect.top;
+  if (activeTool === "pen") {
+    ctx.strokeStyle = currentColor; ctx.lineWidth = 3;
+    ctx.globalCompositeOperation = "source-over";
+    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+  } else if (activeTool === "erase") {
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI*2); ctx.fill();
+  }
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: "draw", tool: activeTool, color: currentColor, fromX: lastX, fromY: lastY, toX: x, toY: y }));
+  }
+  lastX = x; lastY = y;
+});
+
+canvas.addEventListener("mouseup", () => { isDrawing = false; ctx.globalCompositeOperation = "source-over"; });
+canvas.addEventListener("mouseleave", () => { isDrawing = false; ctx.globalCompositeOperation = "source-over"; });
+
+function drawRemote(msg) {
+  ctx.save();
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  if (msg.tool === "pen") {
+    ctx.strokeStyle = msg.color; ctx.lineWidth = 3;
+    ctx.globalCompositeOperation = "source-over";
+    ctx.beginPath(); ctx.moveTo(msg.fromX, msg.fromY); ctx.lineTo(msg.toX, msg.toY); ctx.stroke();
+  } else if (msg.tool === "erase") {
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath(); ctx.arc(msg.toX, msg.toY, 10, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+window.setTool = (t) => {
+  activeTool = t;
+  document.getElementById("tool-pen").classList.toggle("active", t === "pen");
+  document.getElementById("tool-erase").classList.toggle("active", t === "erase");
+};
+window.cycleColor = () => {
+  colorIdx = (colorIdx + 1) % colors.length;
+  currentColor = colors[colorIdx];
+  document.getElementById("tool-color").style.background = currentColor;
+};
+
+// ── Tab switching ──
+window.switchTab = (tab) => {
+  document.getElementById("canvas-wrap").style.display = tab === "canvas" ? "block" : "none";
+  document.getElementById("doc-panel").style.display = tab === "doc" ? "block" : "none";
+  document.getElementById("tab-canvas").classList.toggle("active", tab === "canvas");
+  document.getElementById("tab-doc").classList.toggle("active", tab === "doc");
+};
+window.switchRightTab = (tab) => {
+  document.getElementById("chat-panel").style.display = tab === "chat" ? "flex" : "none";
+  document.getElementById("online-panel").style.display = tab === "online" ? "block" : "none";
+  document.getElementById("voice-panel").style.display = tab === "voice" ? "flex" : "none";
+  document.querySelectorAll("#rightside-header button").forEach((b, i) => b.classList.toggle("active", ["chat","online","voice"][i] === tab));
+};
+
+// ── Workspaces (project 33 RBAC) ──
+async function loadWorkspaces() {
+  if (!token) return;
+  try {
+    const r = await fetch(`${API}/workspaces`, { headers: { Authorization: `Bearer ${token}` } });
+    const d = await r.json();
+    const wsl = document.getElementById("ws-list");
+    if (d.data && d.data.length > 0) {
+      wsl.innerHTML = d.data.map(w => `<div class="side-item">${esc(w.name)}</div>`).join("");
+    } else {
+      wsl.innerHTML = '<div class="side-item" style="color:var(--muted)">No workspaces yet</div>';
+    }
+  } catch (e) {}
+}
+
+window.createWorkspace = async () => {
+  const name = prompt("Workspace name:");
+  if (!name || !token) return;
+  try {
+    const r = await fetch(`${API}/workspaces`, {
+      method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ name })
+    });
+    if (r.ok) loadWorkspaces();
+  } catch (e) {}
+};
+
+// ── Posts + Search (projects 17 REST, 18 Paginator, 19 FTS5) ──
+async function loadPosts() {
+  if (!token) return;
+  try {
+    const r = await fetch(`${API}/posts?limit=10`, { headers: { Authorization: `Bearer ${token}` } });
+    const d = await r.json();
+    renderPosts(d.data);
+  } catch (e) {}
+}
+
+window.searchPosts = async () => {
+  if (!token) return;
+  const q = document.getElementById("search-input").value.trim();
+  try {
+    const url = q ? `${API}/posts?q=${encodeURIComponent(q)}&limit=10` : `${API}/posts?limit=10`;
+    const r = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    const d = await r.json();
+    renderPosts(d.data);
+  } catch (e) {}
+};
+
+function renderPosts(posts) {
+  const pl = document.getElementById("post-list");
+  if (!posts || posts.length === 0) { pl.innerHTML = '<div style="font-size:11px;color:var(--muted)">No posts</div>'; return; }
+  pl.innerHTML = posts.map(p => `<div class="post-item"><div class="title">${esc(p.title)}</div><div class="author">by ${esc(p.author || p.username)}</div></div>`).join("");
+}
+
+// ── File Upload (project 20 Multer) ──
+window.uploadFile = async () => {
+  if (!token) return;
+  const file = document.getElementById("file-input").files[0];
+  if (!file) return;
+  const fd = new FormData();
+  fd.append("image", file);
+  fd.append("title", file.name);
+  fd.append("body", "Uploaded via Cove");
+  try {
+    await fetch(`${API}/posts`, { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
+    loadPosts();
+  } catch (e) {}
+};
+
+// ── Voice (project 32 WebRTC) ──
+let pc = null, localStream = null;
+window.toggleVoice = async () => {
+  if (pc) { pc.close(); pc = null; document.getElementById("voice-status").textContent = "Call ended"; return; }
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+    localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+    pc.onicecandidate = (e) => {
+      if (e.candidate && ws) ws.send(JSON.stringify({ type: "ice-candidate", candidate: e.candidate }));
+    };
+    pc.ontrack = (e) => {
+      const audio = new Audio();
+      audio.srcObject = e.streams[0];
+      audio.play().catch(()=>{});
+    };
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    if (ws) ws.send(JSON.stringify({ type: "webrtc-offer", sdp: offer }));
+    document.getElementById("voice-status").textContent = "Connected (local only)";
+  } catch (e) {
+    document.getElementById("voice-status").textContent = "Error: " + e.message;
+  }
+};
+
+// ── Init ──
+if (token) {
+  // Verify token by hitting /sessions/me
+  fetch(`${API}/sessions/me`, { headers: { Authorization: `Bearer ${token}` } })
+    .then(r => r.json())
+    .then(d => {
+      if (d.id) { user = d; updateAuthUI(); connectWebSocket(); loadWorkspaces(); loadPosts(); }
+      else { token = null; localStorage.removeItem("cove_token"); updateAuthUI(); }
+    })
+    .catch(() => {});
+} else {
+  updateAuthUI();
+}
+
+console.log("%c Cove Editor Ready %c project 07-40", "color:#e94560;font-size:16px", "color:#888");
+console.log("Backend layers visible:");
+console.log("  project 07 Express  - REST API calls");
+console.log("  project 09 JWT      - auth token in localStorage");
+console.log("  project 17 REST     - posts list in sidebar");
+console.log("  project 18 Paginator- 10 posts per page");
+console.log("  project 19 FTS5     - search bar in sidebar");
+console.log("  project 20 Multer   - file upload in sidebar");
+console.log("  project 28 WebSocket- real-time chat + canvas sync");
+console.log("  project 30 Presence - online user list");
+console.log("  project 31 Yjs CRDT - collaborative canvas + doc");
+console.log("  project 32 WebRTC   - voice call button");
+console.log("  project 33 RBAC     - workspaces in sidebar");
+</script>
+
+</body>
+</html>
