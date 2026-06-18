@@ -318,6 +318,9 @@ function connectWS() {
       else if (m.type==="doc-sync") $("doc-editor").innerHTML=m.content;
       else if (m.type==="chat") addMsg('<span class="user">'+esc(m.user)+'</span> '+esc(m.text)+'<span class="time">'+new Date(m.timestamp).toLocaleTimeString()+'</span>');
       else if (m.type==="clear") ctx.clearRect(0,0,canvas.width,canvas.height);
+      else if (m.type==="webrtc-offer") handleOffer(m.sdp);
+      else if (m.type==="webrtc-answer") handleAnswer(m.sdp);
+      else if (m.type==="ice-candidate") handleCandidate(m.candidate);
     } catch(e){}
   };
   ws.onclose = ()=>addMsg("Disconnected",true);
@@ -377,9 +380,46 @@ $("file-input").onchange=async function(){var f=$("file-input").files[0];if(!f||
 
 // ── Voice ──
 var pc=null,ls=null;
+
+function createPC(){
+  pc=new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"}]});
+  pc.onicecandidate=function(e){if(e.candidate&&ws)ws.send(JSON.stringify({type:"ice-candidate",candidate:e.candidate}));};
+  pc.ontrack=function(e){var a=new Audio();a.srcObject=e.streams[0];a.play().catch(function(){});$("voice-status").textContent="Call active";};
+}
+
+async function handleOffer(sdp){
+  if(!pc) createPC();
+  try{
+    await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+    if(ls){ls.getTracks().forEach(function(t){pc.addTrack(t,ls);});}
+    var a=await pc.createAnswer();
+    await pc.setLocalDescription(a);
+    if(ws)ws.send(JSON.stringify({type:"webrtc-answer",sdp:a}));
+    $("voice-status").textContent="Call active";
+  }catch(e){console.error("offer failed",e);}
+}
+
+async function handleAnswer(sdp){
+  if(!pc) return;
+  try{await pc.setRemoteDescription(new RTCSessionDescription(sdp));$("voice-status").textContent="Call active";}catch(e){}
+}
+
+async function handleCandidate(candidate){
+  if(!pc) return;
+  try{await pc.addIceCandidate(new RTCIceCandidate(candidate));}catch(e){}
+}
+
 $("btn-voice").onclick=async function(){
   if(pc){pc.close();pc=null;$("voice-status").textContent="Call ended";return;}
-  try{ls=await navigator.mediaDevices.getUserMedia({audio:true});pc=new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"}]});ls.getTracks().forEach(function(t){pc.addTrack(t,ls);});pc.onicecandidate=function(e){if(e.candidate&&ws)ws.send(JSON.stringify({type:"ice-candidate",candidate:e.candidate}));};pc.ontrack=function(e){var a=new Audio();a.srcObject=e.streams[0];a.play().catch(function(){});};var o=await pc.createOffer();await pc.setLocalDescription(o);if(ws)ws.send(JSON.stringify({type:"webrtc-offer",sdp:o}));$("voice-status").textContent="Connected (local only)";}catch(e){$("voice-status").textContent="Error: "+e.message;}
+  try{
+    ls=await navigator.mediaDevices.getUserMedia({audio:true});
+    createPC();
+    ls.getTracks().forEach(function(t){pc.addTrack(t,ls);});
+    var o=await pc.createOffer();
+    await pc.setLocalDescription(o);
+    if(ws)ws.send(JSON.stringify({type:"webrtc-offer",sdp:o}));
+    $("voice-status").textContent="Waiting for peer...";
+  }catch(e){$("voice-status").textContent="Error: "+e.message;}
 };
 
 // ── Init ──

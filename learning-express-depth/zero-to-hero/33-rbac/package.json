@@ -1,0 +1,28 @@
+{
+  "name": "33-rbac",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "better-sqlite3": "^11.3.0",
+    "zod": "^3.23.0",
+    "pino": "^9.4.0",
+    "pino-http": "^10.3.0",
+    "pino-pretty": "^11.2.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.0",
+    "ioredis": "^5.4.0",
+    "rate-limiter-flexible": "^5.0.0",
+    "node-cron": "^3.0.3",
+    "bullmq": "^5.12.0",
+    "ws": "^8.18.0",
+    "y-websocket": "^2.0.4",
+    "yjs": "^13.6.18"
+  }
+}

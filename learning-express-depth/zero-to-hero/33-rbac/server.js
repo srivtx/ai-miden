@@ -55,6 +55,7 @@ const logger = pino({
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: parseInt(process.env.REDIS_PORT) || 6379,
+  maxRetriesPerRequest: null,
 });
 redis.on("error", (err) => logger.error({ err: err.message }, "Redis error"));
 redis.on("connect", () => logger.info("Connected to Redis"));
@@ -166,6 +167,14 @@ function requireRole(role) {
 
 const app = express();
 app.set("trust proxy", 1);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
+app.use("/cove", express.static(path.join(__dirname, "../../cove"), { fallthrough: false }));
 app.use(express.json());
 app.use(pinoHttp({ logger }));
 app.use("/uploads", express.static(UPLOADS_DIR));
@@ -280,6 +289,9 @@ async function migrate() {
   });
 }
 migrate().then(() => {
+  const drawHistory = [];
+  let docContent = "";
+
   const server = app.listen(3000, () =>
     logger.info("Server listening on http://localhost:3000")
   );
@@ -309,6 +321,13 @@ migrate().then(() => {
     await setOnline(user.userId);
     const online = await getOnlineUsers();
     ws.send(JSON.stringify({ type: "presence:list", users: online }));
+
+    // Draw history + doc state for new clients
+    if (drawHistory.length > 0)
+      ws.send(JSON.stringify({ type: "draw:history", ops: drawHistory }));
+    if (docContent)
+      ws.send(JSON.stringify({ type: "doc-sync", content: docContent }));
+
     const heartbeat = setInterval(
       () => refreshPresence(user.userId),
       HEARTBEAT_INTERVAL * 1000
@@ -316,23 +335,23 @@ migrate().then(() => {
     ws.on("message", (data) => {
       try {
         const message = JSON.parse(data.toString());
-        if (message.type === "chat") {
-          wss.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(
-                JSON.stringify({
-                  type: "chat",
-                  user: message.user,
-                  text: message.text,
-                  timestamp: Date.now(),
-                })
-              );
-            }
-          });
+        if (message.type === "draw") {
+          drawHistory.push(message);
+          if (drawHistory.length > 200) drawHistory.shift();
         }
-      } catch (err) {
-        logger.error({ err: err.message }, "Failed to parse WebSocket message");
-      }
+        if (message.type === "doc-sync") docContent = message.content;
+        wss.clients.forEach((client) => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            if (message.type === "chat") {
+              client.send(JSON.stringify({
+                type: "chat", user: message.user, text: message.text, timestamp: Date.now(),
+              }));
+            } else {
+              client.send(JSON.stringify(message));
+            }
+          }
+        });
+      } catch (err) {}
     });
     ws.on("close", async () => {
       clearInterval(heartbeat);
@@ -344,14 +363,18 @@ migrate().then(() => {
   yWss.on("connection", setupYjs);
   server.on("upgrade", (req, socket, head) => {
     const url = new URL(req.url, "http://localhost");
-    if (url.pathname === "/" || url.pathname === "/chat") {
-      wss.handleUpgrade(req, socket, head, (ws) =>
-        wss.emit("connection", ws, req)
-      );
-    } else {
-      yWss.handleUpgrade(req, socket, head, (ws) =>
-        yWss.emit("connection", ws, req)
-      );
+    try {
+      if (url.pathname === "/" || url.pathname === "/chat") {
+        wss.handleUpgrade(req, socket, head, (ws) =>
+          wss.emit("connection", ws, req)
+        );
+      } else {
+        yWss.handleUpgrade(req, socket, head, (ws) =>
+          yWss.emit("connection", ws, req)
+        );
+      }
+    } catch (e) {
+      if (!e.message.includes("more than once")) logger.error(e);
     }
   });
 });
