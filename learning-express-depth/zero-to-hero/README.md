@@ -133,6 +133,10 @@ This is achievable scope. Every project feeds into it. Nothing is dead weight.
 
 These omissions are intentional. The path is opinionated.
 
+## Status: COMPLETE
+
+All 40 projects are built. The path is finished. You have built a real-time, role-based, tested, deployed, observed, distributed system — the complete backend for a Slack × Notion × Figma-lite hybrid. See project 40 (`40-microservice/CONNECT.md`) for the final summary.
+
 ## The Companion Library
 
 Alongside this path, `learning-express-depth/` keeps the older `0X-name/` (60 single-concept demos) and `incremental*/` (10 incremental apps, 102 stages). Use them as a *reference library* — when you finish project 27 (transactions) and want to see the same concept applied to a different shape, look in `incremental-blog/` for how a blog does it. The library is depth. The path is sequence. They complement each other.
