@@ -324,7 +324,7 @@ function connectWS() {
 }
 function addMsg(html, sys) { var d=document.createElement("div");d.className="chat-msg"+(sys?" system":"");d.innerHTML=html;$("chat-messages").appendChild(d);$("chat-messages").scrollTop=$("chat-messages").scrollHeight; }
 function esc(s) { return String(s).replace(/[&<>"]/g,function(c){return{'"':"&quot;","&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
-function sendChat() { var t=$("chat-input").value.trim();if(!t||!ws||ws.readyState!==WebSocket.OPEN)return;ws.send(JSON.stringify({type:"chat",user:user.username,text:t}));$("chat-input").value=""; }
+function sendChat() { var t=$("chat-input").value.trim();if(!t||!ws||ws.readyState!==WebSocket.OPEN)return;ws.send(JSON.stringify({type:"chat",user:user.username,text:t}));addMsg('<span class="user">'+esc(user.username)+'</span> '+esc(t)+'<span class="time">'+new Date().toLocaleTimeString()+'</span>');$("chat-input").value=""; }
 $("btn-send").onclick=sendChat;
 $("chat-input").onkeydown=function(e){if(e.key==="Enter")sendChat();};
 $("login-pass").onkeydown=function(e){if(e.key==="Enter")doLogin();};
