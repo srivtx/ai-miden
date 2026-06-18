@@ -182,6 +182,18 @@ body { display: grid; grid-template-rows: 44px 1fr; height: 100vh; overflow: hid
 /* Voice */
 #voice-panel { display: flex; flex-direction: column; gap: 10px; align-items: center; padding: 16px 0; }
 #voice-status { font-size: 12px; color: var(--text-quaternary); }
+
+/* Incoming call bar */
+#call-bar {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: var(--bg-elevated); border-top: 1px solid var(--border-standard);
+  padding: 12px 20px; align-items: center; gap: 12px; justify-content: center;
+}
+#call-bar-text { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+#call-bar .btn-accept { background: #27a644; color: #fff; }
+#call-bar .btn-accept:hover { background: #2dc653; }
+#call-bar .btn-decline { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-standard); }
+#call-bar .btn-decline:hover { background: rgba(233,69,96,0.2); color: #e94560; }
 </style>
 </head>
 <body>
@@ -267,6 +279,12 @@ body { display: grid; grid-template-rows: 44px 1fr; height: 100vh; overflow: hid
   </div>
 </div>
 
+<div id="call-bar">
+  <span id="call-bar-text"></span>
+  <button class="btn btn-primary btn-accept" id="btn-accept-call">Accept</button>
+  <button class="btn btn-ghost btn-decline" id="btn-decline-call">Decline</button>
+</div>
+
 <script>
 // ── State ──
 const API = "http://localhost:3000";
@@ -318,7 +336,7 @@ function connectWS() {
       else if (m.type==="doc-sync") $("doc-editor").innerHTML=m.content;
       else if (m.type==="chat") addMsg('<span class="user">'+esc(m.user)+'</span> '+esc(m.text)+'<span class="time">'+new Date(m.timestamp).toLocaleTimeString()+'</span>');
       else if (m.type==="clear") ctx.clearRect(0,0,canvas.width,canvas.height);
-      else if (m.type==="webrtc-offer") handleOffer(m.sdp);
+      else if (m.type==="webrtc-offer") handleOffer(m.sdp, m.from||"Unknown");
       else if (m.type==="webrtc-answer") handleAnswer(m.sdp);
       else if (m.type==="ice-candidate") handleCandidate(m.candidate);
     } catch(e){}
@@ -379,34 +397,56 @@ function renderPosts(posts){var el=$("post-list");if(!posts||!posts.length){el.i
 $("file-input").onchange=async function(){var f=$("file-input").files[0];if(!f||!token)return;var fd=new FormData();fd.append("image",f);fd.append("title",f.name);fd.append("body","Uploaded via Cove");try{await fetch(API+"/posts",{method:"POST",headers:{Authorization:"Bearer "+token},body:fd});loadPosts();}catch(e){}};
 
 // ── Voice ──
-var pc=null,ls=null;
+var pc=null,ls=null,pendingOffer=null;
 
 function createPC(){
   pc=new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"}]});
   pc.onicecandidate=function(e){if(e.candidate&&ws)ws.send(JSON.stringify({type:"ice-candidate",candidate:e.candidate}));};
-  pc.ontrack=function(e){var a=new Audio();a.srcObject=e.streams[0];a.play().catch(function(){});$("voice-status").textContent="Call active";};
+  pc.ontrack=function(e){var a=new Audio();a.srcObject=e.streams[0];a.play().catch(function(){});$("voice-status").textContent="Call active";$("call-bar").style.display="none";};
 }
 
-async function handleOffer(sdp){
-  if(!pc) createPC();
-  try{
-    await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-    if(ls){ls.getTracks().forEach(function(t){pc.addTrack(t,ls);});}
-    var a=await pc.createAnswer();
-    await pc.setLocalDescription(a);
-    if(ws)ws.send(JSON.stringify({type:"webrtc-answer",sdp:a}));
-    $("voice-status").textContent="Call active";
-  }catch(e){console.error("offer failed",e);}
+async function showCallBar(fromUser){
+  pendingOffer = fromUser;
+  $("call-bar-text").textContent = esc(fromUser) + " is calling...";
+  $("call-bar").style.display = "flex";
+}
+
+async function handleOffer(sdp, from){
+  if(pc) return; // already in a call, ignore
+  pendingOffer = { sdp: sdp, from: from };
+  createPC();
+  showCallBar(from);
 }
 
 async function handleAnswer(sdp){
   if(!pc) return;
-  try{await pc.setRemoteDescription(new RTCSessionDescription(sdp));$("voice-status").textContent="Call active";}catch(e){}
+  try{await pc.setRemoteDescription(new RTCSessionDescription(sdp));$("voice-status").textContent="Call active";$("call-bar").style.display="none";}catch(e){}
 }
 
 async function handleCandidate(candidate){
   if(!pc) return;
   try{await pc.addIceCandidate(new RTCIceCandidate(candidate));}catch(e){}
+}
+
+async function acceptCall(){
+  if(!pendingOffer||!pc) return;
+  try{
+    await pc.setRemoteDescription(new RTCSessionDescription(pendingOffer.sdp));
+    if(ls){ls.getTracks().forEach(function(t){pc.addTrack(t,ls);});}
+    var a = await pc.createAnswer();
+    await pc.setLocalDescription(a);
+    if(ws) ws.send(JSON.stringify({type:"webrtc-answer",sdp:a}));
+    $("voice-status").textContent="Call active";
+    $("call-bar").style.display="none";
+  }catch(e){console.error(e);}
+  pendingOffer=null;
+}
+
+function declineCall(){
+  if(pc){pc.close();pc=null;}
+  pendingOffer=null;
+  $("call-bar").style.display="none";
+  $("voice-status").textContent="Call declined";
 }
 
 $("btn-voice").onclick=async function(){
@@ -417,10 +457,13 @@ $("btn-voice").onclick=async function(){
     ls.getTracks().forEach(function(t){pc.addTrack(t,ls);});
     var o=await pc.createOffer();
     await pc.setLocalDescription(o);
-    if(ws)ws.send(JSON.stringify({type:"webrtc-offer",sdp:o}));
-    $("voice-status").textContent="Waiting for peer...";
+    if(ws)ws.send(JSON.stringify({type:"webrtc-offer",sdp:o,from:user.username}));
+    $("voice-status").textContent="Calling...";
   }catch(e){$("voice-status").textContent="Error: "+e.message;}
 };
+
+$("btn-accept-call").onclick = acceptCall;
+$("btn-decline-call").onclick = declineCall;
 
 // ── Init ──
 if (token) {
