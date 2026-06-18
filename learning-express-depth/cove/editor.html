@@ -299,8 +299,12 @@ function connectWebSocket() {
         // presence event handled by list refresh
       } else if (msg.type === "chat") {
         addChatMsg(`<span class="user">${esc(msg.user)}</span>${esc(msg.text)}<span class="time">${new Date(msg.timestamp).toLocaleTimeString()}</span>`);
+      } else if (msg.type === "draw:history") {
+        msg.ops.forEach(op => drawRemote(op));
       } else if (msg.type === "draw") {
         drawRemote(msg);
+      } else if (msg.type === "doc-sync") {
+        document.getElementById("doc-editor").innerHTML = msg.content;
       } else if (msg.type === "clear") {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
@@ -501,6 +505,14 @@ window.toggleVoice = async () => {
     document.getElementById("voice-status").textContent = "Error: " + e.message;
   }
 };
+
+// ── Doc Sync (project 31 Yjs) ──
+const docEditor = document.getElementById("doc-editor");
+docEditor.addEventListener("input", () => {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: "doc-sync", content: docEditor.innerHTML }));
+  }
+});
 
 // ── Init ──
 if (token) {

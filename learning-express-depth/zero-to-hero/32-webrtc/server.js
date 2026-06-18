@@ -238,28 +238,48 @@ migrate().then(() => {
   const signaling = new Map(); // channel -> Set of WebSocket clients
   const channelHosts = new Map(); // channel -> first WebSocket (creates the WebRTC offer)
 
+  const drawHistory = [];
+  const MAX_DRAW_HISTORY = 200;
+  let docContent = "";
+
   chatWss.on("connection", (ws) => {
     ws.send(
       JSON.stringify({ type: "welcome", message: "Connected to the chat" }),
     );
 
+    // Replay full canvas + doc state to new client
+    if (drawHistory.length > 0) {
+      ws.send(JSON.stringify({ type: "draw:history", ops: drawHistory }));
+    }
+    if (docContent) {
+      ws.send(JSON.stringify({ type: "doc-sync", content: docContent }));
+    }
+
     ws.on("message", (data) => {
       try {
         const message = JSON.parse(data.toString());
-        if (message.type === "chat") {
-          chatWss.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(
-                JSON.stringify({
-                  type: "chat",
-                  user: message.user,
-                  text: message.text,
-                  timestamp: Date.now(),
-                }),
-              );
-            }
-          });
+        if (message.type === "draw") {
+          drawHistory.push(message);
+          if (drawHistory.length > MAX_DRAW_HISTORY) drawHistory.shift();
         }
+        if (message.type === "doc-sync") {
+          docContent = message.content;
+        }
+        // Forward to all OTHER clients
+        chatWss.clients.forEach((client) => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            if (message.type === "chat") {
+              client.send(JSON.stringify({
+                type: "chat",
+                user: message.user,
+                text: message.text,
+                timestamp: Date.now(),
+              }));
+            } else {
+              client.send(JSON.stringify(message));
+            }
+          }
+        });
       } catch (err) {}
     });
   });

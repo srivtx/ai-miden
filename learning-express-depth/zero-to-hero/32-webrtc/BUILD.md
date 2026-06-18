@@ -191,6 +191,50 @@ Add screen sharing via `getDisplayMedia`.
 
 ---
 
+### Combined WebSocket Relay (Cove Editor)
+
+The chat WebSocket now relays **all** message types, not just `chat`:
+
+```
+Message types forwarded: chat, draw, doc-sync, webrtc-offer, ice-candidate
+```
+
+**Draw history replay**: the server keeps the last 200 draw operations in memory. When a new client connects, it replays the full history so the refreshed tab sees existing drawings.
+
+```js
+const drawHistory = [];
+ws.on("message", (data) => {
+  const msg = JSON.parse(data);
+  if (msg.type === "draw") {
+    drawHistory.push(msg);
+    if (drawHistory.length > 200) drawHistory.shift();
+  }
+});
+// On new connection: ws.send({ type: "draw:history", ops: drawHistory });
+```
+
+**Doc content sync**: the server stores the latest collaborative doc content. New clients receive it on connect.
+
+```js
+let docContent = "";
+if (msg.type === "doc-sync") docContent = msg.content;
+// On new connection: ws.send({ type: "doc-sync", content: docContent });
+```
+
+**CORS**: manually added (not a library) so the Cove editor at `file://` or served statically can call the API. Also serves the editor at `/cove/editor.html` via `express.static`.
+
+```js
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
+app.use("/cove", express.static(path.join(__dirname, "../../cove")));
+```
+
+---
+
 ## Summary
 
 You now have WebRTC for voice. The server signals. The peers connect. The audio flows directly between them. The server is not in the media path.

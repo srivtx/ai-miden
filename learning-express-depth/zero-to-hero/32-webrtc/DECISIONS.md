@@ -116,4 +116,20 @@ Now the server has voice. WebRTC establishes a peer-to-peer connection. The serv
 
 The next 8 projects begin Phase 6 (Production): RBAC, webhooks, payments, tests, Docker, CI/CD, observability, microservices.
 
+## Decision 6: Draw history replay (not full CRDT state)
+
+The canvas sync uses raw WebSocket draw messages, not Yjs CRDT. This means new clients joining mid-session start with a blank canvas. Two options:
+
+**Alternative**: use Yjs awareness + y-websocket for canvas state sync — every client gets the full state on connect. This is the correct approach for production but adds complexity (Yjs document binding, schema design).
+
+**Chosen**: in-memory draw history (last 200 ops) replayed on connect. Simpler for the learning path — shows the problem (state loss on reconnect) and a pragmatic fix without pulling in a full CRDT sync for the canvas. The collaborative doc tab was added as a first Yjs touchpoint (simple text sync via WebSocket, no Yjs library needed).
+
+## Decision 7: Relay all message types (not just chat)
+
+Previously the WebSocket only forwarded `type: "chat"` messages. With the Cove editor, we have draw, doc-sync, webrtc-offer, and ice-candidate messages too. Changed to forward everything except chat (which gets a timestamp wrapper) to all other clients.
+
+## Decision 8: Serve the editor from the server
+
+Added `app.use("/cove", express.static(...))` so the Cove editor loads from the same origin — no CORS issues. Also added manual CORS headers for development flexibility.
+
 The server has voice. The path continues.
