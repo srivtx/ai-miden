@@ -11,34 +11,37 @@
 //   npm install knex better-sqlite3 zod pino pino-http pino-pretty multer nodemailer
 //   NODE_ENV=development node server.js
 
-const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const knex = require('knex');
-const { z } = require('zod');
-const pino = require('pino');
-const pinoHttp = require('pino-http');
-const multer = require('multer');
-const path = require('node:path');
-const fs = require('node:fs');
-const crypto = require('node:crypto');
-const nodemailer = require('nodemailer');
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const knex = require("knex");
+const { z } = require("zod");
+const pino = require("pino");
+const pinoHttp = require("pino-http");
+const multer = require("multer");
+const path = require("node:path");
+const fs = require("node:fs");
+const crypto = require("node:crypto");
+const nodemailer = require("nodemailer");
 
-const SECRET = 'dev-secret-change-in-prod';
-const TOKEN_TTL = '7d';
+const SECRET = "dev-secret-change-in-prod";
+const TOKEN_TTL = "7d";
 
-const UPLOADS_DIR = path.join(__dirname, 'uploads');
+const UPLOADS_DIR = path.join(__dirname, "uploads");
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR);
 
 const logger = pino({
-  level: process.env.LOG_LEVEL || 'info',
-  transport: process.env.NODE_ENV === 'production' ? undefined : { target: 'pino-pretty' },
+  level: process.env.LOG_LEVEL || "info",
+  transport:
+    process.env.NODE_ENV === "production"
+      ? undefined
+      : { target: "pino-pretty" },
 });
 
 const app = express();
 app.use(express.json());
 app.use(pinoHttp({ logger }));
-app.use('/uploads', express.static(UPLOADS_DIR));
+app.use("/uploads", express.static(UPLOADS_DIR));
 
 let transporter;
 async function setupMailer() {
@@ -48,15 +51,15 @@ async function setupMailer() {
       port: parseInt(process.env.SMTP_PORT) || 587,
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
-    logger.info({ host: process.env.SMTP_HOST }, 'Using SMTP provider');
+    logger.info({ host: process.env.SMTP_HOST }, "Using SMTP provider");
   } else {
     const testAccount = await nodemailer.createTestAccount();
     transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
+      host: "smtp.ethereal.email",
       port: 587,
       auth: { user: testAccount.user, pass: testAccount.pass },
     });
-    logger.info({ user: testAccount.user }, 'Ethereal test account created');
+    logger.info({ user: testAccount.user }, "Ethereal test account created");
   }
 }
 
@@ -71,7 +74,7 @@ async function sendEmail({ to, subject, text, html }) {
     html,
   });
   const url = nodemailer.getTestMessageUrl(info);
-  if (url) logger.info({ url }, 'Preview email at:');
+  if (url) logger.info({ url }, "Preview email at:");
   return info;
 }
 
@@ -88,40 +91,46 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Only images are allowed'));
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only images are allowed"));
     }
     cb(null, true);
   },
 });
 
 const db = knex({
-  client: 'better-sqlite3',
-  connection: { filename: 'app.db' },
+  client: "better-sqlite3",
+  connection: { filename: "app.db" },
   useNullAsDefault: true,
 });
 
 async function migrate() {
-  await db.schema.createTableIfNotExists('users', (t) => {
-    t.increments('id').primary();
-    t.string('username').unique().notNullable();
-    t.string('hash').notNullable();
-    t.string('email').unique();
-    t.bigInteger('created_at').notNullable();
+  await db.schema.createTableIfNotExists("users", (t) => {
+    t.increments("id").primary();
+    t.string("username").unique().notNullable();
+    t.string("hash").notNullable();
+    t.string("email").unique();
+    t.bigInteger("created_at").notNullable();
   });
 
-  await db.schema.createTableIfNotExists('posts', (t) => {
-    t.increments('id').primary();
-    t.integer('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE');
-    t.string('title').notNullable();
-    t.text('body').notNullable();
-    t.string('image_url');
-    t.bigInteger('created_at').notNullable();
+  await db.schema.createTableIfNotExists("posts", (t) => {
+    t.increments("id").primary();
+    t.integer("user_id")
+      .notNullable()
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE");
+    t.string("title").notNullable();
+    t.text("body").notNullable();
+    t.string("image_url");
+    t.bigInteger("created_at").notNullable();
   });
 }
 
 migrate().then(() => {
-  app.listen(3000, () => logger.info('Server listening on http://localhost:3000'));
+  app.listen(3000, () =>
+    logger.info("Server listening on http://localhost:3000"),
+  );
 });
 
 class HttpError extends Error {
@@ -134,32 +143,32 @@ class HttpError extends Error {
 
 class ValidationError extends HttpError {
   constructor(issues) {
-    super(400, 'VALIDATION', 'Validation failed');
+    super(400, "VALIDATION", "Validation failed");
     this.issues = issues;
   }
 }
 
 class UnauthorizedError extends HttpError {
-  constructor(message = 'Unauthorized') {
-    super(401, 'UNAUTHORIZED', message);
+  constructor(message = "Unauthorized") {
+    super(401, "UNAUTHORIZED", message);
   }
 }
 
 class ForbiddenError extends HttpError {
-  constructor(message = 'Forbidden') {
-    super(403, 'FORBIDDEN', message);
+  constructor(message = "Forbidden") {
+    super(403, "FORBIDDEN", message);
   }
 }
 
 class NotFoundError extends HttpError {
-  constructor(message = 'Not Found') {
-    super(404, 'NOT_FOUND', message);
+  constructor(message = "Not Found") {
+    super(404, "NOT_FOUND", message);
   }
 }
 
 class ConflictError extends HttpError {
-  constructor(message = 'Conflict') {
-    super(409, 'CONFLICT', message);
+  constructor(message = "Conflict") {
+    super(409, "CONFLICT", message);
   }
 }
 
@@ -176,17 +185,26 @@ function errorHandler(err, req, res, next) {
     if (err.issues) body.issues = err.issues;
     return res.status(err.status).json(body);
   }
-  res.status(500).json({ error: 'Internal Server Error', code: 'INTERNAL' });
+  res.status(500).json({ error: "Internal Server Error", code: "INTERNAL" });
 }
 
 const userCreateSchema = z.object({
-  username: z.string().min(3).max(30).regex(/^[a-zA-Z0-9_]+$/),
+  username: z
+    .string()
+    .min(3)
+    .max(30)
+    .regex(/^[a-zA-Z0-9_]+$/),
   password: z.string().min(8).max(100),
   email: z.string().email().optional(),
 });
 
 const userUpdateSchema = z.object({
-  username: z.string().min(3).max(30).regex(/^[a-zA-Z0-9_]+$/).optional(),
+  username: z
+    .string()
+    .min(3)
+    .max(30)
+    .regex(/^[a-zA-Z0-9_]+$/)
+    .optional(),
   email: z.string().email().optional(),
 });
 
@@ -230,15 +248,17 @@ function validate(schema) {
 
 function authMiddleware(req, res, next) {
   const auth = req.headers.authorization;
-  if (!auth || !auth.startsWith('Bearer ')) {
-    return next(new UnauthorizedError('missing or invalid authorization header'));
+  if (!auth || !auth.startsWith("Bearer ")) {
+    return next(
+      new UnauthorizedError("missing or invalid authorization header"),
+    );
   }
   const token = auth.slice(7);
   try {
     req.user = jwt.verify(token, SECRET);
     next();
   } catch (err) {
-    return next(new UnauthorizedError('invalid or expired token'));
+    return next(new UnauthorizedError("invalid or expired token"));
   }
 }
 
@@ -258,228 +278,342 @@ function meta(total, limit, offset) {
   };
 }
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the API.' });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the API." });
 });
 
-app.post('/users', validate(userCreateSchema), asyncHandler(async (req, res) => {
-  const { username, password, email } = req.validated;
-  const existing = await db('users').where({ username }).first();
-  if (existing) {
-    throw new ConflictError('username already taken');
-  }
-  const hash = await bcrypt.hash(password, 10);
-  const [id] = await db('users').insert({ username, hash, email: email || null, created_at: Date.now() });
-
-  if (email) {
-    await sendEmail({
-      to: email,
-      subject: 'Welcome to MyApp!',
-      text: `Welcome, ${username}! Your account has been created.`,
-      html: `<p>Welcome, <b>${username}</b>!</p><p>Your account has been created.</p>`,
-    });
-  }
-
-  res.status(201).json({ id, username, email: email || null });
-}));
-
-app.get('/users', asyncHandler(async (req, res) => {
-  const { limit, offset } = paginate(req);
-  const [users, countResult] = await Promise.all([
-    db('users').select('id', 'username', 'email', 'created_at').orderBy('created_at', 'desc').limit(limit).offset(offset),
-    db('users').count('id as count').first(),
-  ]);
-  res.json({ data: users, meta: meta(countResult.count, limit, offset) });
-}));
-
-app.get('/users/:id', asyncHandler(async (req, res) => {
-  const user = await db('users').select('id', 'username', 'email', 'created_at').where({ id: req.params.id }).first();
-  if (!user) {
-    throw new NotFoundError('User not found');
-  }
-  res.json(user);
-}));
-
-app.patch('/users/:id', authMiddleware, validate(userUpdateSchema), asyncHandler(async (req, res) => {
-  if (Number(req.params.id) !== req.user.userId) {
-    throw new ForbiddenError('You can only update your own user');
-  }
-  const updates = req.validated;
-  if (Object.keys(updates).length === 0) {
-    throw new ValidationError([{ path: '', message: 'no fields to update' }]);
-  }
-  await db('users').where({ id: req.params.id }).update(updates);
-  const user = await db('users').select('id', 'username', 'email', 'created_at').where({ id: req.params.id }).first();
-  res.json(user);
-}));
-
-app.delete('/users/:id', authMiddleware, asyncHandler(async (req, res) => {
-  if (Number(req.params.id) !== req.user.userId) {
-    throw new ForbiddenError('You can only delete your own user');
-  }
-  await db('users').where({ id: req.params.id }).delete();
-  res.status(204).end();
-}));
-
-app.post('/sessions', validate(sessionCreateSchema), asyncHandler(async (req, res) => {
-  const { username, password } = req.validated;
-  const user = await db('users').where({ username }).first();
-  if (!user) {
-    throw new UnauthorizedError('invalid credentials');
-  }
-  const ok = await bcrypt.compare(password, user.hash);
-  if (!ok) {
-    throw new UnauthorizedError('invalid credentials');
-  }
-  const token = jwt.sign({ userId: user.id, username: user.username }, SECRET, { expiresIn: TOKEN_TTL });
-  res.status(201).json({ token, user: { id: user.id, username: user.username, email: user.email } });
-}));
-
-app.delete('/sessions', authMiddleware, asyncHandler(async (req, res) => {
-  res.status(204).end();
-}));
-
-app.get('/sessions/me', authMiddleware, asyncHandler(async (req, res) => {
-  const user = await db('users').select('id', 'username', 'email', 'created_at').where({ id: req.user.userId }).first();
-  if (!user) {
-    throw new NotFoundError('User not found');
-  }
-  res.json(user);
-}));
-
-app.post('/sessions/forgot', validate(forgotPasswordSchema), asyncHandler(async (req, res) => {
-  const { email } = req.validated;
-  const user = await db('users').where({ email }).first();
-
-  if (user) {
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    await db('users').where({ id: user.id }).update({
-      password_reset_token: hashedToken,
-      password_reset_expires_at: Date.now() + 60 * 60 * 1000,
+app.post(
+  "/users",
+  validate(userCreateSchema),
+  asyncHandler(async (req, res) => {
+    const { username, password, email } = req.validated;
+    const existing = await db("users").where({ username }).first();
+    if (existing) {
+      throw new ConflictError("username already taken");
+    }
+    const hash = await bcrypt.hash(password, 10);
+    const [id] = await db("users").insert({
+      username,
+      hash,
+      email: email || null,
+      created_at: Date.now(),
     });
 
-    await sendEmail({
-      to: email,
-      subject: 'Reset your password',
-      text: `Click here to reset your password: http://localhost:3000/sessions/reset?token=${resetToken}`,
-      html: `<p>Click <a href="http://localhost:3000/sessions/reset?token=${resetToken}">here</a> to reset your password. This link expires in 1 hour.</p>`,
+    if (email) {
+      await sendEmail({
+        to: email,
+        subject: "Welcome to MyApp!",
+        text: `Welcome, ${username}! Your account has been created.`,
+        html: `<p>Welcome, <b>${username}</b>!</p><p>Your account has been created.</p>`,
+      });
+    }
+
+    res.status(201).json({ id, username, email: email || null });
+  }),
+);
+
+app.get(
+  "/users",
+  asyncHandler(async (req, res) => {
+    const { limit, offset } = paginate(req);
+    const [users, countResult] = await Promise.all([
+      db("users")
+        .select("id", "username", "email", "created_at")
+        .orderBy("created_at", "desc")
+        .limit(limit)
+        .offset(offset),
+      db("users").count("id as count").first(),
+    ]);
+    res.json({ data: users, meta: meta(countResult.count, limit, offset) });
+  }),
+);
+
+app.get(
+  "/users/:id",
+  asyncHandler(async (req, res) => {
+    const user = await db("users")
+      .select("id", "username", "email", "created_at")
+      .where({ id: req.params.id })
+      .first();
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    res.json(user);
+  }),
+);
+
+app.patch(
+  "/users/:id",
+  authMiddleware,
+  validate(userUpdateSchema),
+  asyncHandler(async (req, res) => {
+    if (Number(req.params.id) !== req.user.userId) {
+      throw new ForbiddenError("You can only update your own user");
+    }
+    const updates = req.validated;
+    if (Object.keys(updates).length === 0) {
+      throw new ValidationError([{ path: "", message: "no fields to update" }]);
+    }
+    await db("users").where({ id: req.params.id }).update(updates);
+    const user = await db("users")
+      .select("id", "username", "email", "created_at")
+      .where({ id: req.params.id })
+      .first();
+    res.json(user);
+  }),
+);
+
+app.delete(
+  "/users/:id",
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    if (Number(req.params.id) !== req.user.userId) {
+      throw new ForbiddenError("You can only delete your own user");
+    }
+    await db("users").where({ id: req.params.id }).delete();
+    res.status(204).end();
+  }),
+);
+
+app.post(
+  "/sessions",
+  validate(sessionCreateSchema),
+  asyncHandler(async (req, res) => {
+    const { username, password } = req.validated;
+    const user = await db("users").where({ username }).first();
+    if (!user) {
+      throw new UnauthorizedError("invalid credentials");
+    }
+    const ok = await bcrypt.compare(password, user.hash);
+    if (!ok) {
+      throw new UnauthorizedError("invalid credentials");
+    }
+    const token = jwt.sign(
+      { userId: user.id, username: user.username },
+      SECRET,
+      { expiresIn: TOKEN_TTL },
+    );
+    res.status(201).json({
+      token,
+      user: { id: user.id, username: user.username, email: user.email },
     });
-  }
+  }),
+);
 
-  res.json({ message: 'If the email exists, a reset link has been sent' });
-}));
+app.delete(
+  "/sessions",
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    res.status(204).end();
+  }),
+);
 
-app.post('/sessions/reset', validate(resetPasswordSchema), asyncHandler(async (req, res) => {
-  const { token, password } = req.validated;
-  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  const user = await db('users').where({ password_reset_token: hashedToken }).first();
+app.get(
+  "/sessions/me",
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    const user = await db("users")
+      .select("id", "username", "email", "created_at")
+      .where({ id: req.user.userId })
+      .first();
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    res.json(user);
+  }),
+);
 
-  if (!user || user.password_reset_expires_at < Date.now()) {
-    throw new ValidationError([{ path: 'token', message: 'invalid or expired token' }]);
-  }
+app.post(
+  "/sessions/forgot",
+  validate(forgotPasswordSchema),
+  asyncHandler(async (req, res) => {
+    const { email } = req.validated;
+    const user = await db("users").where({ email }).first();
 
-  const hash = await bcrypt.hash(password, 10);
-  await db('users').where({ id: user.id }).update({
-    hash,
-    password_reset_token: null,
-    password_reset_expires_at: null,
-  });
+    if (user) {
+      const resetToken = crypto.randomBytes(32).toString("hex");
+      const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+      await db("users")
+        .where({ id: user.id })
+        .update({
+          password_reset_token: hashedToken,
+          password_reset_expires_at: Date.now() + 60 * 60 * 1000,
+        });
 
-  res.json({ message: 'Password reset successful' });
-}));
+      await sendEmail({
+        to: email,
+        subject: "Reset your password",
+        text: `Click here to reset your password: http://localhost:3000/sessions/reset?token=${resetToken}`,
+        html: `<p>Click <a href="http://localhost:3000/sessions/reset?token=${resetToken}">here</a> to reset your password. This link expires in 1 hour.</p>`,
+      });
+    }
 
-app.get('/posts', asyncHandler(async (req, res) => {
-  const { limit, offset } = paginate(req);
-  const [posts, countResult] = await Promise.all([
-    db('posts')
-      .join('users', 'posts.user_id', 'users.id')
-      .select('posts.*', 'users.username as author')
-      .orderBy('posts.created_at', 'desc')
-      .limit(limit)
-      .offset(offset),
-    db('posts').count('id as count').first(),
-  ]);
-  res.json({ data: posts, meta: meta(countResult.count, limit, offset) });
-}));
+    res.json({ message: "If the email exists, a reset link has been sent" });
+  }),
+);
 
-app.get('/posts/:id', asyncHandler(async (req, res) => {
-  const post = await db('posts')
-    .join('users', 'posts.user_id', 'users.id')
-    .select('posts.*', 'users.username as author')
-    .where('posts.id', req.params.id)
-    .first();
-  if (!post) {
-    throw new NotFoundError('Post not found');
-  }
-  res.json(post);
-}));
+app.post(
+  "/sessions/reset",
+  validate(resetPasswordSchema),
+  asyncHandler(async (req, res) => {
+    const { token, password } = req.validated;
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const user = await db("users")
+      .where({ password_reset_token: hashedToken })
+      .first();
 
-app.post('/posts', authMiddleware, upload.single('image'), validate(postCreateSchema), asyncHandler(async (req, res) => {
-  const { title, body } = req.validated;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-  const [id] = await db('posts').insert({
-    user_id: req.user.userId,
-    title,
-    body,
-    image_url: imageUrl,
-    created_at: Date.now(),
-  });
-  res.status(201).json({ id, userId: req.user.userId, title, body, imageUrl });
-}));
+    if (!user || user.password_reset_expires_at < Date.now()) {
+      throw new ValidationError([
+        { path: "token", message: "invalid or expired token" },
+      ]);
+    }
 
-app.patch('/posts/:id', authMiddleware, validate(postUpdateSchema), asyncHandler(async (req, res) => {
-  const updates = req.validated;
-  if (Object.keys(updates).length === 0) {
-    throw new ValidationError([{ path: '', message: 'no fields to update' }]);
-  }
-  const post = await db('posts').where({ id: req.params.id }).first();
-  if (!post) {
-    throw new NotFoundError('Post not found');
-  }
-  if (post.user_id !== req.user.userId) {
-    throw new ForbiddenError('You can only update your own posts');
-  }
-  await db('posts').where({ id: req.params.id }).update(updates);
-  const updated = await db('posts').where({ id: req.params.id }).first();
-  res.json(updated);
-}));
+    const hash = await bcrypt.hash(password, 10);
+    await db("users").where({ id: user.id }).update({
+      hash,
+      password_reset_token: null,
+      password_reset_expires_at: null,
+    });
 
-app.delete('/posts/:id', authMiddleware, asyncHandler(async (req, res) => {
-  const post = await db('posts').where({ id: req.params.id }).first();
-  if (!post) {
-    throw new NotFoundError('Post not found');
-  }
-  if (post.user_id !== req.user.userId) {
-    throw new ForbiddenError('You can only delete your own posts');
-  }
-  await db('posts').where({ id: req.params.id }).delete();
-  res.status(204).end();
-}));
+    res.json({ message: "Password reset successful" });
+  }),
+);
 
-app.get('/users/:id/posts', asyncHandler(async (req, res) => {
-  const { limit, offset } = paginate(req);
-  const [posts, countResult] = await Promise.all([
-    db('posts').where({ user_id: req.params.id }).orderBy('created_at', 'desc').limit(limit).offset(offset),
-    db('posts').where({ user_id: req.params.id }).count('id as count').first(),
-  ]);
-  res.json({ data: posts, meta: meta(countResult.count, limit, offset) });
-}));
+app.get(
+  "/posts",
+  asyncHandler(async (req, res) => {
+    const { limit, offset } = paginate(req);
+    const [posts, countResult] = await Promise.all([
+      db("posts")
+        .join("users", "posts.user_id", "users.id")
+        .select("posts.*", "users.username as author")
+        .orderBy("posts.created_at", "desc")
+        .limit(limit)
+        .offset(offset),
+      db("posts").count("id as count").first(),
+    ]);
+    res.json({ data: posts, meta: meta(countResult.count, limit, offset) });
+  }),
+);
 
-app.post('/users/:id/posts', authMiddleware, upload.single('image'), validate(postCreateSchema), asyncHandler(async (req, res) => {
-  if (Number(req.params.id) !== req.user.userId) {
-    throw new ForbiddenError('You can only post as yourself');
-  }
-  const { title, body } = req.validated;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-  const [id] = await db('posts').insert({
-    user_id: req.user.userId,
-    title,
-    body,
-    image_url: imageUrl,
-    created_at: Date.now(),
-  });
-  res.status(201).json({ id, userId: req.user.userId, title, body, imageUrl });
-}));
+app.get(
+  "/posts/:id",
+  asyncHandler(async (req, res) => {
+    const post = await db("posts")
+      .join("users", "posts.user_id", "users.id")
+      .select("posts.*", "users.username as author")
+      .where("posts.id", req.params.id)
+      .first();
+    if (!post) {
+      throw new NotFoundError("Post not found");
+    }
+    res.json(post);
+  }),
+);
+
+app.post(
+  "/posts",
+  authMiddleware,
+  upload.single("image"),
+  validate(postCreateSchema),
+  asyncHandler(async (req, res) => {
+    const { title, body } = req.validated;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    const [id] = await db("posts").insert({
+      user_id: req.user.userId,
+      title,
+      body,
+      image_url: imageUrl,
+      created_at: Date.now(),
+    });
+    res
+      .status(201)
+      .json({ id, userId: req.user.userId, title, body, imageUrl });
+  }),
+);
+
+app.patch(
+  "/posts/:id",
+  authMiddleware,
+  validate(postUpdateSchema),
+  asyncHandler(async (req, res) => {
+    const updates = req.validated;
+    if (Object.keys(updates).length === 0) {
+      throw new ValidationError([{ path: "", message: "no fields to update" }]);
+    }
+    const post = await db("posts").where({ id: req.params.id }).first();
+    if (!post) {
+      throw new NotFoundError("Post not found");
+    }
+    if (post.user_id !== req.user.userId) {
+      throw new ForbiddenError("You can only update your own posts");
+    }
+    await db("posts").where({ id: req.params.id }).update(updates);
+    const updated = await db("posts").where({ id: req.params.id }).first();
+    res.json(updated);
+  }),
+);
+
+app.delete(
+  "/posts/:id",
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    const post = await db("posts").where({ id: req.params.id }).first();
+    if (!post) {
+      throw new NotFoundError("Post not found");
+    }
+    if (post.user_id !== req.user.userId) {
+      throw new ForbiddenError("You can only delete your own posts");
+    }
+    await db("posts").where({ id: req.params.id }).delete();
+    res.status(204).end();
+  }),
+);
+
+app.get(
+  "/users/:id/posts",
+  asyncHandler(async (req, res) => {
+    const { limit, offset } = paginate(req);
+    const [posts, countResult] = await Promise.all([
+      db("posts")
+        .where({ user_id: req.params.id })
+        .orderBy("created_at", "desc")
+        .limit(limit)
+        .offset(offset),
+      db("posts")
+        .where({ user_id: req.params.id })
+        .count("id as count")
+        .first(),
+    ]);
+    res.json({ data: posts, meta: meta(countResult.count, limit, offset) });
+  }),
+);
+
+app.post(
+  "/users/:id/posts",
+  authMiddleware,
+  upload.single("image"),
+  validate(postCreateSchema),
+  asyncHandler(async (req, res) => {
+    if (Number(req.params.id) !== req.user.userId) {
+      throw new ForbiddenError("You can only post as yourself");
+    }
+    const { title, body } = req.validated;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    const [id] = await db("posts").insert({
+      user_id: req.user.userId,
+      title,
+      body,
+      image_url: imageUrl,
+      created_at: Date.now(),
+    });
+    res
+      .status(201)
+      .json({ id, userId: req.user.userId, title, body, imageUrl });
+  }),
+);
 
 app.use(errorHandler);

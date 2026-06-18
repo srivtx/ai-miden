@@ -9,14 +9,14 @@
 // To run:   node server.js
 // To test:  curl http://localhost:3000
 
-const http = require('node:http');
+const http = require("node:http");
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, world.\n');
+  res.setHeader("Content-Type", "text/plain");
+  res.end("Hello, world.\n");
 });
 
 server.listen(3000, () => {
-  console.log('Server listening on http://localhost:3000');
+  console.log("Server listening on http://localhost:3000");
 });

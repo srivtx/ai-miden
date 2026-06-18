@@ -11,7 +11,7 @@
 //            -H "Content-Type: application/json" \
 //            -d '{"name": "Eve"}'
 
-const http = require('node:http');
+const http = require("node:http");
 
 const routes = new Map();
 
@@ -25,50 +25,50 @@ function post(path, handler) {
 
 function json(res, status, body) {
   res.statusCode = status;
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(body));
 }
 
 const USERS = [
-  { id: 1, name: 'Alice', role: 'admin' },
-  { id: 2, name: 'Bob', role: 'user' },
+  { id: 1, name: "Alice", role: "admin" },
+  { id: 2, name: "Bob", role: "user" },
 ];
 
-get('/', (req, res) => {
-  json(res, 200, { message: 'Welcome to the API.' });
+get("/", (req, res) => {
+  json(res, 200, { message: "Welcome to the API." });
 });
 
-get('/users', (req, res) => {
+get("/users", (req, res) => {
   json(res, 200, USERS);
 });
 
-post('/users', (req, res) => {
+post("/users", (req, res) => {
   const user = {
     id: USERS.length + 1,
     name: req.body.name,
-    role: req.body.role || 'user',
+    role: req.body.role || "user",
   };
   USERS.push(user);
   json(res, 201, user);
 });
 
-get('/health', (req, res) => {
-  json(res, 200, { status: 'ok' });
+get("/health", (req, res) => {
+  json(res, 200, { status: "ok" });
 });
 
 const server = http.createServer((req, res) => {
-  const [path, queryString] = req.url.split('?');
-  req.query = Object.fromEntries(new URLSearchParams(queryString || ''));
+  const [path, queryString] = req.url.split("?");
+  req.query = Object.fromEntries(new URLSearchParams(queryString || ""));
 
   const chunks = [];
-  req.on('data', (chunk) => chunks.push(chunk));
-  req.on('end', () => {
-    const raw = Buffer.concat(chunks).toString('utf8');
+  req.on("data", (chunk) => chunks.push(chunk));
+  req.on("end", () => {
+    const raw = Buffer.concat(chunks).toString("utf8");
     if (raw) {
       try {
         req.body = JSON.parse(raw);
       } catch (err) {
-        json(res, 400, { error: 'Invalid JSON' });
+        json(res, 400, { error: "Invalid JSON" });
         return;
       }
     } else {
@@ -77,7 +77,7 @@ const server = http.createServer((req, res) => {
 
     const handler = routes.get(`${req.method} ${path}`);
     if (!handler) {
-      json(res, 404, { error: 'Not Found' });
+      json(res, 404, { error: "Not Found" });
       return;
     }
     handler(req, res);
@@ -85,5 +85,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(3000, () => {
-  console.log('Server listening on http://localhost:3000');
+  console.log("Server listening on http://localhost:3000");
 });

@@ -10,7 +10,7 @@
 // To test:  curl http://localhost:3000/users
 //           curl -X POST http://localhost:3000/users
 
-const http = require('node:http');
+const http = require("node:http");
 
 const routes = new Map();
 
@@ -24,43 +24,43 @@ function post(path, handler) {
 
 function json(res, status, body) {
   res.statusCode = status;
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(body));
 }
 
-get('/', (req, res) => {
-  json(res, 200, { message: 'Welcome to the API.' });
+get("/", (req, res) => {
+  json(res, 200, { message: "Welcome to the API." });
 });
 
-get('/users', (req, res) => {
+get("/users", (req, res) => {
   json(res, 200, [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' },
-    { id: 3, name: 'Carol' },
+    { id: 1, name: "Alice" },
+    { id: 2, name: "Bob" },
+    { id: 3, name: "Carol" },
   ]);
 });
 
-get('/users/1', (req, res) => {
-  json(res, 200, { id: 1, name: 'Alice', email: 'alice@example.com' });
+get("/users/1", (req, res) => {
+  json(res, 200, { id: 1, name: "Alice", email: "alice@example.com" });
 });
 
-post('/users', (req, res) => {
-  json(res, 201, { id: 4, name: 'Dave', email: 'dave@example.com' });
+post("/users", (req, res) => {
+  json(res, 201, { id: 4, name: "Dave", email: "dave@example.com" });
 });
 
-get('/health', (req, res) => {
-  json(res, 200, { status: 'ok' });
+get("/health", (req, res) => {
+  json(res, 200, { status: "ok" });
 });
 
 const server = http.createServer((req, res) => {
   const handler = routes.get(`${req.method} ${req.url}`);
   if (!handler) {
-    json(res, 404, { error: 'Not Found' });
+    json(res, 404, { error: "Not Found" });
     return;
   }
   handler(req, res);
 });
 
 server.listen(3000, () => {
-  console.log('Server listening on http://localhost:3000');
+  console.log("Server listening on http://localhost:3000");
 });

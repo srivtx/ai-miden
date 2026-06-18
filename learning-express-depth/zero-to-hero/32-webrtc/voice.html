@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice Channel</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+    button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    #status { padding: 10px; background: #f0f0f0; border-radius: 4px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Voice Channel: <span id="channel"></span></h1>
+  <div id="status">Disconnected</div>
+  <button id="join">Join Channel</button>
+  <button id="leave" disabled>Leave</button>
+  <audio id="remoteAudio" autoplay></audio>
+
+  <script>
+    const channel = window.location.pathname.slice(1);
+    document.getElementById('channel').textContent = channel;
+
+    let pc, ws, localStream;
+
+    const status = document.getElementById('status');
+    const setStatus = (msg) => { status.textContent = msg; };
+
+    document.getElementById('join').onclick = async () => {
+      try {
+        ws = new WebSocket(`ws://${window.location.host}/${channel}`);
+
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        pc = new RTCPeerConnection({
+          iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+        });
+
+        localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+
+        pc.ontrack = (event) => {
+          const remoteAudio = document.getElementById('remoteAudio');
+          remoteAudio.srcObject = event.streams[0];
+          setStatus('Connected — speaking now');
+        };
+
+        pc.onicecandidate = (event) => {
+          if (event.candidate) {
+            ws.send(JSON.stringify({ type: 'ice', candidate: event.candidate }));
+          }
+        };
+
+        ws.onmessage = async (event) => {
+          const message = JSON.parse(event.data);
+          if (message.type === 'offer') {
+            await pc.setRemoteDescription(message.offer);
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            ws.send(JSON.stringify({ type: 'answer', answer }));
+          } else if (message.type === 'answer') {
+            await pc.setRemoteDescription(message.answer);
+          } else if (message.type === 'ice') {
+            await pc.addIceCandidate(message.candidate);
+          }
+        };
+
+        ws.onopen = async () => {
+          const offer = await pc.createOffer();
+          await pc.setLocalDescription(offer);
+          ws.send(JSON.stringify({ type: 'offer', offer }));
+          setStatus('Connected to signaling server, waiting for peer...');
+          document.getElementById('join').disabled = true;
+          document.getElementById('leave').disabled = false;
+        };
+
+        ws.onerror = () => setStatus('WebSocket error');
+        ws.onclose = () => setStatus('Disconnected');
+      } catch (err) {
+        setStatus('Error: ' + err.message);
+      }
+    };
+
+    document.getElementById('leave').onclick = () => {
+      if (pc) pc.close();
+      if (ws) ws.close();
+      if (localStream) localStream.getTracks().forEach((track) => track.stop());
+      setStatus('Left channel');
+      document.getElementById('join').disabled = false;
+      document.getElementById('leave').disabled = true;
+    };
+  </script>
+</body>
+</html>
