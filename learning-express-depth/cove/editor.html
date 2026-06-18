@@ -406,7 +406,6 @@ function createPC(){
 }
 
 async function showCallBar(fromUser){
-  pendingOffer = fromUser;
   $("call-bar-text").textContent = esc(fromUser) + " is calling...";
   $("call-bar").style.display = "flex";
 }
