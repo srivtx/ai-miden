@@ -143,8 +143,8 @@ The path includes a working editor (`../cove/editor.html`) that connects to the 
 # Terminal 1: start Redis
 brew services start redis
 
-# Terminal 2: start the backend (project 32 includes all features up to WebRTC)
-cd zero-to-hero/32-webrtc
+# Terminal 2: start the backend (project 33 includes all features up to RBAC + workspaces)
+cd zero-to-hero/33-rbac
 npm install
 node server.js
 
@@ -152,7 +152,7 @@ node server.js
 open http://localhost:3000/cove/editor.html
 ```
 
-The editor is also served from the server itself at `/cove/editor.html` so no CORS issues. Login with any username/password (auto-signs up on first try).
+The editor is served from the server at `/cove/editor.html` (same origin, no CORS issues). Login with any username/password (auto-signs up on first try). Open a second tab with a different username to see real-time collaboration across all layers.
 
 ### Which UI Element Connects to Which Backend Project
 
@@ -168,15 +168,18 @@ The editor is also served from the server itself at `/cove/editor.html` so no CO
 | Center: Collaborative Doc tab | 31 Yjs CRDT | First Yjs sync (full Yjs integration via `y-websocket` relay) |
 | Right tab: Chat messages | 28 WebSocket | Chat messages broadcast to all connected clients |
 | Right tab: Online users | 30 Presence | Redis TTL heartbeat + pub/sub presence list |
-| Right tab: Voice call | 32 WebRTC | STUN via Google, SDP/ICE relayed through WebSocket |
+| Right tab: Voice call | 32 WebRTC | STUN via Google, offer/answer signaling, incoming call notification with Accept/Decline |
+| Bottom bar: Call invite | 32 WebRTC | Shows caller name, Accept sends answer back, Decline dismisses |
 
 ### Seeing Real-Time Collaboration
 
 Open a second browser tab at the same URL. Login as a different user. You will see:
 
 - **Chat**: messages appear in both tabs instantly (WebSocket broadcast)
-- **Canvas**: draw in one tab, the lines appear in the other (WebSocket draw relay)
-- **Online users**: both users appear in the Online tab (Redis presence)
+- **Canvas**: draw in one tab, lines appear in the other; new tabs replay the last 200 strokes
+- **Doc**: type in the Doc tab, text syncs to the other tab in real-time
+- **Online users**: both users appear in the Online tab with green dots (Redis presence)
+- **Voice**: click Start Voice Call on one tab, the other shows "X is calling..." with Accept/Decline
 
 ### The Missing Layers (Visible in Code, Not in UI)
 

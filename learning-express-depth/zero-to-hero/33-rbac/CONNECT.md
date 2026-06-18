@@ -153,4 +153,8 @@ From here, the path diverges into the final 7 projects of Phase 6 (Production):
 - **Observability** (project 39): metrics
 - **Microservice** (project 40): split
 
+## The Cove Editor
+
+Project 33 is the recommended server for running the Cove collaborative workspace editor. It serves `../cove/editor.html` at `/cove/editor.html` and handles all real-time features: chat broadcast, canvas draw sync with history replay, collaborative doc sync, presence tracking, WebRTC voice with caller notification, and RBAC workspaces. Two browser tabs with different usernames is all you need to see the full stack in action.
+
 The server knows what you can do. The path continues.

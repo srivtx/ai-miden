@@ -162,6 +162,33 @@ Some actions require both role and ownership. For example, "edit a post" require
 
 ---
 
+## Cove Editor Integration
+
+The 33 server serves the Cove collaborative workspace editor at `/cove/editor.html`. Open two browser tabs, login as different users, and see:
+
+- **Chat (project 28)**: messages sync via WebSocket relay
+- **Canvas (project 28/31)**: draw commands sync in real-time; new tabs replay the last 200 draw ops
+- **Doc (project 31)**: collaborative text editor syncs via WebSocket
+- **Presence (project 30)**: Redis TTL heartbeat, live online user list
+- **Voice (project 32)**: WebRTC with offer/answer signaling, incoming call notification with Accept/Decline
+- **Workspaces (project 33)**: create workspaces in the left sidebar
+
+The server broadcasts all WebSocket message types (chat, draw, doc-sync, webrtc-offer, webrtc-answer, ice-candidate) to other clients. Draw history (last 200 ops) and doc content are stored in memory and replayed to new connections.
+
+### Setting Up
+
+```bash
+cd zero-to-hero/33-rbac
+npm install
+redis-server   # or brew services start redis
+node server.js
+open http://localhost:3000/cove/editor.html
+```
+
+CORS is enabled for development; the editor is served from the same origin via `express.static`.
+
+---
+
 ## Summary
 
 You now have RBAC. The server knows what each user can do. Roles are hierarchical. Membership is per-workspace. The `requireRole` middleware is composable.
