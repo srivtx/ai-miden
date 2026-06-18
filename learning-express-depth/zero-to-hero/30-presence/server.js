@@ -1,24 +1,26 @@
 // server.js
 //
-// Project 32: The WebRTC Voice Channel
-// =====================================
-// Adds WebRTC signaling. The server relays SDP and ICE messages between
-// peers. The peers establish a direct peer-to-peer connection. Audio flows
-// peer-to-peer (not through the server).
+// Project 30: The Presence
+// =========================
+// Adds presence tracking with Redis TTL. Each WebSocket client is
+// authenticated via a token in the query string. On connect, the user
+// is marked online. A heartbeat every 10 seconds refreshes the TTL.
+// On disconnect, the user is marked offline. Cross-process presence
+// events are broadcast via Redis pub/sub.
 //
 // Setup:
 //   redis-server
-//   npm install express bcrypt jsonwebtoken knex better-sqlite3 zod pino pino-http multer nodemailer ioredis rate-limiter-flexible node-cron bullmq ws
+//   npm install ioredis rate-limiter-flexible node-cron bullmq ws
 //   node server.js
 //
 // Test:
-//   Open http://localhost:3000/general in two browser tabs.
-//   Click "Join Channel" in both. Allow microphone. Talk to each other.
-//   Phone (same WiFi): use the LAN URL printed on startup, e.g. http://192.168.x.x:3000/general
-//   Phone (remote):     ngrok http 3000  →  open the https URL on your phone
+//   TOKEN=$(curl -X POST http://localhost:3000/sessions \
+//     -H "Content-Type: application/json" \
+//     -d '{"username":"alice","password":"hunter2long"}' \
+//     | python3 -c "import sys,json;print(json.load(sys.stdin)['token'])")
+//   wscat -c "ws://localhost:3000?token=$TOKEN"
 
 const express = require("express");
-const os = require("node:os");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const knex = require("knex");
@@ -38,6 +40,9 @@ const { WebSocketServer, WebSocket } = require("ws");
 
 const SECRET = "dev-secret-change-in-prod";
 const TOKEN_TTL = "7d";
+const PRESENCE_CHANNEL = "presence:updates";
+const PRESENCE_TTL = 30;
+const HEARTBEAT_INTERVAL = 10;
 
 const UPLOADS_DIR = path.join(__dirname, "uploads");
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR);
@@ -53,7 +58,6 @@ const logger = pino({
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: parseInt(process.env.REDIS_PORT) || 6379,
-  maxRetriesPerRequest: null, // required by BullMQ (uses blocking Redis commands)
 });
 redis.on("error", (err) => logger.error({ err: err.message }, "Redis error"));
 redis.on("connect", () => logger.info("Connected to Redis"));
@@ -72,10 +76,10 @@ const emailWorker = new Worker(
       });
     }
   },
-  { connection: redis },
+  { connection: redis }
 );
 emailWorker.on("failed", (job, err) =>
-  logger.error({ err: err.message }, "Email job failed"),
+  logger.error({ err: err.message }, "Email job failed")
 );
 
 const rateLimiter = new RateLimiterRedis({
@@ -104,7 +108,7 @@ class Cache {
         key,
         JSON.stringify(value),
         "EX",
-        ttlSeconds || this.ttl,
+        ttlSeconds || this.ttl
       );
     } catch (e) {}
   }
@@ -115,6 +119,29 @@ class Cache {
   }
 }
 const cache = new Cache(redis, 60);
+
+// PROJECT 30: presence helpers
+async function setOnline(userId) {
+  await redis.set(`presence:${userId}`, Date.now(), "EX", PRESENCE_TTL);
+  await redis.publish(
+    PRESENCE_CHANNEL,
+    JSON.stringify({ type: "connect", userId })
+  );
+}
+async function setOffline(userId) {
+  await redis.del(`presence:${userId}`);
+  await redis.publish(
+    PRESENCE_CHANNEL,
+    JSON.stringify({ type: "disconnect", userId })
+  );
+}
+async function refreshPresence(userId) {
+  await redis.expire(`presence:${userId}`, PRESENCE_TTL);
+}
+async function getOnlineUsers() {
+  const keys = await redis.keys("presence:*");
+  return keys.map((k) => parseInt(k.split(":")[1]));
+}
 
 const app = express();
 app.set("trust proxy", 1);
@@ -151,6 +178,7 @@ async function setupMailer() {
   }
 }
 setupMailer();
+
 async function sendEmail({ to, subject, text, html }) {
   const info = await transporter.sendMail({
     from: '"MyApp" <noreply@myapp.com>',
@@ -185,61 +213,78 @@ const db = knex({
 });
 
 async function migrate() {
-  if (!(await db.schema.hasTable("users"))) {
-    await db.schema.createTable("users", (t) => {
-      t.increments("id").primary();
-      t.string("username").unique().notNullable();
-      t.string("hash").notNullable();
-      t.string("email").unique();
-      t.bigInteger("created_at").notNullable();
-      t.integer("balance").notNullable().defaultTo(0);
-    });
-  }
-  if (!(await db.schema.hasTable("posts"))) {
-    await db.schema.createTable("posts", (t) => {
-      t.increments("id").primary();
-      t.integer("user_id")
-        .notNullable()
-        .references("id")
-        .inTable("users")
-        .onDelete("CASCADE");
-      t.string("title").notNullable();
-      t.text("body").notNullable();
-      t.string("image_url");
-      t.bigInteger("created_at").notNullable();
-    });
-  }
+  await db.schema.createTableIfNotExists("users", (t) => {
+    t.increments("id").primary();
+    t.string("username").unique().notNullable();
+    t.string("hash").notNullable();
+    t.string("email").unique();
+    t.bigInteger("created_at").notNullable();
+    t.integer("balance").notNullable().defaultTo(0);
+  });
+  await db.schema.createTableIfNotExists("posts", (t) => {
+    t.increments("id").primary();
+    t.integer("user_id")
+      .notNullable()
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE");
+    t.string("title").notNullable();
+    t.text("body").notNullable();
+    t.string("image_url");
+    t.bigInteger("created_at").notNullable();
+  });
 }
 migrate().then(() => {
-  const PORT = 3000;
-  const server = app.listen(PORT, "0.0.0.0", () => {
-    logger.info(`Server listening on http://localhost:${PORT}`);
-    const nets = os.networkInterfaces();
-    for (const iface of Object.values(nets)) {
-      for (const addr of iface || []) {
-        if (addr.family === "IPv4" && !addr.internal) {
-          logger.info(`LAN (phone on same WiFi): http://${addr.address}:${PORT}/general`);
-        }
+  const server = app.listen(3000, () =>
+    logger.info("Server listening on http://localhost:3000")
+  );
+
+  // PROJECT 30: pub/sub subscriber for cross-process presence
+  const subscriber = redis.duplicate();
+  subscriber.subscribe(PRESENCE_CHANNEL);
+  subscriber.on("message", (channel, message) => {
+    const event = JSON.parse(message);
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ type: "presence", event }));
       }
-    }
+    });
   });
 
-  // WebSocket servers (chat + WebRTC signaling)
-  const chatWss = new WebSocketServer({ noServer: true });
-  const signalingWss = new WebSocketServer({ noServer: true });
-  const signaling = new Map(); // channel -> Set of WebSocket clients
-  const channelHosts = new Map(); // channel -> first WebSocket (creates the WebRTC offer)
+  // WebSocket server (project 28, augmented with presence + token auth)
+  const wss = new WebSocketServer({ server });
+  wss.on("connection", async (ws, req) => {
+    // PROJECT 30: token-based authentication
+    const url = new URL(req.url, "http://localhost");
+    const token = url.searchParams.get("token");
+    let user;
+    try {
+      user = jwt.verify(token, SECRET);
+    } catch (err) {
+      ws.close(1008, "Unauthorized");
+      return;
+    }
 
-  chatWss.on("connection", (ws) => {
-    ws.send(
-      JSON.stringify({ type: "welcome", message: "Connected to the chat" }),
+    logger.info({ userId: user.userId }, "WebSocket authenticated");
+
+    // PROJECT 30: mark online
+    await setOnline(user.userId);
+
+    // Send current online users
+    const online = await getOnlineUsers();
+    ws.send(JSON.stringify({ type: "presence:list", users: online }));
+
+    // PROJECT 30: heartbeat refresh
+    const heartbeat = setInterval(
+      () => refreshPresence(user.userId),
+      HEARTBEAT_INTERVAL * 1000
     );
 
     ws.on("message", (data) => {
       try {
         const message = JSON.parse(data.toString());
         if (message.type === "chat") {
-          chatWss.clients.forEach((client) => {
+          wss.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
               client.send(
                 JSON.stringify({
@@ -247,92 +292,21 @@ migrate().then(() => {
                   user: message.user,
                   text: message.text,
                   timestamp: Date.now(),
-                }),
+                })
               );
             }
           });
         }
-      } catch (err) {}
-    });
-  });
-
-  signalingWss.on("connection", (ws, req) => {
-    const url = new URL(req.url, "http://localhost");
-    const channel = url.pathname.slice(1);
-    const MAX_VOICE_PEERS = 2;
-
-    if (!signaling.has(channel)) signaling.set(channel, new Set());
-    const peers = signaling.get(channel);
-    peers.add(ws);
-
-    // Voice is 1-to-1 — drop stale tabs so host + one guest remain
-    while (peers.size > MAX_VOICE_PEERS) {
-      for (const client of peers) {
-        if (client !== ws && client !== channelHosts.get(channel)) {
-          client.close(4000, "Too many peers — close extra tabs");
-          peers.delete(client);
-          break;
-        }
-      }
-    }
-
-    if (!channelHosts.has(channel)) channelHosts.set(channel, ws);
-
-    const broadcastPresence = () => {
-      const count = peers.size;
-      for (const client of peers) {
-        if (client.readyState !== WebSocket.OPEN) continue;
-        const role = client === channelHosts.get(channel) ? "host" : "guest";
-        client.send(JSON.stringify({ type: "presence", count, role }));
-      }
-    };
-
-    logger.info(
-      { channel, clientCount: peers.size, role: ws === channelHosts.get(channel) ? "host" : "guest" },
-      "Peer joined channel",
-    );
-    broadcastPresence();
-
-    ws.on("message", (data) => {
-      try {
-        const parsed = JSON.parse(data.toString());
-        if (parsed.type === "presence") return;
-      } catch (err) {}
-
-      for (const client of peers) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(data.toString());
-        }
+      } catch (err) {
+        logger.error({ err: err.message }, "Failed to parse WebSocket message");
       }
     });
 
-    ws.on("close", () => {
-      peers.delete(ws);
-      if (channelHosts.get(channel) === ws) {
-        const next = peers.values().next().value;
-        if (next) channelHosts.set(channel, next);
-        else channelHosts.delete(channel);
-      }
-      if (!peers.size) signaling.delete(channel);
-      logger.info(
-        { channel, clientCount: peers.size },
-        "Peer left channel",
-      );
-      if (peers.size) broadcastPresence();
+    ws.on("close", async () => {
+      // PROJECT 30: mark offline
+      clearInterval(heartbeat);
+      await setOffline(user.userId);
     });
-  });
-
-  server.on("upgrade", (req, socket, head) => {
-    const url = new URL(req.url, "http://localhost");
-    if (url.pathname === "/" || url.pathname === "/chat") {
-      chatWss.handleUpgrade(req, socket, head, (ws) =>
-        chatWss.emit("connection", ws, req),
-      );
-    } else {
-      signalingWss.handleUpgrade(req, socket, head, (ws) =>
-        signalingWss.emit("connection", ws, req),
-      );
-    }
   });
 });
 
@@ -371,27 +345,27 @@ class ConflictError extends HttpError {
 }
 
 function asyncHandler(fn) {
-  return (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+  return (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
 }
+
 function errorHandler(err, req, res, next) {
   req.log.error(
     { err: err.message, code: err.code, status: err.status },
-    err.message,
+    err.message
   );
   if (err instanceof HttpError) {
     const body = { error: err.message, code: err.code };
     if (err.issues) body.issues = err.issues;
     return res.status(err.status).json(body);
   }
-  res.status(500).json({ error: "Internal Server Error", code: "INTERNAL" });
+  res
+    .status(500)
+    .json({ error: "Internal Server Error", code: "INTERNAL" });
 }
 
 const userCreateSchema = z.object({
-  username: z
-    .string()
-    .min(3)
-    .max(30)
-    .regex(/^[a-zA-Z0-9_]+$/),
+  username: z.string().min(3).max(30).regex(/^[a-zA-Z0-9_]+$/),
   password: z.string().min(8).max(100),
   email: z.string().email().optional(),
 });
@@ -441,9 +415,7 @@ function validate(schema) {
 function authMiddleware(req, res, next) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer "))
-    return next(
-      new UnauthorizedError("missing or invalid authorization header"),
-    );
+    return next(new UnauthorizedError("missing or invalid authorization header"));
   try {
     req.user = jwt.verify(auth.slice(7), SECRET);
     next();
@@ -468,61 +440,58 @@ function meta(total, limit, offset) {
 
 app.get("/", (req, res) => res.json({ message: "Welcome to the API." }));
 
-app.post(
-  "/users",
-  validate(userCreateSchema),
-  asyncHandler(async (req, res) => {
-    const { username, password, email } = req.validated;
-    if (await db("users").where({ username }).first())
-      throw new ConflictError("username already taken");
-    const hash = await bcrypt.hash(password, 10);
-    const [id] = await db("users").insert({
-      username,
-      hash,
-      email: email || null,
-      balance: 0,
-      created_at: Date.now(),
-    });
-    if (email)
-      await emailQueue.add(
-        "welcome",
-        { userId: id, email, username },
-        { attempts: 3, backoff: { type: "exponential", delay: 1000 } },
-      );
-    res.status(201).json({ id, username, email: email || null });
-  }),
-);
+// PROJECT 30: presence list endpoint
+app.get("/online", authMiddleware, asyncHandler(async (req, res) => {
+  const online = await getOnlineUsers();
+  res.json({ online });
+}));
 
-app.get(
-  "/users",
-  asyncHandler(async (req, res) => {
-    const { limit, offset } = paginate(req);
-    const [users, c] = await Promise.all([
-      db("users")
-        .select("id", "username", "email", "balance", "created_at")
-        .orderBy("created_at", "desc")
-        .limit(limit)
-        .offset(offset),
-      db("users").count("id as count").first(),
-    ]);
-    res.json({ data: users, meta: meta(c.count, limit, offset) });
-  }),
-);
-app.get(
-  "/users/:id",
-  asyncHandler(async (req, res) => {
-    const k = `user:${req.params.id}`;
-    const c = await cache.get(k);
-    if (c) return res.json(c);
-    const u = await db("users")
+app.post("/users", validate(userCreateSchema), asyncHandler(async (req, res) => {
+  const { username, password, email } = req.validated;
+  if (await db("users").where({ username }).first())
+    throw new ConflictError("username already taken");
+  const hash = await bcrypt.hash(password, 10);
+  const [id] = await db("users").insert({
+    username,
+    hash,
+    email: email || null,
+    balance: 0,
+    created_at: Date.now(),
+  });
+  if (email) {
+    await emailQueue.add(
+      "welcome",
+      { userId: id, email, username },
+      { attempts: 3, backoff: { type: "exponential", delay: 1000 } }
+    );
+  }
+  res.status(201).json({ id, username, email: email || null });
+}));
+
+app.get("/users", asyncHandler(async (req, res) => {
+  const { limit, offset } = paginate(req);
+  const [users, c] = await Promise.all([
+    db("users")
       .select("id", "username", "email", "balance", "created_at")
-      .where({ id: req.params.id })
-      .first();
-    if (!u) throw new NotFoundError("User not found");
-    await cache.set(k, u);
-    res.json(u);
-  }),
-);
+      .orderBy("created_at", "desc")
+      .limit(limit)
+      .offset(offset),
+    db("users").count("id as count").first(),
+  ]);
+  res.json({ data: users, meta: meta(c.count, limit, offset) });
+}));
+app.get("/users/:id", asyncHandler(async (req, res) => {
+  const k = `user:${req.params.id}`;
+  const c = await cache.get(k);
+  if (c) return res.json(c);
+  const u = await db("users")
+    .select("id", "username", "email", "balance", "created_at")
+    .where({ id: req.params.id })
+    .first();
+  if (!u) throw new NotFoundError("User not found");
+  await cache.set(k, u);
+  res.json(u);
+}));
 app.patch(
   "/users/:id",
   authMiddleware,
@@ -532,7 +501,9 @@ app.patch(
       throw new ForbiddenError("You can only update your own user");
     const updates = req.validated;
     if (Object.keys(updates).length === 0)
-      throw new ValidationError([{ path: "", message: "no fields to update" }]);
+      throw new ValidationError([
+        { path: "", message: "no fields to update" },
+      ]);
     await db("users").where({ id: req.params.id }).update(updates);
     await cache.delete(`user:${req.params.id}`);
     const u = await db("users")
@@ -540,19 +511,15 @@ app.patch(
       .where({ id: req.params.id })
       .first();
     res.json(u);
-  }),
+  })
 );
-app.delete(
-  "/users/:id",
-  authMiddleware,
-  asyncHandler(async (req, res) => {
-    if (Number(req.params.id) !== req.user.userId)
-      throw new ForbiddenError("You can only delete your own user");
-    await db("users").where({ id: req.params.id }).delete();
-    await cache.delete(`user:${req.params.id}`);
-    res.status(204).end();
-  }),
-);
+app.delete("/users/:id", authMiddleware, asyncHandler(async (req, res) => {
+  if (Number(req.params.id) !== req.user.userId)
+    throw new ForbiddenError("You can only delete your own user");
+  await db("users").where({ id: req.params.id }).delete();
+  await cache.delete(`user:${req.params.id}`);
+  res.status(204).end();
+}));
 
 app.post(
   "/sessions",
@@ -563,21 +530,21 @@ app.post(
     if (!u) throw new UnauthorizedError("invalid credentials");
     if (!(await bcrypt.compare(password, u.hash)))
       throw new UnauthorizedError("invalid credentials");
-    const token = jwt.sign({ userId: u.id, username: u.username }, SECRET, {
-      expiresIn: TOKEN_TTL,
+    const token = jwt.sign(
+      { userId: u.id, username: u.username },
+      SECRET,
+      { expiresIn: TOKEN_TTL }
+    );
+    res.status(201).json({
+      token,
+      user: { id: u.id, username: u.username, email: u.email },
     });
-    res
-      .status(201)
-      .json({
-        token,
-        user: { id: u.id, username: u.username, email: u.email },
-      });
-  }),
+  })
 );
 app.delete(
   "/sessions",
   authMiddleware,
-  asyncHandler(async (req, res) => res.status(204).end()),
+  asyncHandler(async (req, res) => res.status(204).end())
 );
 app.get(
   "/sessions/me",
@@ -593,7 +560,7 @@ app.get(
     if (!u) throw new NotFoundError("User not found");
     await cache.set(k, u);
     res.json(u);
-  }),
+  })
 );
 
 app.post(
@@ -605,20 +572,18 @@ app.post(
     if (u) {
       const t = crypto.randomBytes(32).toString("hex");
       const h = crypto.createHash("sha256").update(t).digest("hex");
-      await db("users")
-        .where({ id: u.id })
-        .update({
-          password_reset_token: h,
-          password_reset_expires_at: Date.now() + 60 * 60 * 1000,
-        });
+      await db("users").where({ id: u.id }).update({
+        password_reset_token: h,
+        password_reset_expires_at: Date.now() + 60 * 60 * 1000,
+      });
       await emailQueue.add(
         "password-reset",
         { email, token: t },
-        { attempts: 3, backoff: { type: "exponential", delay: 1000 } },
+        { attempts: 3, backoff: { type: "exponential", delay: 1000 } }
       );
     }
     res.json({ message: "If the email exists, a reset link has been sent" });
-  }),
+  })
 );
 app.post(
   "/sessions/reset",
@@ -631,16 +596,14 @@ app.post(
       throw new ValidationError([
         { path: "token", message: "invalid or expired token" },
       ]);
-    await db("users")
-      .where({ id: u.id })
-      .update({
-        hash: await bcrypt.hash(password, 10),
-        password_reset_token: null,
-        password_reset_expires_at: null,
-      });
+    await db("users").where({ id: u.id }).update({
+      hash: await bcrypt.hash(password, 10),
+      password_reset_token: null,
+      password_reset_expires_at: null,
+    });
     await cache.delete(`user:${u.id}`);
     res.json({ message: "Password reset successful" });
-  }),
+  })
 );
 
 app.post(
@@ -666,41 +629,35 @@ app.post(
     await cache.delete(`user:${fromUserId}`);
     await cache.delete(`user:${toUserId}`);
     res.json({ message: "Transfer complete" });
-  }),
+  })
 );
 
-app.get(
-  "/posts",
-  asyncHandler(async (req, res) => {
-    const { limit, offset } = paginate(req);
-    const [posts, c] = await Promise.all([
-      db("posts")
-        .join("users", "posts.user_id", "users.id")
-        .select("posts.*", "users.username as author")
-        .orderBy("posts.created_at", "desc")
-        .limit(limit)
-        .offset(offset),
-      db("posts").count("id as count").first(),
-    ]);
-    res.json({ data: posts, meta: meta(c.count, limit, offset) });
-  }),
-);
-app.get(
-  "/posts/:id",
-  asyncHandler(async (req, res) => {
-    const k = `post:${req.params.id}`;
-    const c = await cache.get(k);
-    if (c) return res.json(c);
-    const p = await db("posts")
+app.get("/posts", asyncHandler(async (req, res) => {
+  const { limit, offset } = paginate(req);
+  const [posts, c] = await Promise.all([
+    db("posts")
       .join("users", "posts.user_id", "users.id")
       .select("posts.*", "users.username as author")
-      .where("posts.id", req.params.id)
-      .first();
-    if (!p) throw new NotFoundError("Post not found");
-    await cache.set(k, p);
-    res.json(p);
-  }),
-);
+      .orderBy("posts.created_at", "desc")
+      .limit(limit)
+      .offset(offset),
+    db("posts").count("id as count").first(),
+  ]);
+  res.json({ data: posts, meta: meta(c.count, limit, offset) });
+}));
+app.get("/posts/:id", asyncHandler(async (req, res) => {
+  const k = `post:${req.params.id}`;
+  const c = await cache.get(k);
+  if (c) return res.json(c);
+  const p = await db("posts")
+    .join("users", "posts.user_id", "users.id")
+    .select("posts.*", "users.username as author")
+    .where("posts.id", req.params.id)
+    .first();
+  if (!p) throw new NotFoundError("Post not found");
+  await cache.set(k, p);
+  res.json(p);
+}));
 app.post(
   "/posts",
   authMiddleware,
@@ -716,10 +673,14 @@ app.post(
       image_url: imageUrl,
       created_at: Date.now(),
     });
-    res
-      .status(201)
-      .json({ id, userId: req.user.userId, title, body, imageUrl });
-  }),
+    res.status(201).json({
+      id,
+      userId: req.user.userId,
+      title,
+      body,
+      imageUrl,
+    });
+  })
 );
 app.patch(
   "/posts/:id",
@@ -728,7 +689,9 @@ app.patch(
   asyncHandler(async (req, res) => {
     const updates = req.validated;
     if (Object.keys(updates).length === 0)
-      throw new ValidationError([{ path: "", message: "no fields to update" }]);
+      throw new ValidationError([
+        { path: "", message: "no fields to update" },
+      ]);
     const p = await db("posts").where({ id: req.params.id }).first();
     if (!p) throw new NotFoundError("Post not found");
     if (p.user_id !== req.user.userId)
@@ -736,7 +699,7 @@ app.patch(
     await db("posts").where({ id: req.params.id }).update(updates);
     await cache.delete(`post:${req.params.id}`);
     res.json(await db("posts").where({ id: req.params.id }).first());
-  }),
+  })
 );
 app.delete(
   "/posts/:id",
@@ -749,27 +712,21 @@ app.delete(
     await db("posts").where({ id: req.params.id }).delete();
     await cache.delete(`post:${req.params.id}`);
     res.status(204).end();
-  }),
+  })
 );
 
-app.get(
-  "/users/:id/posts",
-  asyncHandler(async (req, res) => {
-    const { limit, offset } = paginate(req);
-    const [posts, c] = await Promise.all([
-      db("posts")
-        .where({ user_id: req.params.id })
-        .orderBy("created_at", "desc")
-        .limit(limit)
-        .offset(offset),
-      db("posts")
-        .where({ user_id: req.params.id })
-        .count("id as count")
-        .first(),
-    ]);
-    res.json({ data: posts, meta: meta(c.count, limit, offset) });
-  }),
-);
+app.get("/users/:id/posts", asyncHandler(async (req, res) => {
+  const { limit, offset } = paginate(req);
+  const [posts, c] = await Promise.all([
+    db("posts")
+      .where({ user_id: req.params.id })
+      .orderBy("created_at", "desc")
+      .limit(limit)
+      .offset(offset),
+    db("posts").where({ user_id: req.params.id }).count("id as count").first(),
+  ]);
+  res.json({ data: posts, meta: meta(c.count, limit, offset) });
+}));
 app.post(
   "/users/:id/posts",
   authMiddleware,
@@ -787,16 +744,14 @@ app.post(
       image_url: imageUrl,
       created_at: Date.now(),
     });
-    res
-      .status(201)
-      .json({ id, userId: req.user.userId, title, body, imageUrl });
-  }),
+    res.status(201).json({
+      id,
+      userId: req.user.userId,
+      title,
+      body,
+      imageUrl,
+    });
+  })
 );
-
-// Voice channel page (project 32)
-app.get("/:channel", (req, res) => {
-  if (req.params.channel === "favicon.ico") return res.status(404).end();
-  res.sendFile(path.join(__dirname, "voice.html"));
-});
 
 app.use(errorHandler);

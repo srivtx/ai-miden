@@ -6,84 +6,281 @@
     body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
     button { padding: 10px 20px; margin: 5px; cursor: pointer; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
-    #status { padding: 10px; background: #f0f0f0; border-radius: 4px; margin: 10px 0; }
+    .panel { padding: 12px; background: #f0f0f0; border-radius: 4px; margin: 10px 0; }
+    .row { display: flex; justify-content: space-between; padding: 4px 0; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    .dot-off { background: #999; }
+    .dot-on { background: #22c55e; }
+    .dot-warn { background: #f59e0b; }
+    .speaking { color: #16a34a; font-weight: bold; }
+    .hint { font-size: 0.9em; color: #555; margin-top: 8px; }
+    .warn { background: #fff3cd; border: 1px solid #ffc107; padding: 12px; border-radius: 4px; margin: 10px 0; font-size: 0.9em; }
   </style>
 </head>
 <body>
   <h1>Voice Channel: <span id="channel"></span></h1>
-  <div id="status">Disconnected</div>
+
+  <div class="panel">
+    <div class="row"><span>Signaling (WebSocket)</span><span id="signalingState">Disconnected</span></div>
+    <div class="row"><span>Your role</span><span id="role">—</span></div>
+    <div class="row"><span>Peers in channel</span><span id="peerCount">0</span></div>
+    <div class="row"><span>Voice link (WebRTC)</span><span id="webrtcState">Not connected</span></div>
+    <div class="row"><span>ICE</span><span id="iceState">—</span></div>
+    <div class="row"><span>You</span><span id="localSpeaking">—</span></div>
+    <div class="row"><span>Remote</span><span id="remoteSpeaking">—</span></div>
+  </div>
+  <p class="hint" id="testHint"></p>
+  <div class="warn" id="httpsWarn" hidden></div>
+  <div class="warn" id="peersWarn" hidden>Close extra tabs — voice only works with exactly <strong>2</strong> peers (1 host + 1 guest).</div>
+
   <button id="join">Join Channel</button>
   <button id="leave" disabled>Leave</button>
-  <audio id="remoteAudio" autoplay></audio>
+  <audio id="remoteAudio" autoplay playsinline></audio>
 
   <script>
     const channel = window.location.pathname.slice(1);
     document.getElementById('channel').textContent = channel;
+    document.getElementById('testHint').textContent =
+      `Share this URL: ${window.location.origin}/${channel} — use exactly 2 devices/tabs.`;
 
-    let pc, ws, localStream;
+    const ICE_SERVERS = [
+      { urls: 'stun:stun.l.google.com:19302' },
+      {
+        urls: [
+          'turn:openrelay.metered.ca:80',
+          'turn:openrelay.metered.ca:443',
+          'turns:openrelay.metered.ca:443',
+        ],
+        username: 'openrelayproject',
+        credential: 'openrelayproject',
+      },
+    ];
 
-    const status = document.getElementById('status');
-    const setStatus = (msg) => { status.textContent = msg; };
+    const httpsWarn = document.getElementById('httpsWarn');
+    const peersWarn = document.getElementById('peersWarn');
+    const needsHttps =
+      !window.isSecureContext &&
+      location.hostname !== 'localhost' &&
+      location.hostname !== '127.0.0.1';
+
+    if (needsHttps) {
+      httpsWarn.hidden = false;
+      httpsWarn.innerHTML =
+        '<strong>Phone needs HTTPS for the microphone.</strong> Run ' +
+        '<code>npx cloudflared tunnel --url http://localhost:3000</code> ' +
+        'and open the <strong>https://</strong> link on your phone.';
+    }
+
+    async function getMicStream() {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        if (needsHttps) {
+          throw new Error(
+            'Microphone blocked on HTTP. Use the cloudflared https:// URL on your phone.',
+          );
+        }
+        throw new Error('Microphone not available in this browser.');
+      }
+      return navigator.mediaDevices.getUserMedia({ audio: true });
+    }
+
+    let pc, ws, localStream, speakingInterval;
+    let myRole = null;
+    let pendingIce = [];
+
+    const signalingState = document.getElementById('signalingState');
+    const roleEl = document.getElementById('role');
+    const peerCount = document.getElementById('peerCount');
+    const webrtcState = document.getElementById('webrtcState');
+    const iceState = document.getElementById('iceState');
+    const localSpeaking = document.getElementById('localSpeaking');
+    const remoteSpeaking = document.getElementById('remoteSpeaking');
+
+    function monitorSpeaking(stream, el) {
+      const ctx = new AudioContext();
+      const source = ctx.createMediaStreamSource(stream);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+      const data = new Uint8Array(analyser.frequencyBinCount);
+
+      speakingInterval = setInterval(() => {
+        if (!stream.active) return;
+        analyser.getByteFrequencyData(data);
+        const avg = data.reduce((a, b) => a + b, 0) / data.length;
+        const speaking = avg > 15;
+        el.textContent = speaking ? 'Speaking' : 'Silent';
+        el.className = speaking ? 'speaking' : '';
+      }, 200);
+    }
+
+    function setSignaling(text, level) {
+      signalingState.innerHTML = `<span class="dot dot-${level}"></span>${text}`;
+    }
+
+    function setWebrtc(text, level) {
+      webrtcState.innerHTML = `<span class="dot dot-${level}"></span>${text}`;
+    }
+
+    function wirePeerConnection(peer) {
+      peer.onconnectionstatechange = () => {
+        const s = peer.connectionState;
+        if (s === 'connected') setWebrtc('Connected — audio flowing', 'on');
+        else if (s === 'connecting') setWebrtc('Connecting...', 'warn');
+        else if (s === 'failed') setWebrtc('Failed — tap Leave then rejoin', 'off');
+        else setWebrtc(s, 'warn');
+      };
+
+      peer.oniceconnectionstatechange = () => {
+        const s = peer.iceConnectionState;
+        iceState.textContent = s;
+        if (s === 'failed' || s === 'disconnected') {
+          setWebrtc(`ICE ${s} — tap Leave, close extra tabs, rejoin`, 'off');
+        }
+      };
+
+      peer.ontrack = async (event) => {
+        const remoteAudio = document.getElementById('remoteAudio');
+        remoteAudio.srcObject = event.streams[0];
+        try { await remoteAudio.play(); } catch (e) {}
+        monitorSpeaking(event.streams[0], remoteSpeaking);
+        setWebrtc('Connected — audio flowing', 'on');
+      };
+
+      peer.onicecandidate = (event) => {
+        if (event.candidate && ws?.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'ice', candidate: event.candidate }));
+        }
+      };
+    }
+
+    function createPeerConnection() {
+      const peer = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+      wirePeerConnection(peer);
+      if (localStream) {
+        localStream.getTracks().forEach((track) => peer.addTrack(track, localStream));
+      }
+      return peer;
+    }
+
+    async function flushPendingIce() {
+      while (pendingIce.length && pc?.remoteDescription) {
+        await pc.addIceCandidate(pendingIce.shift());
+      }
+    }
+
+    async function resetPeerConnection() {
+      if (pc) pc.close();
+      pendingIce = [];
+      pc = createPeerConnection();
+    }
+
+    async function sendOffer() {
+      if (!pc || !ws || ws.readyState !== WebSocket.OPEN) return;
+      if (pc.signalingState !== 'stable') await resetPeerConnection();
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      ws.send(JSON.stringify({ type: 'offer', offer }));
+      setWebrtc('Sent offer — waiting for answer...', 'warn');
+    }
+
+    function cleanup() {
+      clearInterval(speakingInterval);
+      pendingIce = [];
+      myRole = null;
+      if (pc) { pc.close(); pc = null; }
+      if (ws) { ws.close(); ws = null; }
+      if (localStream) {
+        localStream.getTracks().forEach((track) => track.stop());
+        localStream = null;
+      }
+    }
+
+    window.addEventListener('beforeunload', cleanup);
+    window.addEventListener('pagehide', cleanup);
 
     document.getElementById('join').onclick = async () => {
       try {
-        ws = new WebSocket(`ws://${window.location.host}/${channel}`);
+        const wsProto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+        ws = new WebSocket(`${wsProto}//${window.location.host}/${channel}`);
 
-        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-        pc = new RTCPeerConnection({
-          iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-        });
-
-        localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
-
-        pc.ontrack = (event) => {
-          const remoteAudio = document.getElementById('remoteAudio');
-          remoteAudio.srcObject = event.streams[0];
-          setStatus('Connected — speaking now');
-        };
-
-        pc.onicecandidate = (event) => {
-          if (event.candidate) {
-            ws.send(JSON.stringify({ type: 'ice', candidate: event.candidate }));
-          }
-        };
+        localStream = await getMicStream();
+        monitorSpeaking(localStream, localSpeaking);
+        pc = createPeerConnection();
 
         ws.onmessage = async (event) => {
           const message = JSON.parse(event.data);
+
+          if (message.type === 'presence') {
+            peerCount.textContent = message.count;
+            myRole = message.role;
+            roleEl.textContent = myRole;
+            peersWarn.hidden = message.count <= 2;
+
+            if (message.count === 1) {
+              setSignaling('Connected — waiting for a peer', 'warn');
+            } else if (message.count === 2) {
+              setSignaling('Connected — 2 peers, negotiating voice...', 'on');
+              if (myRole === 'host') await sendOffer();
+            } else {
+              setSignaling(`Connected — ${message.count} peers (close extras!)`, 'warn');
+            }
+            return;
+          }
+
           if (message.type === 'offer') {
+            if (myRole === 'host') return;
+            await resetPeerConnection();
             await pc.setRemoteDescription(message.offer);
+            await flushPendingIce();
             const answer = await pc.createAnswer();
             await pc.setLocalDescription(answer);
             ws.send(JSON.stringify({ type: 'answer', answer }));
+            setWebrtc('Answered offer — connecting...', 'warn');
           } else if (message.type === 'answer') {
+            if (myRole !== 'host') return;
             await pc.setRemoteDescription(message.answer);
+            await flushPendingIce();
+            setWebrtc('Got answer — connecting...', 'warn');
           } else if (message.type === 'ice') {
-            await pc.addIceCandidate(message.candidate);
+            if (!pc) return;
+            if (pc.remoteDescription) {
+              await pc.addIceCandidate(message.candidate);
+            } else {
+              pendingIce.push(message.candidate);
+            }
           }
         };
 
-        ws.onopen = async () => {
-          const offer = await pc.createOffer();
-          await pc.setLocalDescription(offer);
-          ws.send(JSON.stringify({ type: 'offer', offer }));
-          setStatus('Connected to signaling server, waiting for peer...');
+        ws.onopen = () => {
+          setSignaling('Connected — joining channel...', 'warn');
           document.getElementById('join').disabled = true;
           document.getElementById('leave').disabled = false;
         };
 
-        ws.onerror = () => setStatus('WebSocket error');
-        ws.onclose = () => setStatus('Disconnected');
+        ws.onerror = () => setSignaling('WebSocket error', 'off');
+        ws.onclose = () => {
+          setSignaling('Disconnected', 'off');
+          peerCount.textContent = '0';
+          roleEl.textContent = '—';
+          iceState.textContent = '—';
+          setWebrtc('Not connected', 'off');
+          peersWarn.hidden = true;
+        };
       } catch (err) {
-        setStatus('Error: ' + err.message);
+        setSignaling('Error: ' + err.message, 'off');
       }
     };
 
     document.getElementById('leave').onclick = () => {
-      if (pc) pc.close();
-      if (ws) ws.close();
-      if (localStream) localStream.getTracks().forEach((track) => track.stop());
-      setStatus('Left channel');
+      cleanup();
+      setSignaling('Left channel', 'off');
+      setWebrtc('Not connected', 'off');
+      peerCount.textContent = '0';
+      roleEl.textContent = '—';
+      iceState.textContent = '—';
+      localSpeaking.textContent = '—';
+      remoteSpeaking.textContent = '—';
+      peersWarn.hidden = true;
       document.getElementById('join').disabled = false;
       document.getElementById('leave').disabled = true;
     };
