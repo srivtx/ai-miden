@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "imagetracerjs": "^1.2.6",
     "puppeteer": "^23.0.0",
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "tesseract.js": "^7.0.0"
   }
 }
